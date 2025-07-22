@@ -148,14 +148,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="End\EndScene.cpp" />
+    <ClCompile Include="GameMain\GameMainScene.cpp" />
+    <ClCompile Include="Help\HelpScene.cpp" />
+    <ClCompile Include="Result\ResultScene.cpp" />
+    <ClCompile Include="Title\TitleScene.cpp" />
     <ClCompile Include="Utility\InputManager.cpp" />
     <ClCompile Include="Utility\ResourceManager.cpp" />
-    <ClCompile Include="Utility\UserTemplate.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="End\EndScene.h" />
+    <ClInclude Include="GameMain\GameMainScene.h" />
+    <ClInclude Include="Help\HelpScene.h" />
+    <ClInclude Include="Result\ResultScene.h" />
+    <ClInclude Include="Title\TitleScene.h" />
     <ClInclude Include="Utility\InputManager.h" />
     <ClInclude Include="Utility\ResourceManager.h" />
+    <ClInclude Include="Utility\UserTemplate.h" />
+    <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
