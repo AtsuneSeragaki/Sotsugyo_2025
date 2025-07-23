@@ -152,6 +152,13 @@
     <ClCompile Include="GameMain\GameMainScene.cpp" />
     <ClCompile Include="Help\HelpScene.cpp" />
     <ClCompile Include="Result\ResultScene.cpp" />
+    <ClCompile Include="Scene\End\EndScene.cpp" />
+    <ClCompile Include="Scene\GameMain\GameMainScene.cpp" />
+    <ClCompile Include="Scene\Help\HelpScene.cpp" />
+    <ClCompile Include="Scene\Result\ResultScene.cpp" />
+    <ClCompile Include="Scene\SceneBase.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\Title\TitleScene.cpp" />
     <ClCompile Include="Title\TitleScene.cpp" />
     <ClCompile Include="Utility\InputManager.cpp" />
     <ClCompile Include="Utility\ResourceManager.cpp" />
@@ -162,6 +169,13 @@
     <ClInclude Include="GameMain\GameMainScene.h" />
     <ClInclude Include="Help\HelpScene.h" />
     <ClInclude Include="Result\ResultScene.h" />
+    <ClInclude Include="Scene\End\EndScene.h" />
+    <ClInclude Include="Scene\GameMain\GameMainScene.h" />
+    <ClInclude Include="Scene\Help\HelpScene.h" />
+    <ClInclude Include="Scene\Result\ResultScene.h" />
+    <ClInclude Include="Scene\SceneBase.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\Title\TitleScene.h" />
     <ClInclude Include="Title\TitleScene.h" />
     <ClInclude Include="Utility\InputManager.h" />
     <ClInclude Include="Utility\ResourceManager.h" />
