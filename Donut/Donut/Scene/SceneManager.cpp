@@ -1,8 +1,10 @@
 #include "SceneManager.h"
-
+#include "DxLib.h"
 #include "Title/TitleScene.h"
 #include "GameMain/GameMainScene.h"
 #include "Help/HelpScene.h"
+#include "Result/ResultScene.h"
+#include "End/EndScene.h"
 
 SceneManager::SceneManager() : current_scene(nullptr), loop_flag(true)
 {
@@ -16,7 +18,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::Initialize()
 {
-	ChangeScene(eSceneType::eTitle);
+	ChangeScene(eSceneType::eGameMain);
 }
 
 void SceneManager::Update()
@@ -81,13 +83,17 @@ SceneBase* SceneManager::CreateScene(eSceneType new_scene_type)
 	case eSceneType::eTitle:
 		return dynamic_cast<SceneBase*>(new TitleScene());
 
-	case eSceneType::eInGame:
-		return dynamic_cast<SceneBase*>(new InGameScene());
+	case eSceneType::eGameMain:
+		return dynamic_cast<SceneBase*>(new GameMainScene());
 
 	case eSceneType::eHelp:
 		return dynamic_cast<SceneBase*>(new HelpScene());
 
+	case eSceneType::eResult:
+		return dynamic_cast<SceneBase*>(new ResultScene());
+
 	case eSceneType::eEnd:
+		return dynamic_cast<SceneBase*>(new EndScene());
 
 	default:
 		return nullptr;

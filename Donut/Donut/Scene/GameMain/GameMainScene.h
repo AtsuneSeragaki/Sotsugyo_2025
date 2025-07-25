@@ -1,10 +1,21 @@
 #pragma once
 
 #include "../SceneBase.h"
+#include "../../Objects/GameObjectManager.h"
+
 
 class GameMainScene : public SceneBase
 {
 private:
+	GameObjectManager* gameobjects;  // ゲームオブジェクトクラスのオブジェクト
+	class Player* player;     // プレイヤークラスのオブジェクト
+
+public:
+	// コンストラクタ
+	GameMainScene();
+
+	// デストラクタ
+	~GameMainScene();
 
 public:
 	// 初期化処理

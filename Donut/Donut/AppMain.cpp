@@ -9,7 +9,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	ChangeWindowMode(TRUE);
 
 	// Windowサイズの設定
-	SetGraphMode(640, 480, 32);
+	SetGraphMode(1280, 720, 32);
 
 	// DXライブラリの初期化
 	if (DxLib_Init() == -1)
@@ -29,30 +29,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	try
 	{
+		manager = new SceneManager();
+
+		manager->Initialize();
+
+		// 入力情報のインスタンスを取得
+		InputManager* input = InputManager::GetInstance();
+
 		// メインループ
 		while (ProcessMessage() != -1)
 		{
-			manager = new SceneManager();
-
-			manager->Initialize();
-
-			// 入力情報のインスタンスを取得
-			InputManager* input = InputManager::GetInstance();
-
-			// 入力情報の更新
-			manager->Update();
-
 			// 画面の初期化
 			ClearDrawScreen();
 
-			// オブジェクトの描画処理
-			object->Draw();
+			// 入力情報の更新
+			manager->Update();
 
 			// 裏画面の内容を表画面に反映する
 			ScreenFlip();
 
 			// ESCキーが入力されたら、ループを終了する
-			if (input->GetKeyUp(KEY_INPUT_ESCAPE))
+			if (input->GetKeyInputState(KEY_INPUT_ESCAPE) == eInputState::eRelease)
 			{
 				break;
 			}
@@ -67,15 +64,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	// オブジェクトの削除
-	if (object != nullptr)
+	if (manager != nullptr)
 	{
-		object->Finalize();
-		delete object;
-		object = nullptr;
+		manager->Finalize();
+		delete manager;
 	}
 
 	// 入力機能のインスタンスを削除する
-	InputControl::DeleteInstance();
+	InputManager::DeleteInstance();
 
 	// 読み込んだ画像、音源の解放
 	rm->UnloadResourcesAll();
