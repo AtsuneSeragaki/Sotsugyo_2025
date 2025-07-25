@@ -46,7 +46,7 @@ void Donuts::FallDonut()
 {
     if (location.y < 680.0f - r)
     {
-        location.y += 4.0f;
+        location.y += 7.0f;
     }
     else
     {

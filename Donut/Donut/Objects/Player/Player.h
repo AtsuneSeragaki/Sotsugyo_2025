@@ -21,10 +21,13 @@ public:
 	// 終了時処理
 	virtual void Finalize() override;
 
+	// 左クリックフラグ設定
+	bool SetClickFlg(bool flg);
+
+	// 左クリックフラグ取得
+	bool GetClickFlg();
+
 private:
 	// ドーナツを落とす枠の範囲しか移動出来ないようにする処理
 	void LocXControl();
-
-	// ドーナツ落下処理
-	void FallDonut();
 };

@@ -22,27 +22,13 @@ void Player::Update()
 	// マウスのX座標を取得
 	location.x = input->GetMouseLocation().x;
 
-	// ドーナツ移動制限
+	// カーソル移動制限
 	LocXControl();
-
-	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
-	{
-		if (is_click == false)
-		{
-			is_click = true;
-		}
-	}
-
-	// ドーナツ落下処理
-	if (is_click == true)
-	{
-		FallDonut();
-	}
 }
 
 void Player::Draw() const
 {
-	//DrawCircleAA(location.x, location.y, r, 32, 0xffff00, TRUE);
+	DrawCircleAA(location.x, location.y, r, 32, 0xffff00, TRUE);
 }
 
 void Player::Finalize()
@@ -61,15 +47,12 @@ void Player::LocXControl()
 	}
 }
 
-void Player::FallDonut()
+bool Player::SetClickFlg(bool flg)
 {
-	if (location.y < 680.0f - r)
-	{
-		location.y += 4.0f;
-	}
-	else
-	{
-		is_click = false;
-		location.y = 680.0f - r;
-	}
+	return is_click = flg;
+}
+
+bool Player::GetClickFlg()
+{
+	return is_click;
 }

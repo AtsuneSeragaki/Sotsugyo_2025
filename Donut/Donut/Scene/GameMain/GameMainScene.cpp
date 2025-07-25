@@ -24,10 +24,17 @@ eSceneType GameMainScene::Update()
 {
 	InputManager* input = InputManager::GetInstance();
 
-	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	// 左クリックされたらドーナツを落とす
+	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress && player->GetClickFlg() == false)
 	{
+		player->SetClickFlg(true);
+
 		// ドーナツを新しく追加
 		gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f));
+	}
+	else if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::eNone)
+	{
+		player->SetClickFlg(false);
 	}
 
 	for (GameObject* obj : gameobjects->GetObjectList())
@@ -50,6 +57,8 @@ void GameMainScene::Draw() const
 
 	// ドーナツを落とす枠の描画
 	DrawBox(400, 100, 880, 680, 0xffffff, FALSE);
+
+	DrawFormatString(0, 30, 0xffffff, "%d", player->GetClickFlg());
 }
 
 void GameMainScene::Finalize()
