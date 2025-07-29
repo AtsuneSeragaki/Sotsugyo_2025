@@ -2,17 +2,19 @@
 #include "../../Utility/InputManager.h"
 #include "../../Utility/ResourceManager.h"
 #include "../../Objects/Player/Player.h"
-#include "../../Objects/Donuts/Donuts.h"
 #include "DxLib.h"
 
 
 GameMainScene::GameMainScene()
 {
 	gameobjects = new GameObjectManager();
+	player = nullptr;
 }
 
 GameMainScene::~GameMainScene()
 {
+	delete player;
+	delete gameobjects;
 }
 
 void GameMainScene::Initialize()
@@ -29,8 +31,14 @@ eSceneType GameMainScene::Update()
 	{
 		player->SetClickFlg(true);
 
-		// ドーナツを新しく追加
-		gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f));
+		// 落とすドーナツの種類を取得
+		DonutType type = player->GetNextDonutType();
+
+		// ドーナツを追加(落とす)
+		gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f),type);
+
+		// 次に落とすドーナツの種類を決める
+		player->ChooseRandomDonut();
 	}
 	else if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::eNone)
 	{

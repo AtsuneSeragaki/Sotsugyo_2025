@@ -4,6 +4,7 @@
 
 Player::Player() : is_click(false)
 {
+	next_donut_type = DonutType::DONUT_MINI_BASIC;
 }
 
 Player::~Player()
@@ -33,6 +34,11 @@ void Player::Draw() const
 
 void Player::Finalize()
 {
+}
+
+void Player::ChooseRandomDonut()
+{
+	next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_OLD_FASHIONED) + 1));
 }
 
 void Player::LocXControl()

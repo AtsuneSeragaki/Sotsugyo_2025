@@ -1,10 +1,11 @@
 #pragma once
-#include "../GameObject.h"
+#include "../Donuts/Donuts.h"
 
 class Player : public GameObject
 {
 private:
 	bool is_click; // マウス左クリックされたか？
+	DonutType next_donut_type; // 次に落とすドーナツの種類
 
 public:
 	// コンストラクタ
@@ -26,6 +27,15 @@ public:
 
 	// 左クリックフラグ取得
 	bool GetClickFlg();
+
+	// 次に落とすドーナツの種類を取得
+	DonutType GetNextDonutType() const { return next_donut_type; }
+
+	// 次に落とすドーナツの種類を設定
+	void SetNextDonutType(DonutType type) { next_donut_type = type; }
+
+	// ドーナツをランダムに選ぶ
+	void ChooseRandomDonut();
 
 private:
 	// ドーナツを落とす枠の範囲しか移動出来ないようにする処理
