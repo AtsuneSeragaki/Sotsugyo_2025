@@ -1,9 +1,10 @@
 #pragma once
 #include "../GameObject.h"
 #define MAX_PATH_LEN 256
+//#define MAX_DONUT_NUM 11
 
 // ドーナツの種類
-typedef enum class DonutType
+enum class DonutType
 {
 	DONUT_MINI_BASIC,           // ミスドの小さいドーナツみたいなやつ（ノーマル）
 	DONUT_MINI_VARIANT,         // ミスドの小さいドーナツみたいなやつ（色違い）
@@ -16,7 +17,7 @@ typedef enum class DonutType
 	DONUT_HALF_CHOCOLATE,       // 半分チョコドーナツ
 	DONUT_HALF_STRAWBERRY,      // 半分ストロベリードーナツ
 	DONUT_PON_DE_RING,          // ポン・デ・リング
-	DONUT_COUNT                 // ← ドーナツの総数（自動で11になる）
+	DONUT_COUNT
 };
 
 // ドーナツ情報構造体
@@ -27,12 +28,16 @@ typedef struct {
 	char image_path[MAX_PATH_LEN]; // ドーナツ画像パス
 } DonutInfo;
 
+constexpr int MAX_DONUT_NUM = static_cast<int>(DonutType::DONUT_COUNT);
+extern const DonutInfo g_DonutInfoTable[MAX_DONUT_NUM];
+
 class Donuts : public GameObject
 {
 private:
 	bool landed; // 着地したか
 	DonutType type; // ドーナツの種類
 	float vy; // 重力
+	const char* name; // デバック用のドーナツの種類
 
 public:
 	// コンストラクタ
@@ -52,4 +57,7 @@ public:
 private:
 	// ドーナツ落下処理
 	void FallDonut();
+
+	// デバック用のドーナツ種類文字に変換処理
+	const char* GetDonutTypeName(DonutType type);
 };
