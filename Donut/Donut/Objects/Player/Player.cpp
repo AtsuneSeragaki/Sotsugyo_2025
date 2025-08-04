@@ -6,6 +6,8 @@ Player::Player() : is_click(false)
 {
 	next_donut_type = DonutType::DONUT_MINI_BASIC;
 	next_next_donut_type = DonutType::DONUT_FRENCH_CRULLER;
+	r = 20.0f;
+	next_r = 22.0f;
 }
 
 Player::~Player()
@@ -14,8 +16,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	r = 20.0f;
-	next_r = 22.0f;
+	
 }
 
 void Player::Update()

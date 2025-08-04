@@ -35,6 +35,7 @@ class Donuts : public GameObject
 private:
 	bool landed; // 着地したか
 	DonutType type; // ドーナツの種類
+	float vx;  // ← 横方向速度
 	float vy; // 重力
 	const char* name; // デバック用のドーナツの種類
 
@@ -54,6 +55,8 @@ public:
 	virtual void Finalize() override;
 	// ドーナツの半径を返す
 	float GetDonutRadius(DonutType dtype);
+	Vector2D GetVelocity() const { return Vector2D(vx, vy); }
+	void SetVelocity(Vector2D vel) { vx = vel.x; vy = vel.y; }
 
 private:
 	// ドーナツ落下処理
@@ -61,4 +64,7 @@ private:
 
 	// デバック用のドーナツ種類文字に変換処理
 	const char* GetDonutTypeName(DonutType type);
+
+	// ドーナツの枠はみ出し防止
+	void ClampToFrame(float left, float right, float top, float bottom);
 };

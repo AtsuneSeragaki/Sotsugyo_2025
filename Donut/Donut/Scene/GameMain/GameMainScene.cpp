@@ -53,6 +53,8 @@ eSceneType GameMainScene::Update()
 	{
 		obj->Update();
 	}
+	
+	CollisionDonuts();
 
 	return GetNowSceneType();
 }
@@ -80,4 +82,54 @@ void GameMainScene::Finalize()
 eSceneType GameMainScene::GetNowSceneType() const
 {
 	return eSceneType::eGameMain;
+}
+
+void GameMainScene::CollisionDonuts()
+{
+	std::vector<Donuts*> donutList;
+	for (GameObject* obj : gameobjects->GetObjectList()) {
+		Donuts* donut = dynamic_cast<Donuts*>(obj);
+		if (donut) {
+			donutList.push_back(donut);
+		}
+	}
+
+	for (size_t i = 0; i < donutList.size(); ++i) {
+		for (size_t j = i + 1; j < donutList.size(); ++j) {
+			Donuts* a = donutList[i];
+			Donuts* b = donutList[j];
+
+			Vector2D delta = a->GetLocation() - b->GetLocation();
+			float distSq = delta.x * delta.x + delta.y * delta.y;
+			float rSum = a->GetRadiusSize() + b->GetRadiusSize();
+
+			if (distSq < rSum * rSum) {
+				// 当たってるので反発 or 位置修正などを行う
+				ResolveDonutCollision(a, b);
+			}
+		}
+	}
+
+
+
+}
+
+void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
+{
+	Vector2D delta = a->GetLocation() - b->GetLocation();
+	float dist = sqrtf(delta.x * delta.x + delta.y * delta.y);
+	float rSum = a->GetRadiusSize() + b->GetRadiusSize();
+
+	if (dist == 0.0f) return; // 避ける
+
+	float overlap = rSum - dist;
+	Vector2D normal = delta / dist;
+
+	// 重なり解消（半分ずつ押し戻す）
+	a->SetLocation(a->GetLocation() + normal * (overlap / 2.0f));
+	b->SetLocation(b->GetLocation() - normal * (overlap / 2.0f));
+
+	// 簡単な反発（跳ね返り）
+	a->SetVelocity(a->GetVelocity() + normal * 0.3f);
+	b->SetVelocity(b->GetVelocity() - normal * 0.3f);
 }

@@ -30,4 +30,11 @@ public:
 public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
+
+private:
+	// ドーナツ同士の当たり判定
+	void CollisionDonuts();
+
+	// 当たった時の処理
+	void ResolveDonutCollision(class Donuts* a, class Donuts* b);
 };
