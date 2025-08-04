@@ -1,7 +1,6 @@
 #pragma once
 #include "../GameObject.h"
 #define MAX_PATH_LEN 256
-//#define MAX_DONUT_NUM 11
 
 // ドーナツの種類
 enum class DonutType
@@ -53,6 +52,8 @@ public:
 	virtual void Draw() const override;
 	// 終了時処理
 	virtual void Finalize() override;
+	// ドーナツの半径を返す
+	float GetDonutRadius(DonutType dtype);
 
 private:
 	// ドーナツ落下処理

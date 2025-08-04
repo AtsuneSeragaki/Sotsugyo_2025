@@ -6,6 +6,8 @@ class Player : public GameObject
 private:
 	bool is_click; // マウス左クリックされたか？
 	DonutType next_donut_type; // 次に落とすドーナツの種類
+	DonutType next_next_donut_type; // 次の次に落とすドーナツの種類
+	float next_r; // 次の次に落とすドーナツの半径
 
 public:
 	// コンストラクタ
@@ -31,11 +33,17 @@ public:
 	// 次に落とすドーナツの種類を取得
 	DonutType GetNextDonutType() const { return next_donut_type; }
 
-	// 次に落とすドーナツの種類を設定
-	void SetNextDonutType(DonutType type) { next_donut_type = type; }
+	// 次の次に落とすドーナツの種類を取得
+	DonutType GetNextNextDonutType() const { return next_next_donut_type; }
 
 	// ドーナツをランダムに選ぶ
 	void ChooseRandomDonut();
+
+	// プレイヤーが動かすドーナツを次のドーナツに変更する
+	void SetDonutRadius(float r) { this->r = r; }
+
+	//　次の次に落とすドーナツの半径設定(ネクスト描画用)
+	void SetNextDonutRadius(float r) { next_r = r; }
 
 private:
 	// ドーナツを落とす枠の範囲しか移動出来ないようにする処理

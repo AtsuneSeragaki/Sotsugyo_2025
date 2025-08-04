@@ -6,6 +6,7 @@
 #include "Result/ResultScene.h"
 #include "End/EndScene.h"
 
+
 SceneManager::SceneManager() : current_scene(nullptr), loop_flag(true)
 {
 
@@ -13,24 +14,87 @@ SceneManager::SceneManager() : current_scene(nullptr), loop_flag(true)
 
 SceneManager::~SceneManager()
 {
-	this->Finalize();
 }
 
 void SceneManager::Initialize()
 {
+	// ウィンドウのタイトルを設定
+	SetMainWindowText("Button Attack");
+
+	// ウィンドウモードで起動
+	if (ChangeWindowMode(TRUE) != DX_CHANGESCREEN_OK)
+	{
+		throw("ウィンドウモードで起動できませんでした\n");
+	}
+
+	// ウィンドウサイズの設定
+	SetGraphMode(1280, 720, 32);
+
+	// DXライブラリの初期化
+	if (DxLib_Init() == -1)
+	{
+		throw("Dxライブラリが初期化できませんでした\n");
+	}
+
+	// 描画先指定処理
+	if (SetDrawScreen(DX_SCREEN_BACK) == -1)
+	{
+		throw("描画先の指定ができませんでした\n");
+	}
+
 	ChangeScene(eSceneType::eGameMain);
 }
 
 void SceneManager::Update()
 {
-	eSceneType next_scene_type = current_scene->Update();
+	// フレーム開始時間(マイクロ秒を取得)
+	LONGLONG start_time = GetNowHiPerformanceCount();
+
+	while (ProcessMessage() != -1)
+	{
+		// 現在時間を取得
+		LONGLONG now_time = GetNowHiPerformanceCount();
+
+		// 1フレーム当たりの時間に到達したら、更新および描画処理を行う
+		if ((now_time - start_time) >= DELTA_SECOND)
+		{
+			// フレーム開始時間を更新する
+			start_time = now_time;
+
+			// 更新処理(戻り値は次のシーン情報)
+			eSceneType next = current_scene->Update();
+
+			// 描画処理
+			Draw();
+
+			// 現在のシーンと次のシーンが違っていたら、切り替え処理を行う
+			if (next != current_scene->GetNowSceneType())
+			{
+				ChangeScene(next);
+			}
+		}
+
+		// ESCAPEキーが押されたら、ゲームを終了する
+		if (CheckHitKey(KEY_INPUT_ESCAPE))
+		{
+			break;
+		}
+
+		// エンドカウントが180より大きかったらゲームを終了する
+		/*if (EndScene::cnt > 180)
+		{
+			break;
+		}*/
+	}
+
+	/*eSceneType next_scene_type = current_scene->Update();
 
 	current_scene->Draw();
 
 	if (next_scene_type != current_scene->GetNowSceneType())
 	{
 		ChangeScene(next_scene_type);
-	}
+	}*/
 }
 
 void SceneManager::Finalize()
@@ -41,11 +105,26 @@ void SceneManager::Finalize()
 		delete current_scene;
 		current_scene = nullptr;
 	}
+
+	// DXライブラリの使用を終了する
+	DxLib_End();
 }
 
 bool SceneManager::LoopCheck() const
 {
 	return loop_flag;
+}
+
+void SceneManager::Draw() const
+{
+	// 画面の初期化
+	ClearDrawScreen();
+
+	// シーンの描画
+	current_scene->Draw();
+
+	// 裏画面の内容を表画面に反映
+	ScreenFlip();
 }
 
 void SceneManager::ChangeScene(eSceneType new_scene_type)

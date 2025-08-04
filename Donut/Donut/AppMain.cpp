@@ -33,27 +33,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		manager->Initialize();
 
-		// 入力情報のインスタンスを取得
-		InputManager* input = InputManager::GetInstance();
+		// シーンマネージャー機能の更新処理
+		manager->Update();
 
-		// メインループ
-		while (ProcessMessage() != -1)
-		{
-			// 画面の初期化
-			ClearDrawScreen();
-
-			// 入力情報の更新
-			manager->Update();
-
-			// 裏画面の内容を表画面に反映する
-			ScreenFlip();
-
-			// ESCキーが入力されたら、ループを終了する
-			if (input->GetKeyInputState(KEY_INPUT_ESCAPE) == eInputState::eRelease)
-			{
-				break;
-			}
-		}
+		// シーンマネージャー機能の終了時処理
+		manager->Finalize();
 	}
 	catch (std::string error_log)
 	{

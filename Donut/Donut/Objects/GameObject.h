@@ -2,6 +2,8 @@
 
 #include "../Utility/Vector2D.h"
 
+
+
 // ゲームオブジェクトクラス(画面に出てくるオブジェクトの親クラス)
 class GameObject
 {

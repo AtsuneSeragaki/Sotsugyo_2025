@@ -35,10 +35,14 @@ eSceneType GameMainScene::Update()
 		DonutType type = player->GetNextDonutType();
 
 		// ドーナツを追加(落とす)
-		gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f),type);
+		Donuts* donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f),type);
 
 		// 次に落とすドーナツの種類を決める
 		player->ChooseRandomDonut();
+
+		player->SetDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
+
+		player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextNextDonutType()));
 	}
 	else if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::eNone)
 	{

@@ -3,10 +3,10 @@
 
 DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
         { DonutType::DONUT_MINI_BASIC,        20.0f, 100, "images/donut_mini_basic.png" },
-        { DonutType::DONUT_MINI_VARIANT,      20.0f, 120, "images/donut_mini_variant.png" },
-        { DonutType::DONUT_FRENCH_CRULLER,    25.0f, 150, "images/french_cruller.png" },
-        { DonutType::DONUT_FRENCH_CRULLER_VAR,25.0f, 160, "images/french_cruller_var.png" },
-        { DonutType::DONUT_OLD_FASHIONED,     22.0f, 130, "images/old_fashioned.png" },
+        { DonutType::DONUT_MINI_VARIANT,      21.0f, 120, "images/donut_mini_variant.png" },
+        { DonutType::DONUT_FRENCH_CRULLER,    22.0f, 150, "images/french_cruller.png" },
+        { DonutType::DONUT_FRENCH_CRULLER_VAR,23.0f, 160, "images/french_cruller_var.png" },
+        { DonutType::DONUT_OLD_FASHIONED,     24.0f, 130, "images/old_fashioned.png" },
         { DonutType::DONUT_OLD_FASHIONED_VAR, 22.0f, 140, "images/old_fashioned_var.png" },
         { DonutType::DONUT_GOLDEN_CHOCOLATE,  28.0f, 200, "images/golden_chocolate.png" },
         { DonutType::DONUT_COCONUT_CHOCOLATE, 28.0f, 200, "images/coconut_chocolate.png" },
@@ -53,6 +53,12 @@ void Donuts::Finalize()
 {
 }
 
+float Donuts::GetDonutRadius(DonutType dtype)
+{
+    const DonutInfo& info = g_DonutInfoTable[static_cast<int>(dtype)];
+    return info.size;
+}
+
 void Donuts::FallDonut()
 {
     /*if (location.y < 680.0f - r)
@@ -66,7 +72,7 @@ void Donuts::FallDonut()
     }*/
 
     if (!landed) {
-        vy += 0.08f;   // 重力加速度
+        vy += 0.5f;   // 重力加速度
         location.y += vy;
 
         if (location.y + r >= 680.0f) {

@@ -5,6 +5,7 @@
 Player::Player() : is_click(false)
 {
 	next_donut_type = DonutType::DONUT_MINI_BASIC;
+	next_next_donut_type = DonutType::DONUT_FRENCH_CRULLER;
 }
 
 Player::~Player()
@@ -14,6 +15,7 @@ Player::~Player()
 void Player::Initialize()
 {
 	r = 20.0f;
+	next_r = 22.0f;
 }
 
 void Player::Update()
@@ -30,6 +32,9 @@ void Player::Update()
 void Player::Draw() const
 {
 	DrawCircleAA(location.x, location.y, r, 32, 0xffff00, TRUE);
+	DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", (int)(r - 19.0f));
+	DrawCircleAA(1000.0f, 60.0f, next_r, 32, 0xffff00, TRUE);
+	DrawFormatString((int)1000.0f, (int)60.0f - 3, 0x000000, "%d", (int)(next_r - 19.0f));
 }
 
 void Player::Finalize()
@@ -38,7 +43,8 @@ void Player::Finalize()
 
 void Player::ChooseRandomDonut()
 {
-	next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_OLD_FASHIONED) + 1));
+	next_donut_type = next_next_donut_type;
+	next_next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_OLD_FASHIONED) + 1));
 }
 
 void Player::LocXControl()

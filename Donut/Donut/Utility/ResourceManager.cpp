@@ -118,7 +118,8 @@ void ResourceManager::UnloadResourcesAll()
 	// 全ての音源を削除
 	for (std::pair<std::string, int> value : sounds_container)
 	{
-		InitSoundMem(value.second);
+		//InitSoundMem(value.second);
+		InitSoundMem();
 	}
 
 	// コンテナを解散
