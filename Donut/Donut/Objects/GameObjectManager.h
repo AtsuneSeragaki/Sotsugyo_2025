@@ -28,6 +28,8 @@ public:
 	void DestroyGameObject(GameObject*);
 	// 当たり判定を確認する処理
 	void CheckCollision();
+	// 削除対象のオブジェクトをリストから取り除く処理
+	void RemoveDeadObjects();
 
 	//// オブジェクトを生成する処理
 	//template <class T>

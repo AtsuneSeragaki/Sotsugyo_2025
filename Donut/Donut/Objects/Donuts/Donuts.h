@@ -1,5 +1,6 @@
 #pragma once
 #include "../GameObject.h"
+#include <vector>
 #define MAX_PATH_LEN 256
 
 // ドーナツの種類
@@ -38,6 +39,8 @@ private:
 	float vx;  // ← 横方向速度
 	float vy; // 重力
 	const char* name; // デバック用のドーナツの種類
+	bool isMerged;  // すでに合体したかどうか
+	bool isDead;    // 削除予定（外部で処理）
 
 public:
 	// コンストラクタ
@@ -58,10 +61,22 @@ public:
 	Vector2D GetVelocity() const { return Vector2D(vx, vy); }
 	void SetVelocity(Vector2D vel) { vx = vel.x; vy = vel.y; }
 
-private:
-	// ドーナツ落下処理
-	void FallDonut();
+	void ResolveCollision(Donuts* other);
 
+	DonutType GetDonutType() const { return type; }
+	void SetDonutType(DonutType t) { type = t; name = GetDonutTypeName(t); }
+	void SetRadius(float r_) { r = r_; }
+
+	bool IsDead() const { return isDead; }
+	void SetDead(bool d) { isDead = d; }
+
+	bool IsMerged() const { return isMerged; }
+	void SetMerged(bool m) { isMerged = m; }
+
+	// ドーナツ落下処理
+	void FallDonut(const std::vector<Donuts*>& others);
+
+private:
 	// デバック用のドーナツ種類文字に変換処理
 	const char* GetDonutTypeName(DonutType type);
 

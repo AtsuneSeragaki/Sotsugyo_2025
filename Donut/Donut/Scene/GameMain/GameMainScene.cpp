@@ -49,12 +49,27 @@ eSceneType GameMainScene::Update()
 		player->SetClickFlg(false);
 	}
 
-	for (GameObject* obj : gameobjects->GetObjectList())
-	{
+	std::vector<Donuts*> donutList;
+	for (GameObject* obj : gameobjects->GetObjectList()) {
+		Donuts* donut = dynamic_cast<Donuts*>(obj);
+		if (donut) {
+			donutList.push_back(donut);
+			donut->SetMerged(false);
+		}
+	}
+
+	for (Donuts* donut : donutList) {
+		donut->FallDonut(donutList);  // 他ドーナツ情報を渡す
+	}
+
+	// 他のUpdate処理
+	for (GameObject* obj : gameobjects->GetObjectList()) {
 		obj->Update();
 	}
-	
+
 	CollisionDonuts();
+
+	gameobjects->RemoveDeadObjects();
 
 	return GetNowSceneType();
 }
@@ -116,20 +131,42 @@ void GameMainScene::CollisionDonuts()
 
 void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 {
+	if (a->IsDead() || b->IsDead()) return;
+
+	// 同じタイプ & まだ進化していない
+	if (a->GetDonutType() == b->GetDonutType() &&
+		!a->IsMerged() && !b->IsMerged())
+	{
+		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
+
+		if (nextTypeIndex < MAX_DONUT_NUM)
+		{
+			// aを進化させる
+			a->SetDonutType(static_cast<DonutType>(nextTypeIndex));
+			a->SetRadius(g_DonutInfoTable[nextTypeIndex].size);
+			a->SetMerged(true);
+
+			// bを削除対象に
+			b->SetDead(true);
+
+			return; // 衝突解決は不要（1つになるため）
+		}
+	}
+
+	// 通常の衝突処理（反発）
 	Vector2D delta = a->GetLocation() - b->GetLocation();
 	float dist = sqrtf(delta.x * delta.x + delta.y * delta.y);
 	float rSum = a->GetRadiusSize() + b->GetRadiusSize();
 
-	if (dist == 0.0f) return; // 避ける
+	if (dist == 0.0f) return;
 
 	float overlap = rSum - dist;
 	Vector2D normal = delta / dist;
 
-	// 重なり解消（半分ずつ押し戻す）
 	a->SetLocation(a->GetLocation() + normal * (overlap / 2.0f));
 	b->SetLocation(b->GetLocation() - normal * (overlap / 2.0f));
 
-	// 簡単な反発（跳ね返り）
 	a->SetVelocity(a->GetVelocity() + normal * 0.3f);
 	b->SetVelocity(b->GetVelocity() - normal * 0.3f);
 }
+
