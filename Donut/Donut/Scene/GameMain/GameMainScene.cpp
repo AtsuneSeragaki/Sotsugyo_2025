@@ -32,7 +32,7 @@ eSceneType GameMainScene::Update()
 		player->SetClickFlg(true);
 
 		// 落とすドーナツの種類を取得
-		DonutType type = player->GetNextDonutType();
+		DonutType type = player->GetDonutType();
 
 		// ドーナツを追加(落とす)
 		Donuts* donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f),type);
@@ -40,9 +40,13 @@ eSceneType GameMainScene::Update()
 		// 次に落とすドーナツの種類を決める
 		player->ChooseRandomDonut();
 
-		player->SetDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
+		// 落とすドーナツの情報を変更する
+		player->SetDonutRadius(donut->GetDonutRadius(player->GetDonutType()));
+		player->SetDonutNumber(donut->GetDonutNumber(player->GetDonutType()));
 
-		player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextNextDonutType()));
+		// 次に落とすドーナツの情報を変更する
+		player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
+		player->SetNextDonutNumber(donut->GetDonutNumber(player->GetNextDonutType()));
 	}
 	else if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::eNone)
 	{
@@ -62,13 +66,16 @@ eSceneType GameMainScene::Update()
 		donut->FallDonut(donutList);  // 他ドーナツ情報を渡す
 	}
 
+
 	// 他のUpdate処理
 	for (GameObject* obj : gameobjects->GetObjectList()) {
 		obj->Update();
 	}
 
+	// ドーナツ同士の当たり判定
 	CollisionDonuts();
 
+	// オブジェクトの削除
 	gameobjects->RemoveDeadObjects();
 
 	return GetNowSceneType();
@@ -86,8 +93,6 @@ void GameMainScene::Draw() const
 
 	// ドーナツを落とす枠の描画
 	DrawBox(400, 100, 880, 680, 0xffffff, FALSE);
-
-	DrawFormatString(0, 30, 0xffffff, "%d", player->GetClickFlg());
 }
 
 void GameMainScene::Finalize()
@@ -99,6 +104,7 @@ eSceneType GameMainScene::GetNowSceneType() const
 	return eSceneType::eGameMain;
 }
 
+// ドーナツ同士の当たり判定
 void GameMainScene::CollisionDonuts()
 {
 	std::vector<Donuts*> donutList;
@@ -124,11 +130,9 @@ void GameMainScene::CollisionDonuts()
 			}
 		}
 	}
-
-
-
 }
 
+// 当たった時の処理
 void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 {
 	if (a->IsDead() || b->IsDead()) return;
@@ -145,6 +149,16 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			a->SetDonutType(static_cast<DonutType>(nextTypeIndex));
 			a->SetRadius(g_DonutInfoTable[nextTypeIndex].size);
 			a->SetMerged(true);
+
+			// bを削除対象に
+			b->SetDead(true);
+
+			return; // 衝突解決は不要（1つになるため）
+		}
+		else if (nextTypeIndex == MAX_DONUT_NUM)
+		{
+			// aを削除対象に
+			a->SetDead(true);
 
 			// bを削除対象に
 			b->SetDead(true);

@@ -29,13 +29,7 @@ void GameObject::Update()
 // •`‰æˆ—
 void GameObject::Draw() const
 {
-	// ƒƒ“ƒo‚Ìî•ñ‚ğŠî‚É‰æ‘œ‚ğ•`‰æ‚·‚é
-	//DrawCircleAA(location.x, location.y, r, 32, 0xffff00, TRUE);
 
-	// “–‚½‚è”»’è‚Ì‹éŒ`î•ñ‚ğ•`‰æ‚·‚é
-	/*Vector2D upper_left = location - (box_size / 2.0f);
-	Vector2D lower_right = location + (box_size / 2.0f);
-	DrawBoxAA(upper_left.x, upper_left.y, lower_right.x, lower_right.y, GetColor(255, 0, 0), FALSE);*/
 }
 
 // I—¹ˆ—
