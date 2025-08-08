@@ -103,6 +103,9 @@ public:
 	// 合体したか？フラグを書き換える処理(引数：設定したい値)
 	void SetMerged(bool m) { isMerged = m; }
 
+	// 着地フラグを返す処理(戻り値：着地フラグ)
+	bool GetLanded() { return landed; }
+
 	// ドーナツ落下処理
 	void FallDonut(const std::vector<Donuts*>& others);
 
@@ -110,7 +113,7 @@ public:
 	bool IsSupported(const std::vector<Donuts*>& others);
 
 	// ドーナツリストをコピーする処理
-	void SetDonutList(const std::vector<Donuts*>& others);
+	//void SetDonutList(const std::vector<Donuts*>& others);
 
 private:
 	// ドーナツの枠はみ出し防止処理

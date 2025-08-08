@@ -2,6 +2,7 @@
 #include "../../Utility/InputManager.h"
 #include "../../Utility/ResourceManager.h"
 #include "../../Objects/Player/Player.h"
+#include "../../Objects/Order/Order.h"
 #include "DxLib.h"
 
 
@@ -9,6 +10,7 @@ GameMainScene::GameMainScene()
 {
 	gameobjects = new GameObjectManager();
 	player = nullptr;
+	is_gameover = false;
 }
 
 GameMainScene::~GameMainScene()
@@ -20,6 +22,7 @@ GameMainScene::~GameMainScene()
 void GameMainScene::Initialize()
 {
 	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 60.0f));
+	gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
 }
 
 eSceneType GameMainScene::Update()
@@ -54,27 +57,42 @@ eSceneType GameMainScene::Update()
 	}
 
 	std::vector<Donuts*> donutList;
-	for (GameObject* obj : gameobjects->GetObjectList()) {
+	for (GameObject* obj : gameobjects->GetObjectList()) 
+	{
 		Donuts* donut = dynamic_cast<Donuts*>(obj);
-		if (donut) {
+		
+		if (donut) 
+		{
 			donutList.push_back(donut);
 			donut->SetMerged(false);
 		}
 	}
 
-	for (Donuts* donut : donutList) {
+	// ドーナツ落下処理
+	for (Donuts* donut : donutList) 
+	{
 		donut->FallDonut(donutList);  // 他ドーナツ情報を渡す
+
+		float upper_line = 100.0f; // 上枠の位置
+		float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
+
+		// ドーナツが上枠からはみ出していないか確認
+		if (d_locy < upper_line && donut->GetLanded() == true)
+		{
+			is_gameover = true;
+			return eSceneType::eResult;
+		}
 	}
 
-
 	// 他のUpdate処理
-	for (GameObject* obj : gameobjects->GetObjectList()) {
+	for (GameObject* obj : gameobjects->GetObjectList())
+	{
 		obj->Update();
 	}
 
 	// ドーナツ同士の当たり判定
 	CollisionDonuts();
-
+	
 	// オブジェクトの削除
 	gameobjects->RemoveDeadObjects();
 
@@ -85,6 +103,7 @@ void GameMainScene::Draw() const
 {
 	SetFontSize(20);
 	DrawString(0, 0, "GameMain", 0xffffff);
+	DrawFormatString(0, 50, 0xffffff, "%d", is_gameover);
 
 	for (GameObject* obj : gameobjects->GetObjectList())
 	{
@@ -138,8 +157,7 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	if (a->IsDead() || b->IsDead()) return;
 
 	// 同じタイプ & まだ進化していない
-	if (a->GetDonutType() == b->GetDonutType() &&
-		!a->IsMerged() && !b->IsMerged())
+	if (a->GetDonutType() == b->GetDonutType() && !a->IsMerged() && !b->IsMerged())
 	{
 		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
 
@@ -156,14 +174,15 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			return; // 衝突解決は不要（1つになるため）
 		}
 		else if (nextTypeIndex == MAX_DONUT_NUM)
-		{
+		{// 最大まで進化したもの同士が合体すると、両方消える
+
 			// aを削除対象に
 			a->SetDead(true);
 
 			// bを削除対象に
 			b->SetDead(true);
 
-			return; // 衝突解決は不要（1つになるため）
+			return; // 衝突解決は不要（両方消えるため）
 		}
 	}
 

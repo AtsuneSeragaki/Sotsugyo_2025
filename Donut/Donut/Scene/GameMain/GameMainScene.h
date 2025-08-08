@@ -9,6 +9,7 @@ class GameMainScene : public SceneBase
 private:
 	GameObjectManager* gameobjects;  // ゲームオブジェクトクラスのオブジェクト
 	class Player* player;            // プレイヤークラスのオブジェクト
+	bool is_gameover;                // ゲームオーバーか？
 
 public:
 	// コンストラクタ

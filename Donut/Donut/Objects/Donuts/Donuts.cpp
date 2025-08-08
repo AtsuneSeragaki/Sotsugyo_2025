@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include <math.h>
 
-// 全ドーナツの情報設定
+// 全ドーナツの情報設定(変更不可)
 DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
         { DonutType::DONUT_MINI_BASIC,        10.0f, 100, "images/donut_mini_basic.png" ,1},
         { DonutType::DONUT_MINI_VARIANT,      20.0f, 120, "images/donut_mini_variant.png",2 },
@@ -16,6 +16,21 @@ DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
         { DonutType::DONUT_HALF_STRAWBERRY,   100.0f, 170, "images/half_strawberry.png" ,10},
         { DonutType::DONUT_PON_DE_RING,       110.0f, 180, "images/pon_de_ring.png",11 }
 };
+
+// テスト用ドーナツ情報(変更可)
+//DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
+//        { DonutType::DONUT_MINI_BASIC,        80.0f, 100, "images/donut_mini_basic.png" ,1},
+//        { DonutType::DONUT_MINI_VARIANT,      90.0f, 120, "images/donut_mini_variant.png",2 },
+//        { DonutType::DONUT_FRENCH_CRULLER,    100.0f, 150, "images/french_cruller.png" ,3},
+//        { DonutType::DONUT_FRENCH_CRULLER_VAR,120.0f, 160, "images/french_cruller_var.png",4 },
+//        { DonutType::DONUT_OLD_FASHIONED,     130.0f, 130, "images/old_fashioned.png" ,5},
+//        { DonutType::DONUT_OLD_FASHIONED_VAR, 140.0f, 140, "images/old_fashioned_var.png",6 },
+//        { DonutType::DONUT_GOLDEN_CHOCOLATE,  150.0f, 200, "images/golden_chocolate.png" ,7},
+//        { DonutType::DONUT_COCONUT_CHOCOLATE, 160.0f, 200, "images/coconut_chocolate.png" ,8},
+//        { DonutType::DONUT_HALF_CHOCOLATE,    170.0f, 170, "images/half_chocolate.png" ,9},
+//        { DonutType::DONUT_HALF_STRAWBERRY,   180.0f, 170, "images/half_strawberry.png" ,10},
+//        { DonutType::DONUT_PON_DE_RING,       190.0f, 180, "images/pon_de_ring.png",11 }
+//};
 
 // コンストラクタ
 Donuts::Donuts(DonutType type)
@@ -49,7 +64,7 @@ void Donuts::Update()
 {
     isMerged = false;
 
-    // --- 横方向の移動 ---
+    // 横方向の移動
     location.x += vx;
 
     // 壁で跳ね返り（画面サイズ: 640x480 を前提）
@@ -74,6 +89,7 @@ void Donuts::Update()
         }
     }
 
+    // ドーナツの枠はみ出し防止処理
     ClampToFrame(400.0f, 880.0f, 100.0f, 680.0f);
 }
 
@@ -85,6 +101,7 @@ void Donuts::Draw() const
 
     SetFontSize(20);
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
+   
     // ドーナツ番号表示
     DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
     // ドーナツ着地フラグ表示
@@ -196,7 +213,10 @@ void Donuts::ClampToFrame(float left, float right, float top, float bottom)
 bool Donuts::IsSupported(const std::vector<Donuts*>& others)
 {
     // 地面に接地している
-    if (location.y + r >= 680.0f) return true;
+    if (location.y + r >= 680.0f)
+    {
+        return true;
+    }
 
     bool supportBelow = false;
     bool supportLeft = false;
@@ -204,8 +224,12 @@ bool Donuts::IsSupported(const std::vector<Donuts*>& others)
     bool supportLeftBelow = false;
     bool supportRightBelow = false;
 
-    for (Donuts* other : others) {
-        if (other == this) continue;
+    for (Donuts* other : others) 
+    {
+        if (other == this)
+        {
+            continue;
+        }
 
         float dx = location.x - other->location.x;
         float dy = other->location.y - location.y;
@@ -214,40 +238,44 @@ bool Donuts::IsSupported(const std::vector<Donuts*>& others)
         float distY = (float)fabs(location.y - other->location.y);
         float combinedRadius = r + other->r;
 
-        // --- 真下に支えがあるかチェック ---
-        if (distX < combinedRadius * 0.8f) {
+        // 真下に支えがあるかチェック
+        if (distX < combinedRadius * 0.8f) 
+        {
             float verticalGap = other->location.y - location.y;
-            if (verticalGap > 0 && verticalGap < 5.0f) {
+
+            if (verticalGap > 0 && verticalGap < 5.0f) 
+            {
                 supportBelow = true;
             }
         }
 
-        // --- 左右に支えがあるかチェック ---
-        if (distY < combinedRadius * 0.8f) {
-            if (dx > 0 && dx < combinedRadius * 0.9f) {
+        // 左右に支えがあるかチェック
+        if (distY < combinedRadius * 0.8f) 
+        {
+            if (dx > 0 && dx < combinedRadius * 0.9f) 
+            {
                 supportLeft = true;
             }
-            else if (dx < 0 && dx > -combinedRadius * 0.9f) {
+            else if (dx < 0 && dx > -combinedRadius * 0.9f) 
+            {
                 supportRight = true;
             }
         }
 
-        // --- 左下にドーナツがあるか ---
-        if (dx > combinedRadius * 0.3f && dx < combinedRadius * 1.1f &&
-            dy > 0 && dy < combinedRadius * 1.1f) {
+        // 左下にドーナツがあるかチェック
+        if (dx > combinedRadius * 0.3f && dx < combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
+        {
             supportLeftBelow = true;
         }
 
-        // --- 右下にドーナツがあるか ---
-        if (dx < -combinedRadius * 0.3f && dx > -combinedRadius * 1.1f &&
-            dy > 0 && dy < combinedRadius * 1.1f) {
+        // 右下にドーナツがあるかチェック
+        if (dx < -combinedRadius * 0.3f && dx > -combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
+        {
             supportRightBelow = true;
         }
     }
 
-    // --- 最終的な支え判定 ---
+    // 最終的な支え判定
     return
-        supportBelow ||
-        (supportLeft && supportRight) ||
-        (supportLeftBelow && supportRightBelow);  // 👈 両側にある時のみOK
+        supportBelow || (supportLeft && supportRight) || (supportLeftBelow && supportRightBelow);  // 両側にある時のみOK
 }
