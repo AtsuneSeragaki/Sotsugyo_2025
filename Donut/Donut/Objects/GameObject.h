@@ -42,4 +42,11 @@ public:
 	
 	// ˆÊ’uÀ•Wİ’èˆ—
 	void SetLocation(const Vector2D& location);
+
+	template <typename T>
+	T Clamp(const T& v, const T& lo, const T& hi) 
+	{
+		return (v < lo) ? lo : (v > hi) ? hi : v;
+	}
+
 };

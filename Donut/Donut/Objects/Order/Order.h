@@ -33,6 +33,9 @@ public:
 	// 終了時処理
 	virtual void Finalize() override;
 
-private:
+public:
+	// オーダーをランダムに生成(引数：難易度(0～2))
+	void SetRandomOrder(int difficulty);
 
+private:
 };

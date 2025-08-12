@@ -127,15 +127,20 @@ eSceneType GameMainScene::GetNowSceneType() const
 void GameMainScene::CollisionDonuts()
 {
 	std::vector<Donuts*> donutList;
-	for (GameObject* obj : gameobjects->GetObjectList()) {
+	for (GameObject* obj : gameobjects->GetObjectList()) 
+	{
 		Donuts* donut = dynamic_cast<Donuts*>(obj);
-		if (donut) {
+
+		if (donut) 
+		{
 			donutList.push_back(donut);
 		}
 	}
 
-	for (size_t i = 0; i < donutList.size(); ++i) {
-		for (size_t j = i + 1; j < donutList.size(); ++j) {
+	for (size_t i = 0; i < donutList.size(); ++i) 
+	{
+		for (size_t j = i + 1; j < donutList.size(); ++j)
+		{
 			Donuts* a = donutList[i];
 			Donuts* b = donutList[j];
 
@@ -143,7 +148,8 @@ void GameMainScene::CollisionDonuts()
 			float distSq = delta.x * delta.x + delta.y * delta.y;
 			float rSum = a->GetRadiusSize() + b->GetRadiusSize();
 
-			if (distSq < rSum * rSum) {
+			if (distSq < rSum * rSum)
+			{
 				// “–‚½‚Á‚Ä‚é‚Ì‚Å”½”­ or ˆÊ’uC³‚È‚Ç‚ðs‚¤
 				ResolveDonutCollision(a, b);
 			}

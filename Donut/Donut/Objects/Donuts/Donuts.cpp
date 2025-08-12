@@ -131,7 +131,8 @@ int Donuts::GetDonutNumber(DonutType dtype)
 void Donuts::FallDonut(const std::vector<Donuts*>& others)
 {
     // もし既に着地していても、下に支えがないなら落下再開
-    if (landed && !IsSupported(others)) {
+    if (landed && !IsSupported(others)) 
+    {
         landed = false;
     }
 
@@ -143,17 +144,20 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
     bool landedOnSomething = false;
 
     // 地面に着地したかチェック
-    if (location.y + r >= 680.0f) {
+    if (location.y + r >= 680.0f)
+    {
         location.y = 680.0f - r;
         vy *= -0.15f;
-        if (fabs(vy) < 1.0f) {
+        if (fabs(vy) < 1.0f) 
+        {
             vy = 0.0f;
             landedOnSomething = true;
         }
     }
 
     // 他のドーナツの上に着地したかチェック
-    for (Donuts* other : others) {
+    for (Donuts* other : others) 
+    {
         if (other == this) continue;
 
         float distX = (float)fabs(location.x - other->location.x);
@@ -182,7 +186,8 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
         //}
     }
 
-    if (landedOnSomething || IsSupported(others)) {
+    if (landedOnSomething || IsSupported(others)) 
+    {
         landed = true;
     }
 }
@@ -190,20 +195,24 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
 // ドーナツの枠はみ出し防止処理
 void Donuts::ClampToFrame(float left, float right, float top, float bottom)
 {
-    if (location.x - r < left) {
+    if (location.x - r < left) 
+    {
         location.x = left + r;
         vx *= -0.5f;
     }
-    if (location.x + r > right) {
+    if (location.x + r > right) 
+    {
         location.x = right - r;
         vx *= -0.5f;
     }
 
-    if (location.y - r < top) {
+    if (location.y - r < top)
+    {
         location.y = top + r;
         vy *= -0.5f;
     }
-    if (location.y + r > bottom) {
+    if (location.y + r > bottom) 
+    {
         location.y = bottom - r;
         vy *= -0.6f;
     }
@@ -276,6 +285,5 @@ bool Donuts::IsSupported(const std::vector<Donuts*>& others)
     }
 
     // 最終的な支え判定
-    return
-        supportBelow || (supportLeft && supportRight) || (supportLeftBelow && supportRightBelow);  // 両側にある時のみOK
+    return supportBelow || (supportLeft && supportRight) || (supportLeftBelow && supportRightBelow);  // 両側にある時のみOK
 }
