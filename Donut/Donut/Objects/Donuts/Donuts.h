@@ -48,6 +48,7 @@ private:
 	const float maxRollingDistance = 100.0f;  // 転がる最大距離
 	const float rollingSpeed = 1.0f;          // 1フレームあたりの転がる速度
 	std::vector<Donuts*>* donutList;
+	bool player_collision; // プレイヤーと当たっているか？フラグ
 
 public:
 	// コンストラクタ
@@ -114,6 +115,9 @@ public:
 
 	// ドーナツリストをコピーする処理
 	//void SetDonutList(const std::vector<Donuts*>& others);
+
+	// プレイヤーと当たっているか？フラグの設定(引数：設定したい値)
+	void SetPlayerCollisionFlg(bool flg) { player_collision = flg; }
 
 private:
 	// ドーナツの枠はみ出し防止処理

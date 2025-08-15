@@ -10,6 +10,7 @@ GameMainScene::GameMainScene()
 {
 	gameobjects = new GameObjectManager();
 	player = nullptr;
+	order  = nullptr;
 	is_gameover = false;
 }
 
@@ -22,7 +23,7 @@ GameMainScene::~GameMainScene()
 void GameMainScene::Initialize()
 {
 	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 60.0f));
-	gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
+	order  = gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
 }
 
 eSceneType GameMainScene::Update()
@@ -83,6 +84,15 @@ eSceneType GameMainScene::Update()
 			return eSceneType::eResult;
 		}
 	}
+
+	for (Donuts* donut : donutList)
+	{
+		if (order->GetDonutOrder(donut->GetDonutType()) == 1)
+		{
+			DonutPlayerCollision(donut);
+		}
+	}
+
 
 	// 他のUpdate処理
 	for (GameObject* obj : gameobjects->GetObjectList())
@@ -207,5 +217,37 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 
 	a->SetVelocity(a->GetVelocity() + normal * 0.3f);
 	b->SetVelocity(b->GetVelocity() - normal * 0.3f);
+}
+
+void GameMainScene::DonutPlayerCollision(Donuts* donut)
+{
+	InputManager* input = InputManager::GetInstance();
+
+	// プレイヤーの情報
+	float player_pos_x  = player->GetLocation().x;
+	float player_pos_y  = input->GetMouseLocation().y;
+	float player_radius = 10.0f;
+
+	// ドーナツの情報
+	float donut_pos_x  = donut->GetLocation().x;
+	float donut_pos_y  = donut->GetLocation().y;
+	float donut_radius = donut->GetRadiusSize();
+
+	float dx = player_pos_x - donut_pos_x;
+	float dy = player_pos_y - donut_pos_y;
+	float dr = dx * dx + dy * dy;
+
+	float ar = player_radius + donut_radius;
+	float dl = ar * ar;
+	
+	if (dr < dl)
+	{
+		donut->SetPlayerCollisionFlg(true);
+	}
+	else
+	{
+		donut->SetPlayerCollisionFlg(false);
+	}
+	
 }
 

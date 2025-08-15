@@ -4,16 +4,6 @@
 
 Order::Order()
 {
-	/*order_list[0] = DonutType::DONUT_PON_DE_RING;
-	order_list[1] = DonutType::DONUT_HALF_STRAWBERRY;
-	order_list[2] = DonutType::DONUT_HALF_CHOCOLATE;
-	order_list[3] = DonutType::DONUT_COCONUT_CHOCOLATE;
-
-	for (int i = 0; i < ORDER_MAX; i++)
-	{
-		order_num[i] = 1;
-	}*/
-
     // オーダーを設定
     SetRandomOrder(0);
 }
@@ -28,23 +18,32 @@ void Order::Initialize()
 
 void Order::Update()
 {
+    // オーダーのドーナツの個数が全て0になったらクリアしたことにする
+    if (order_num[0] <= 0 && order_num[1] <= 0 && order_num[2] <= 0 && order_num[3] <= 0)
+    {
+        complete_order = true;
+    }
 }
 
 void Order::Draw() const
 {
 	// オーダーの枠を表示
-	DrawBox(ORDER_X, ORDER_Y, ORDER_X + ORDER_WIDTH, ORDER_Y + ORDER_HEIGHT, 0xffffff, TRUE);
+	DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
 	SetFontSize(20);
-	DrawString(ORDER_X + 130, ORDER_Y + 15, "オーダー", 0x000000);
+	DrawString(ORDER_LX + 130, ORDER_LY + 15, "オーダー", 0x000000);
 
+    // オーダーのドーナツを表示
 	for (int i = 0; i < ORDER_MAX; i++)
 	{
-		DrawCircle(ORDER_X + 95, ORDER_Y + 95 + 95 * i, 40, 0xffff00, TRUE);
+        // ドーナツ表示
+		DrawCircle(ORDER_LX + 95, ORDER_LY + 95 + 95 * i, 40, 0xffff00, TRUE);
 		Donuts* donut = new Donuts(order_list[i]);
 		SetFontSize(20);
-		DrawFormatString(ORDER_X + 90, ORDER_Y + 95 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
-		SetFontSize(40);
-		DrawFormatString(ORDER_X + 160, ORDER_Y + 80 + 95 * i, 0x000000, "x %d個", order_num[i]);
+		DrawFormatString(ORDER_LX + 90, ORDER_LY + 95 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
+		
+        // ドーナツの個数を表示
+        SetFontSize(40);
+		DrawFormatString(ORDER_LX + 160, ORDER_LY + 80 + 95 * i, 0x000000, "x %d個", order_num[i]);
 	}
 }
 
@@ -69,6 +68,9 @@ void Order::SetRandomOrder(int difficulty)
         DonutType::DONUT_PON_DE_RING
     };
 
+    // オーダークリアをリセット
+    complete_order = false;
+
     // シャッフル用にコピーを作成
     std::vector<DonutType> shuffled_menu(menu_list, menu_list + available_types);
 
@@ -91,7 +93,7 @@ void Order::SetRandomOrder(int difficulty)
     {
     case 0:
         min_count = 1;
-        max_count = 2;
+        max_count = 1;
         break;
     case 1:
         min_count = 1;
@@ -150,4 +152,39 @@ void Order::SetRandomOrder(int difficulty)
         order_list[i] = items[i].type;
         order_num[i] = items[i].count;
     }
+}
+
+// ドーナツの数を減らす
+void Order::DecrementDonutNum(DonutType type)
+{
+    int num = 0;
+
+    // 減らすドーナツの要素番号を探す
+    for (int i = 0; i < ORDER_MAX; i++)
+    {
+        if (order_list[i] == type)
+        {
+            num = i;
+            break;
+        } 
+    }
+
+    // 残り個数が0より大きかったら、デクリメントする
+    if (order_num[num] > 0) 
+    {
+        order_num[num]--;
+    }
+}
+
+int Order::GetDonutOrder(DonutType type)
+{
+    for (int i = 0; i < ORDER_MAX; i++)
+    {
+        if (order_list[i] == type)
+        {
+            return 1;
+        }
+    }
+
+    return 0;
 }

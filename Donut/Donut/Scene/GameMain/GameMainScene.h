@@ -9,6 +9,7 @@ class GameMainScene : public SceneBase
 private:
 	GameObjectManager* gameobjects;  // ゲームオブジェクトクラスのオブジェクト
 	class Player* player;            // プレイヤークラスのオブジェクト
+	class Order* order;              // オーダークラスのオブジェクト
 	bool is_gameover;                // ゲームオーバーか？
 
 public:
@@ -41,4 +42,7 @@ private:
 
 	// 当たった時の処理
 	void ResolveDonutCollision(class Donuts* a, class Donuts* b);
+
+	// 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
+	void DonutPlayerCollision(class Donuts* donut);
 };

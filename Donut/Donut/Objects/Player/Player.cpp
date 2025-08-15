@@ -51,6 +51,9 @@ void Player::Draw() const
 	DrawCircleAA(1000.0f, 60.0f, next_r, 32, 0xffff00, TRUE);
 	// 次に落とすドーナツ番号を表示
 	DrawFormatString((int)1000.0f, (int)60.0f - 3, 0x000000, "%d", next_donut_number);
+
+	InputManager* input = InputManager::GetInstance();
+	DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);
 }
 
 // 終了時処理

@@ -1,17 +1,18 @@
 #pragma once
 #include "../Donuts/Donuts.h"
 
-#define ORDER_X  35
-#define ORDER_Y  240
-#define ORDER_WIDTH 330
-#define ORDER_HEIGHT (680 - ORDER_Y)
-#define ORDER_MAX 4
+#define ORDER_LX  35               // オーダーの枠X座標(左上)
+#define ORDER_LY  240              // オーダーの枠Y座標(左上)
+#define ORDER_RX  ORDER_LX + 330   // オーダーの枠X座標(右下)
+#define ORDER_RY  680              // オーダーの枠Y座標(右下)
+#define ORDER_MAX 4                // オーダーの数
 
 class Order : public GameObject
 {
 private:
 	DonutType order_list[ORDER_MAX]; // オーダーリスト(ドーナツ4種類)
-	int order_num[ORDER_MAX];        // それぞれのオーダーの数
+	int order_num[ORDER_MAX];        // それぞれのオーダーの個数
+	bool complete_order;             // オーダー全てクリアしたか？フラグ
 
 public:
 	// コンストラクタ
@@ -34,8 +35,14 @@ public:
 	virtual void Finalize() override;
 
 public:
-	// オーダーをランダムに生成(引数：難易度(0～2))
+	// オーダーをランダムに生成する処理(引数：難易度(0～2))
 	void SetRandomOrder(int difficulty);
+
+	// ドーナツの数を減らす処理(引数：減らしたいドーナツの種類)
+	void DecrementDonutNum(DonutType type);
+
+	// オーダーのドーナツの種類を返す処理(戻り値：オーダーリスト)
+	int GetDonutOrder(DonutType type);
 
 private:
 };

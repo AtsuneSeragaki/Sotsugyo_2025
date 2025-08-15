@@ -47,6 +47,7 @@ Donuts::Donuts(DonutType type)
     isDead = false;
 
     donutList = nullptr;
+    player_collision = false;
 }
 
 // デストラクタ
@@ -97,15 +98,27 @@ void Donuts::Update()
 void Donuts::Draw() const 
 {
     // ドーナツ仮表示
-    DrawCircleAA(location.x, location.y, r, 32, GetColor(255, 255, 0), TRUE);
-
+    if (player_collision == true)
+    {
+        // ドーナツを暗くする
+        // 描画輝度のセット
+        SetDrawBright(128, 128, 128);
+        DrawCircleAA(location.x, location.y, r, 32, GetColor(255, 255, 0), TRUE);
+        // 描画輝度を元に戻す
+        SetDrawBright(255, 255, 255);
+    }
+    else
+    {
+        DrawCircleAA(location.x, location.y, r, 32, GetColor(255, 255, 0), TRUE);
+    }
+   
     SetFontSize(20);
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
    
     // ドーナツ番号表示
     DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
     // ドーナツ着地フラグ表示
-    DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
+    DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", player_collision);
 }
 
 // 終了時処理
