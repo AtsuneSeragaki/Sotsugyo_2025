@@ -1,9 +1,9 @@
 #pragma once
 #include "../Donuts/Donuts.h"
 
-#define ORDER_LX  35               // オーダーの枠X座標(左上)
-#define ORDER_LY  240              // オーダーの枠Y座標(左上)
-#define ORDER_RX  ORDER_LX + 330   // オーダーの枠X座標(右下)
+#define ORDER_LX  50               // オーダーの枠X座標(左上)
+#define ORDER_LY  260              // オーダーの枠Y座標(左上)
+#define ORDER_RX  ORDER_LX + 300   // オーダーの枠X座標(右下)
 #define ORDER_RY  680              // オーダーの枠Y座標(右下)
 #define ORDER_MAX 4                // オーダーの数
 

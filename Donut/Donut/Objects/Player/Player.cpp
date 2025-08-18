@@ -49,10 +49,13 @@ void Player::Draw() const
 	// ドーナツ番号を表示
 	DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", donut_number);
 
+	SetFontSize(20);
+	DrawString(1030, 90, "ネクスト", 0xffffff);
 	// 次に落とすドーナツを表示(右上)
-	DrawCircleAA(1000.0f, 60.0f, next_r, 32, 0xffff00, TRUE);
+	DrawCircleAA(1070.0f, 175.0f, next_r, 32, 0xffff00, TRUE);
 	// 次に落とすドーナツ番号を表示
-	DrawFormatString((int)1000.0f, (int)60.0f - 3, 0x000000, "%d", next_donut_number);
+	DrawFormatString((int)1067.0f, (int)170.0f - 3, 0x000000, "%d", next_donut_number);
+	DrawCircle(1070, 150, 105, 0xffffff, FALSE);
 
 	InputManager* input = InputManager::GetInstance();
 	DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);

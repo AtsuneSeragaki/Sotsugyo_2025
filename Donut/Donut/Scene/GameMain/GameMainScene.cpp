@@ -159,10 +159,14 @@ void GameMainScene::Draw() const
 
 	// スコア表示
 	SetFontSize(20);
-	DrawString(170, 70, "スコア", 0xffffff);
-	SetFontSize(80);
-	DrawFormatString(78, 110, 0xffffff, "%06d", score);
-	DrawBox(35, 50, 35 + 330, 210, 0xffffff, FALSE);
+	DrawString(170, 80, "スコア", 0xffffff);
+	SetFontSize(50);
+	DrawFormatString(123, 120, 0xffffff, "%06d", score);
+	DrawCircle(200, 135,100, 0xffffff, FALSE);
+
+	SetFontSize(30);
+	DrawString(1015, 300, "進化の輪", 0xffffff);
+	DrawCircle(1080, 510, 170, 0xffffff, FALSE);
 }
 
 void GameMainScene::Finalize()

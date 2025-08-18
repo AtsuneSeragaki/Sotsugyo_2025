@@ -30,20 +30,20 @@ void Order::Draw() const
 	// オーダーの枠を表示
 	DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
 	SetFontSize(20);
-	DrawString(ORDER_LX + 130, ORDER_LY + 15, "オーダー", 0x000000);
+	DrawString(ORDER_LX + 115, ORDER_LY + 15, "オーダー", 0x000000);
 
     // オーダーのドーナツを表示
 	for (int i = 0; i < ORDER_MAX; i++)
 	{
         // ドーナツ表示
-		DrawCircle(ORDER_LX + 95, ORDER_LY + 95 + 95 * i, 40, 0xffff00, TRUE);
+		DrawCircle(ORDER_LX + 85, ORDER_LY + 85 + 95 * i, 40, 0xffff00, TRUE);
 		Donuts* donut = new Donuts(order_list[i]);
 		SetFontSize(20);
-		DrawFormatString(ORDER_LX + 90, ORDER_LY + 95 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
+		DrawFormatString(ORDER_LX + 80, ORDER_LY + 85 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
 		
         // ドーナツの個数を表示
         SetFontSize(40);
-		DrawFormatString(ORDER_LX + 160, ORDER_LY + 80 + 95 * i, 0x000000, "x %d個", order_num[i]);
+		DrawFormatString(ORDER_LX + 150, ORDER_LY + 70 + 95 * i, 0x000000, "x %d個", order_num[i]);
 	}
 }
 
