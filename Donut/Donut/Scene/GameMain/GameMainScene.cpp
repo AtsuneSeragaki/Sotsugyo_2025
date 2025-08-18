@@ -13,6 +13,7 @@ GameMainScene::GameMainScene()
 	order  = nullptr;
 	is_gameover = false;
 	donut_collision = nullptr;
+	score = 0;
 }
 
 GameMainScene::~GameMainScene()
@@ -146,7 +147,7 @@ void GameMainScene::Draw() const
 {
 	SetFontSize(20);
 	DrawString(0, 0, "GameMain", 0xffffff);
-	DrawFormatString(0, 50, 0xffffff, "%d", is_gameover);
+	//DrawFormatString(0, 50, 0xffffff, "%d", is_gameover);
 
 	for (GameObject* obj : gameobjects->GetObjectList())
 	{
@@ -155,6 +156,13 @@ void GameMainScene::Draw() const
 
 	// ドーナツを落とす枠の描画
 	DrawBox(400, 100, 880, 680, 0xffffff, FALSE);
+
+	// スコア表示
+	SetFontSize(20);
+	DrawString(170, 70, "スコア", 0xffffff);
+	SetFontSize(80);
+	DrawFormatString(78, 110, 0xffffff, "%06d", score);
+	DrawBox(35, 50, 35 + 330, 210, 0xffffff, FALSE);
 }
 
 void GameMainScene::Finalize()
@@ -220,10 +228,14 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			// bを削除対象に
 			b->SetDead(true);
 
+			score += a->GetDonutScore(a->GetDonutType());
+
 			return; // 衝突解決は不要（1つになるため）
 		}
 		else if (nextTypeIndex == MAX_DONUT_NUM)
 		{// 最大まで進化したもの同士が合体すると、両方消える
+
+			score += a->GetDonutScore(a->GetDonutType());
 
 			// aを削除対象に
 			a->SetDead(true);

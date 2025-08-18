@@ -57,7 +57,7 @@ void Player::Draw() const
 	InputManager* input = InputManager::GetInstance();
 	DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);
 
-	DrawFormatString(0, 100, 0xffffff, "%d", donut_collision);
+	//DrawFormatString(0, 100, 0xffffff, "%d", donut_collision);
 }
 
 // I—¹ˆ—
