@@ -36,7 +36,7 @@ void Order::Draw() const
 	for (int i = 0; i < ORDER_MAX; i++)
 	{
         // ドーナツ表示
-		DrawCircle(ORDER_LX + 85, ORDER_LY + 85 + 95 * i, 40, 0xffff00, TRUE);
+		DrawCircle(ORDER_LX + 85, ORDER_LY + 85 + 95 * i, 40, 0xD6A15D, TRUE);
 		Donuts* donut = new Donuts(order_list[i]);
 		SetFontSize(20);
 		DrawFormatString(ORDER_LX + 80, ORDER_LY + 85 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));

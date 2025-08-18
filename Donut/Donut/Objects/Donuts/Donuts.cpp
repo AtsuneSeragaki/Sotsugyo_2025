@@ -103,13 +103,13 @@ void Donuts::Draw() const
         // ドーナツを暗くする
         // 描画輝度のセット
         SetDrawBright(128, 128, 128);
-        DrawCircleAA(location.x, location.y, r, 32, GetColor(255, 255, 0), TRUE);
+        DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
         // 描画輝度を元に戻す
         SetDrawBright(255, 255, 255);
     }
     else
     {
-        DrawCircleAA(location.x, location.y, r, 32, GetColor(255, 255, 0), TRUE);
+        DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
     }
    
     SetFontSize(20);

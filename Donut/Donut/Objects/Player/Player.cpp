@@ -45,20 +45,22 @@ void Player::Update()
 void Player::Draw() const
 {
 	// ドーナツ仮表示
-	DrawCircleAA(location.x, location.y, r, 32, 0xffff00, TRUE);
+	DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
 	// ドーナツ番号を表示
 	DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", donut_number);
 
 	SetFontSize(20);
-	DrawString(1030, 90, "ネクスト", 0xffffff);
+	DrawString(1030, 90, "ネクスト", 0x1A2E40);
 	// 次に落とすドーナツを表示(右上)
-	DrawCircleAA(1070.0f, 175.0f, next_r, 32, 0xffff00, TRUE);
+	DrawCircleAA(1070.0f, 175.0f, next_r, 32, 0xD6A15D, TRUE);
 	// 次に落とすドーナツ番号を表示
-	DrawFormatString((int)1067.0f, (int)170.0f - 3, 0x000000, "%d", next_donut_number);
-	DrawCircle(1070, 150, 105, 0xffffff, FALSE);
+	DrawFormatString((int)1067.0f, (int)170.0f - 3, 0x1A2E40, "%d", next_donut_number);
+	DrawCircle(1070, 150, 105, 0x1A2E40, FALSE);
 
 	InputManager* input = InputManager::GetInstance();
-	DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);
+	//DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);
+
+	//DrawBox(input->GetMouseLocation().x - 5, input->GetMouseLocation().y, input->GetMouseLocation().x + 10, input->GetMouseLocation().y + 10, 0xffffff, TRUE);
 
 	//DrawFormatString(0, 100, 0xffffff, "%d", donut_collision);
 }
