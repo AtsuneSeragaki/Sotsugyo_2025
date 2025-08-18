@@ -119,6 +119,9 @@ public:
 	// プレイヤーと当たっているか？フラグの設定(引数：設定したい値)
 	void SetPlayerCollisionFlg(bool flg) { player_collision = flg; }
 
+	// プレイヤーと当たっているか？フラグを取得
+	bool GetPlayerCollisionFlg() { return player_collision; }
+
 private:
 	// ドーナツの枠はみ出し防止処理
 	void ClampToFrame(float left, float right, float top, float bottom);

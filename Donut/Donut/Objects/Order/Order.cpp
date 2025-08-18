@@ -188,3 +188,16 @@ int Order::GetDonutOrder(DonutType type)
 
     return 0;
 }
+
+int Order::GetDonutOrderNum(DonutType type)
+{
+    for (int i = 0; i < ORDER_MAX; i++)
+    {
+        if (order_list[i] == type)
+        {
+            return order_num[i];
+        }
+    }
+
+    return 0;
+}

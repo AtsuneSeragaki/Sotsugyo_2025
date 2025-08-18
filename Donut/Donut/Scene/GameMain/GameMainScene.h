@@ -11,6 +11,7 @@ private:
 	class Player* player;            // プレイヤークラスのオブジェクト
 	class Order* order;              // オーダークラスのオブジェクト
 	bool is_gameover;                // ゲームオーバーか？
+	class Donuts* donut_collision;   // プレイヤーと当たっているドーナツの情報
 
 public:
 	// コンストラクタ

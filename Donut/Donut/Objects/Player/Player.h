@@ -10,6 +10,7 @@ private:
 	float next_r;                   // 次に落とすドーナツの半径
 	int donut_number;               // ドーナツの番号
 	int next_donut_number;          // ネクストドーナツの番号
+	bool donut_collision;           // ドーナツと当たっているか？
 
 public:
 	// コンストラクタ
@@ -58,6 +59,12 @@ public:
 
 	// ドーナツをランダムに選ぶ
 	void ChooseRandomDonut();
+
+	// ドーナツと当たっているか？フラグを設定
+	void SetDonutCollision(bool flg) { donut_collision = flg; }
+
+	// ドーナツと当たっているか？フラグを取得
+	bool GetDonutCollision() { return donut_collision; }
 
 private:
 	// ドーナツを落とす枠の範囲しか移動出来ないようにする処理

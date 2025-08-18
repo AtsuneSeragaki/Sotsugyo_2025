@@ -41,8 +41,11 @@ public:
 	// ドーナツの数を減らす処理(引数：減らしたいドーナツの種類)
 	void DecrementDonutNum(DonutType type);
 
-	// オーダーのドーナツの種類を返す処理(戻り値：オーダーリスト)
+	// オーダーのドーナツの種類を返す処理(引数：ドーナツの種類　戻り値：オーダーリスト)
 	int GetDonutOrder(DonutType type);
+
+	// オーダーにあるドーナツの個数を返す処理(引数：ドーナツの種類　戻り値：ドーナツの個数)
+	int GetDonutOrderNum(DonutType type);
 
 private:
 };

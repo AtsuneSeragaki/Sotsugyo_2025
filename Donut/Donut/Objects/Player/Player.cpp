@@ -14,6 +14,8 @@ Player::Player() : is_click(false)
 	next_donut_type = DonutType::DONUT_FRENCH_CRULLER;
 	next_r = 30.0f;
 	next_donut_number = 3;
+
+	donut_collision = false;
 }
 
 // デストラクタ
@@ -54,6 +56,8 @@ void Player::Draw() const
 
 	InputManager* input = InputManager::GetInstance();
 	DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);
+
+	DrawFormatString(0, 100, 0xffffff, "%d", donut_collision);
 }
 
 // 終了時処理
