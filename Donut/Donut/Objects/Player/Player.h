@@ -66,6 +66,9 @@ public:
 	// ドーナツと当たっているか？フラグを取得
 	bool GetDonutCollision() { return donut_collision; }
 
+	// プレイヤーのX座標を設定
+	void SetPlayerPosX(float pos_x) { location.x = pos_x; }
+
 private:
 	// ドーナツを落とす枠の範囲しか移動出来ないようにする処理
 	void LocXControl();

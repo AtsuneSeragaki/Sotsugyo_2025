@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "DxLib.h"
 
 void ResultScene::Initialize()
 {
@@ -11,6 +12,8 @@ eSceneType ResultScene::Update()
 
 void ResultScene::Draw() const
 {
+	SetFontSize(20);
+	DrawFormatString(0, 0, 0xffffff, "Result");
 }
 
 void ResultScene::Finalize()

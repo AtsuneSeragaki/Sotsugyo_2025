@@ -4,37 +4,36 @@
 #include "../../Objects/GameObjectManager.h"
 
 // ポーズボタン
-#define PAUSE_LX 1170
-#define PAUSE_LY 10
-#define PAUSE_RX PAUSE_LX + 100
-#define PAUSE_RY PAUSE_LY + 35
+#define PAUSE_LX 1170             // ポーズボタン左上X座標
+#define PAUSE_LY 10               // ポーズボタン左上Y座標
+#define PAUSE_RX PAUSE_LX + 100   // ポーズボタン右下X座標(左上X座標＋ボタンの幅)
+#define PAUSE_RY PAUSE_LY + 35    // ポーズボタン右下Y座標(左上Y座標＋ボタンの高さ)
 
 // ポーズ画面のボタン(続ける)
-#define PAUSE_B1_LX 500
-#define PAUSE_B1_LY 250
-#define PAUSE_B1_RX PAUSE_B1_LX + 300
-#define PAUSE_B1_RY PAUSE_B1_LY + 100
+#define PAUSE_B1_LX 500                // ポーズ画面ボタン「続ける」左上X座標
+#define PAUSE_B1_LY 250                // ポーズ画面ボタン「続ける」左上Y座標
+#define PAUSE_B1_RX PAUSE_B1_LX + 300  // ポーズ画面ボタン「続ける」右下X座標(左上X座標＋ボタンの幅)
+#define PAUSE_B1_RY PAUSE_B1_LY + 100  // ポーズ画面ボタン「続ける」右下Y座標(左上Y座標＋ボタンの高さ)
 
 // ポーズ画面のボタン(タイトルに戻る)
-#define PAUSE_B2_LX 500
-#define PAUSE_B2_LY 400
-#define PAUSE_B2_RX PAUSE_B2_LX + 300
-#define PAUSE_B2_RY PAUSE_B2_LY + 100
-
+#define PAUSE_B2_LX 500                // ポーズ画面ボタン「タイトルに戻る」左上X座標
+#define PAUSE_B2_LY 400                // ポーズ画面ボタン「タイトルに戻る」左上Y座標
+#define PAUSE_B2_RX PAUSE_B2_LX + 300  // ポーズ画面ボタン「タイトルに戻る」右下X座標(左上X座標＋ボタンの幅)
+#define PAUSE_B2_RY PAUSE_B2_LY + 100  // ポーズ画面ボタン「タイトルに戻る」右下Y座標(左上Y座標＋ボタンの高さ)
 
 class GameMainScene : public SceneBase
 {
 private:
 	GameObjectManager* gameobjects;  // ゲームオブジェクトクラスのオブジェクト
 	class Player* player;            // プレイヤークラスのオブジェクト
-	class Order* order;              // オーダークラスのオブジェクト
-	bool is_gameover;                // ゲームオーバーか？
 	class Donuts* donut_collision;   // プレイヤーと当たっているドーナツの情報
+	class Order* order;              // オーダークラスのオブジェクト
+	bool is_gameover;                // ゲームオーバーフラグ(false:ゲームオーバーじゃない  true:ゲームオーバー)
+	bool pause;                      // ポーズフラグ(false:ポーズ状態じゃない  true:ポーズ状態)
+	bool pause_collision;            // ポーズボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
+	bool pause_b1_collision;         // ポーズ画面ボタン「続ける」とプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
+	bool pause_b2_collision;         // ポーズ画面ボタン「タイトルに戻る」とプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
 	int score;                       // スコア
-	bool pause;                      // ポーズフラグ
-	bool pause_collision;            // ポーズボタンにプレイヤーカーソルが当たっているか？フラグ
-	bool pause_b1_collision;         // ポーズ画面のボタン(続ける)にプレイヤーカーソルが当たっているか？フラグ
-	bool pause_b2_collision;         // ポーズ画面のボタン(タイトルに戻る)にプレイヤーカーソルが当たっているか？フラグ
 
 public:
 	// コンストラクタ
@@ -64,14 +63,12 @@ private:
 	// ドーナツ同士の当たり判定
 	void CollisionDonuts();
 
-	// 当たった時の処理
+	// ドーナツ同士が当たった時の処理(引数：ドーナツ1(仮)の情報、ドーナツ2(仮)の情報)
 	void ResolveDonutCollision(class Donuts* a, class Donuts* b);
 
 	// 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
-	void DonutPlayerCollision(class Donuts* donut);
+	void CheckDonutPlayerCollision(class Donuts* donut);
 
-	// プレイヤーカーソルとボタンの当たり判定
+	// プレイヤーカーソルとボタンの当たり判定(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
 	int CheckPlayerButtonCollision(int left,int right,int top,int bottom);
-
-
 };

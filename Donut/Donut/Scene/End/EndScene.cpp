@@ -1,4 +1,5 @@
 #include "EndScene.h"
+#include "DxLib.h"
 
 void EndScene::Initialize()
 {
@@ -11,6 +12,8 @@ eSceneType EndScene::Update()
 
 void EndScene::Draw() const
 {
+	SetFontSize(20);
+	DrawFormatString(0, 0, 0xffffff, "End");
 }
 
 void EndScene::Finalize()

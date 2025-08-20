@@ -65,20 +65,20 @@ void Donuts::Update()
 {
     isMerged = false;
 
-    // 横方向の移動
-    location.x += vx;
+    //// 横方向の移動
+    //location.x += vx;
 
-    // 壁で跳ね返り（画面サイズ: 640x480 を前提）
-    if (location.x < 400.0f + r)
-    {
-        location.x = r;
-        vx *= -0.3f;
-    }
-    if (location.x > 880.0f - r)
-    {
-        location.x = 880.0f - r;
-        vx *= -0.3f;
-    }
+    //// 壁で跳ね返り（画面サイズ: 640x480 を前提）
+    //if (location.x < 400.0f + r)
+    //{
+    //    location.x = r;
+    //    vx *= -0.3f;
+    //}
+    //if (location.x > 880.0f - r)
+    //{
+    //    location.x = 880.0f - r;
+    //    vx *= -0.3f;
+    //}
 
     // 着地中なら摩擦で減速
     if (landed)
@@ -149,66 +149,151 @@ int Donuts::GetDonutScore(DonutType dtype)
 // ドーナツ落下処理
 void Donuts::FallDonut(const std::vector<Donuts*>& others)
 {
-    // もし既に着地していても、下に支えがないなら落下再開
-    if (landed && !IsSupported(others)) 
-    {
-        landed = false;
-    }
+    //// もし既に着地していても、下に支えがないなら落下再開
+    //if (landed && !IsSupported(others)) 
+    //{
+    //    landed = false;
+    //}
 
-    if (landed) return;
+    //if (landed) return;
 
-    vy += 0.5f; // 重力
+    //vy += 0.5f; // 重力
+    //location.y += vy;
+
+    //bool landedOnSomething = false;
+
+    //// 地面に着地したかチェック
+    //if (location.y + r >= 680.0f)
+    //{
+    //    location.y = 680.0f - r;
+    //    vy *= -0.15f;
+    //    if (fabs(vy) < 1.0f) 
+    //    {
+    //        vy = 0.0f;
+    //        landedOnSomething = true;
+    //    }
+    //}
+
+    //// 他のドーナツの上に着地したかチェック
+    //for (Donuts* other : others) 
+    //{
+    //    if (other == this) continue;
+
+    //    float distX = (float)fabs(location.x - other->location.x);
+    //    float distY = location.y - other->location.y;
+
+    //    // 横方向は近く、縦方向は下にちょっと接触しているか？
+    //    if(distX < (r + other->r) * 0.8f &&distY > 0 && distY < 5.0f)
+    //    {
+    //        // ドーナツの上に着地とみなす
+    //        location.y = other->location.y - r - other->r;
+    //        vy = 0.0f;
+    //        landedOnSomething = true;
+    //        break;
+    //    }
+
+    //    //float distCenter = sqrtf(distX * distX + distY * distY);
+    //    //float threshold = r + other->r - 0.8f; // 少し余裕を持たせる
+
+    //    //if (distCenter < threshold && location.y < other->location.y)
+    //    //{
+    //    //    // 接地処理
+    //    //    location.y = other->location.y - r - other->r;
+    //    //    vy = 0.0f;
+    //    //    landedOnSomething = true;
+    //    //    break;
+    //    //}
+    //}
+
+    //if (landedOnSomething || IsSupported(others)) 
+    //{
+    //    landed = true;
+    //}
+
+    // 重力適用
+    vy += 0.5f;
     location.y += vy;
+    location.x += vx;
 
-    bool landedOnSomething = false;
-
-    // 地面に着地したかチェック
-    if (location.y + r >= 680.0f)
-    {
-        location.y = 680.0f - r;
-        vy *= -0.15f;
-        if (fabs(vy) < 1.0f) 
-        {
-            vy = 0.0f;
-            landedOnSomething = true;
-        }
-    }
-
-    // 他のドーナツの上に着地したかチェック
-    for (Donuts* other : others) 
+    landed = false;
+    for (Donuts* other : others)
     {
         if (other == this) continue;
 
-        float distX = (float)fabs(location.x - other->location.x);
-        float distY = location.y - other->location.y;
+        float combinedRadius = r + other->r;
+        float distSq = (location.x - other->location.x) * (location.x - other->location.x) + (location.y - other->location.y) * (location.y - other->location.y);
 
-        // 横方向は近く、縦方向は下にちょっと接触しているか？
-        if(distX < (r + other->r) * 0.8f &&distY > 0 && distY < 5.0f)
+        // 衝突判定
+        if (distSq < combinedRadius * combinedRadius)
         {
-            // ドーナツの上に着地とみなす
-            location.y = other->location.y - r - other->r;
-            vy = 0.0f;
-            landedOnSomething = true;
-            break;
+            // 物理的な反発処理
+            HandleCollision(other);
         }
-
-        //float distCenter = sqrtf(distX * distX + distY * distY);
-        //float threshold = r + other->r - 0.8f; // 少し余裕を持たせる
-
-        //if (distCenter < threshold && location.y < other->location.y)
-        //{
-        //    // 接地処理
-        //    location.y = other->location.y - r - other->r;
-        //    vy = 0.0f;
-        //    landedOnSomething = true;
-        //    break;
-        //}
     }
 
-    if (landedOnSomething || IsSupported(others)) 
+    // 地面への着地判定と反発
+    if (location.y + r >= 680.0f)
     {
-        landed = true;
+        location.y = 680.0f - r;
+        vy *= -0.3f; // 地面への反発
+        vx *= 0.85f; // 地面摩擦
+        if (fabs(vy) < 1.0f)
+        {
+            vy = 0.0f;
+            landed = true;
+        }
     }
+}
+
+// 衝突処理 (弾性衝突)
+void Donuts::HandleCollision(Donuts* other)
+{
+    float combinedRadius = r + other->r;
+    float dx = location.x - other->location.x;
+    float dy = location.y - other->location.y;
+    float distance = sqrtf(dx * dx + dy * dy);
+
+    // めり込み防止
+    if (distance < combinedRadius)
+    {
+        float overlap = combinedRadius - distance;
+        float totalMass = r + other->r;
+        float massRatioA = other->r / totalMass;
+        float massRatioB = r / totalMass;
+
+        // めり込みを解消するために位置をずらす
+        location.x += overlap * (dx / distance) * massRatioA;
+        location.y += overlap * (dy / distance) * massRatioA;
+        other->location.x -= overlap * (dx / distance) * massRatioB;
+        other->location.y -= overlap * (dy / distance) * massRatioB;
+    }
+
+    // 速度を分解して反発を計算
+    float nx = dx / distance;
+    float ny = dy / distance;
+    float tangentx = -ny;
+    float tangenty = nx;
+
+    float v1n = vx * nx + vy * ny;
+    float v1t = vx * tangentx + vy * tangenty;
+    float v2n = other->vx * nx + other->vy * ny;
+    float v2t = other->vx * tangentx + other->vy * tangenty;
+
+    // 質量を考慮した速度の交換
+    float new_v1n = (v1n * (r - other->r) + 2 * other->r * v2n) / (r + other->r);
+    float new_v2n = (v2n * (other->r - r) + 2 * r * v1n) / (r + other->r);
+
+    // 新しい速度を元のベクトルに戻す
+    vx = new_v1n * nx + v1t * tangentx;
+    vy = new_v1n * ny + v1t * tangenty;
+    other->vx = new_v2n * nx + v2t * tangentx;
+    other->vy = new_v2n * ny + v2t * tangenty;
+
+    // 弾性反発係数と摩擦を適用
+    vx *= 0.85f; // 反発後の減速
+    vy *= 0.85f;
+    other->vx *= 0.85f;
+    other->vy *= 0.85f;
 }
 
 // ドーナツの枠はみ出し防止処理
@@ -227,8 +312,7 @@ void Donuts::ClampToFrame(float left, float right, float top, float bottom)
 
     if (location.y - r < top)
     {
-        /*location.y = top + r;
-        vy *= -0.5f;*/
+        // 上の壁にはぶつからないようにする（ゲームのルール上）
     }
     if (location.y + r > bottom) 
     {
@@ -246,63 +330,93 @@ bool Donuts::IsSupported(const std::vector<Donuts*>& others)
         return true;
     }
 
-    bool supportBelow = false;
-    bool supportLeft = false;
-    bool supportRight = false;
-    bool supportLeftBelow = false;
-    bool supportRightBelow = false;
-
-    for (Donuts* other : others) 
+    // 他のドーナツに支えられているか
+    for (Donuts* other : others)
     {
-        if (other == this)
-        {
-            continue;
-        }
+        if (other == this) continue;
 
-        float dx = location.x - other->location.x;
-        float dy = other->location.y - location.y;
-
-        float distX = (float)fabs(dx);
-        float distY = (float)fabs(location.y - other->location.y);
         float combinedRadius = r + other->r;
+        float distSq = (location.x - other->location.x) * (location.x - other->location.x) + (location.y - other->location.y) * (location.y - other->location.y);
 
-        // 真下に支えがあるかチェック
-        if (distX < combinedRadius * 0.8f) 
+        // 衝突しているか、または非常に近いかをチェック
+        if (distSq < combinedRadius * combinedRadius * 1.1) // 少し余裕を持たせる
         {
-            float verticalGap = other->location.y - location.y;
-
-            if (verticalGap > 0 && verticalGap < 5.0f) 
+            // 真下にいるかをチェック
+            if (location.y < other->location.y)
             {
-                supportBelow = true;
+                // this ドーナツの底が other ドーナツの上にあるか
+                if (location.y + r > other->location.y - other->r && fabs(location.x - other->location.x) < combinedRadius * 0.9)
+                {
+                    return true;
+                }
             }
-        }
-
-        // 左右に支えがあるかチェック
-        if (distY < combinedRadius * 0.8f) 
-        {
-            if (dx > 0 && dx < combinedRadius * 0.9f) 
-            {
-                supportLeft = true;
-            }
-            else if (dx < 0 && dx > -combinedRadius * 0.9f) 
-            {
-                supportRight = true;
-            }
-        }
-
-        // 左下にドーナツがあるかチェック
-        if (dx > combinedRadius * 0.3f && dx < combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
-        {
-            supportLeftBelow = true;
-        }
-
-        // 右下にドーナツがあるかチェック
-        if (dx < -combinedRadius * 0.3f && dx > -combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
-        {
-            supportRightBelow = true;
         }
     }
+    return false;
 
-    // 最終的な支え判定
-    return supportBelow || (supportLeft && supportRight) || (supportLeftBelow && supportRightBelow);  // 両側にある時のみOK
+    //// 地面に接地している
+    //if (location.y + r >= 680.0f)
+    //{
+    //    return true;
+    //}
+
+    //bool supportBelow = false;
+    //bool supportLeft = false;
+    //bool supportRight = false;
+    //bool supportLeftBelow = false;
+    //bool supportRightBelow = false;
+
+    //for (Donuts* other : others) 
+    //{
+    //    if (other == this)
+    //    {
+    //        continue;
+    //    }
+
+    //    float dx = location.x - other->location.x;
+    //    float dy = other->location.y - location.y;
+
+    //    float distX = (float)fabs(dx);
+    //    float distY = (float)fabs(location.y - other->location.y);
+    //    float combinedRadius = r + other->r;
+
+    //    // 真下に支えがあるかチェック
+    //    if (distX < combinedRadius * 0.8f) 
+    //    {
+    //        float verticalGap = other->location.y - location.y;
+
+    //        if (verticalGap > 0 && verticalGap < 5.0f) 
+    //        {
+    //            supportBelow = true;
+    //        }
+    //    }
+
+    //    // 左右に支えがあるかチェック
+    //    if (distY < combinedRadius * 0.8f) 
+    //    {
+    //        if (dx > 0 && dx < combinedRadius * 0.9f) 
+    //        {
+    //            supportLeft = true;
+    //        }
+    //        else if (dx < 0 && dx > -combinedRadius * 0.9f) 
+    //        {
+    //            supportRight = true;
+    //        }
+    //    }
+
+    //    // 左下にドーナツがあるかチェック
+    //    if (dx > combinedRadius * 0.3f && dx < combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
+    //    {
+    //        supportLeftBelow = true;
+    //    }
+
+    //    // 右下にドーナツがあるかチェック
+    //    if (dx < -combinedRadius * 0.3f && dx > -combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
+    //    {
+    //        supportRightBelow = true;
+    //    }
+    //}
+
+    //// 最終的な支え判定
+    //return supportBelow || (supportLeft && supportRight) || (supportLeftBelow && supportRightBelow);  // 両側にある時のみOK
 }

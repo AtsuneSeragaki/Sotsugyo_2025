@@ -128,4 +128,7 @@ public:
 private:
 	// ドーナツの枠はみ出し防止処理
 	void ClampToFrame(float left, float right, float top, float bottom);
+
+	// 衝突処理 (弾性衝突)
+	void HandleCollision(Donuts* other);
 };
