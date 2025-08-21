@@ -6,6 +6,7 @@
 #define ORDER_RX  ORDER_LX + 300   // オーダーの枠X座標(右下)
 #define ORDER_RY  680              // オーダーの枠Y座標(右下)
 #define ORDER_MAX 4                // オーダーの数
+#define DIFFICULTY_MAX 2           // 難易度MAXの数            
 
 class Order : public GameObject
 {
@@ -13,6 +14,7 @@ private:
 	DonutType order_list[ORDER_MAX]; // オーダーリスト(ドーナツ4種類)
 	int order_num[ORDER_MAX];        // それぞれのオーダーの個数
 	bool complete_order;             // オーダー全てクリアしたか？フラグ
+	int difficulty;                  // 難易度
 
 public:
 	// コンストラクタ

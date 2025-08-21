@@ -4,8 +4,9 @@
 
 Order::Order()
 {
+    difficulty = 0;
     // オーダーを設定
-    SetRandomOrder(0);
+    SetRandomOrder(difficulty);
 }
 
 Order::~Order()
@@ -22,6 +23,18 @@ void Order::Update()
     if (order_num[0] <= 0 && order_num[1] <= 0 && order_num[2] <= 0 && order_num[3] <= 0)
     {
         complete_order = true;
+    }
+
+    // オーダーを全てクリアしたら、次のオーダーを設定
+    if (complete_order == true)
+    {
+        // 難易度MAXじゃなかったら、難易度を1上げる
+        if (difficulty < DIFFICULTY_MAX)
+        {
+            difficulty++;
+        }
+        
+        SetRandomOrder(difficulty);
     }
 }
 

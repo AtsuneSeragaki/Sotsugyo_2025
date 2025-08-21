@@ -2,6 +2,8 @@
 
 #include "../SceneBase.h"
 #include "../../Objects/GameObjectManager.h"
+#include "../../Objects/Player/Player.h"
+#include <vector>
 
 // ポーズボタン
 #define PAUSE_LX 1170             // ポーズボタン左上X座標
@@ -26,7 +28,7 @@ class GameMainScene : public SceneBase
 private:
 	GameObjectManager* gameobjects;  // ゲームオブジェクトクラスのオブジェクト
 	class Player* player;            // プレイヤークラスのオブジェクト
-	class Donuts* donut_collision;   // プレイヤーと当たっているドーナツの情報
+	std::vector<Donuts*> donut_collision;   // プレイヤーと当たっているドーナツの情報
 	class Order* order;              // オーダークラスのオブジェクト
 	bool is_gameover;                // ゲームオーバーフラグ(false:ゲームオーバーじゃない  true:ゲームオーバー)
 	bool pause;                      // ポーズフラグ(false:ポーズ状態じゃない  true:ポーズ状態)
@@ -67,7 +69,7 @@ private:
 	void ResolveDonutCollision(class Donuts* a, class Donuts* b);
 
 	// 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
-	void CheckDonutPlayerCollision(class Donuts* donut);
+	int CheckDonutPlayerCollision(class Donuts* donut);
 
 	// プレイヤーカーソルとボタンの当たり判定(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
 	int CheckPlayerButtonCollision(int left,int right,int top,int bottom);

@@ -1,7 +1,6 @@
 #include "GameMainScene.h"
 #include "../../Utility/InputManager.h"
 #include "../../Utility/ResourceManager.h"
-#include "../../Objects/Player/Player.h"
 #include "../../Objects/Order/Order.h"
 #include "DxLib.h"
 
@@ -12,7 +11,6 @@ GameMainScene::GameMainScene()
 	player = nullptr;
 	order  = nullptr;
 	is_gameover = false;
-	donut_collision = nullptr;
 	score = 0;
 	pause = false;
 	pause_collision = false;
@@ -25,7 +23,7 @@ GameMainScene::~GameMainScene()
 	delete player;
 	delete gameobjects;
 	delete order;
-	delete donut_collision;
+	donut_collision.clear();
 }
 
 void GameMainScene::Initialize()
@@ -64,32 +62,41 @@ eSceneType GameMainScene::Update()
 				
 				player->SetClickFlg(true);
 				
-				std::vector<Donuts*> donutList;
-				for (GameObject* obj : gameobjects->GetObjectList())
-				{
-					Donuts* donut = dynamic_cast<Donuts*>(obj);
+				//std::vector<Donuts*> donutList;
+				//for (GameObject* obj : gameobjects->GetObjectList())
+				//{
+				//	Donuts* donut = dynamic_cast<Donuts*>(obj);
 
-					if (donut)
-					{
-						donutList.push_back(donut);
-						donut->SetMerged(false);
-					}
-				}
+				//	if (donut)
+				//	{
+				//		donutList.push_back(donut);
+				//		donut->SetMerged(false);
+				//	}
+				//}
 
-				// プレイヤーと当たっているドーナツを削除/オーダーの個数を減らす
-				for (Donuts* donut : donutList)
+				//// プレイヤーと当たっているドーナツを削除/オーダーの個数を減らす
+				//for (Donuts* donut : donutList)
+				//{
+				//	if (donut->GetPlayerCollisionFlg() == true && donut == donut_collision)
+				//	{
+				//		order->DecrementDonutNum(donut->GetDonutType());
+				//		donut->SetDead(true);
+				//		player->SetDonutCollision(false);
+				//		donut_collision.erase(donut);
+				//	}
+				//}
+
+				// 当たっているドーナツをすべて処理
+				for (Donuts* donut : donut_collision)
 				{
-					if (donut->GetPlayerCollisionFlg() == true && donut == donut_collision)
+					if (donut->GetPlayerCollisionFlg() == true)
 					{
 						order->DecrementDonutNum(donut->GetDonutType());
 						donut->SetDead(true);
-						player->SetDonutCollision(false);
-						donut_collision = nullptr;
 					}
 				}
-
 				player->SetDonutCollision(false);
-
+				donut_collision.clear(); // 処理が終わったのでクリア
 			}
 			else if (pause_b1_collision == false && player->GetClickFlg() == false)
 			{// 左クリックされたらドーナツを落とす
@@ -147,16 +154,6 @@ eSceneType GameMainScene::Update()
 			}
 		}
 
-		// プレイヤーとドーナツの当たり判定
-		for (Donuts* donut : donutList)
-		{
-			// オーダーにあるドーナツか？/オーダーのドーナツの個数が0個より大きいか？
-			if (order->GetDonutOrder(donut->GetDonutType()) == 1 && order->GetDonutOrderNum(donut->GetDonutType()) > 0)
-			{
-				CheckDonutPlayerCollision(donut);
-			}
-		}
-
 		// 他のUpdate処理
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
@@ -165,6 +162,39 @@ eSceneType GameMainScene::Update()
 
 		// ドーナツ同士の当たり判定
 		CollisionDonuts();
+
+		// プレイヤーとドーナツの当たり判定
+		// まず、前フレームの当たり判定情報をクリア
+		donut_collision.clear();
+		player->SetDonutCollision(false);
+
+		// プレイヤーとドーナツの当たり判定
+		for (Donuts* donut : donutList)
+		{
+			//// オーダーにあるドーナツか？/オーダーのドーナツの個数が0個より大きいか？
+			//if (order->GetDonutOrder(donut->GetDonutType()) == 1 && order->GetDonutOrderNum(donut->GetDonutType()) > 0)
+			//{
+			//	CheckDonutPlayerCollision(donut);
+			//}
+			//else
+			//{
+			//	donut->SetPlayerCollisionFlg(false);
+			//}
+
+			if (order->GetDonutOrder(donut->GetDonutType()) == 1 && order->GetDonutOrderNum(donut->GetDonutType()) > 0)
+			{
+				if (CheckDonutPlayerCollision(donut) == 1)
+				{
+					donut->SetPlayerCollisionFlg(true);
+					player->SetDonutCollision(true); // 当たっているドーナツが一つでもあればtrue
+					donut_collision.push_back(donut); // 当たったドーナツをリストに追加
+				}
+				else
+				{
+					donut->SetPlayerCollisionFlg(false);
+				}
+			}
+		}
 
 		// オブジェクトの削除
 		gameobjects->RemoveDeadObjects();
@@ -234,8 +264,8 @@ void GameMainScene::Draw() const
 	// スコア表示
 	SetFontSize(20);
 	DrawString(170, 80, "スコア", 0x1A2E40);
-	SetFontSize(50);
-	DrawFormatString(123, 120, 0x1A2E40, "%06d", score);
+	SetFontSize(40);
+	DrawFormatString(118, 125, 0x1A2E40, "%08d", score);
 	DrawCircle(200, 135,100, 0x1A2E40, FALSE);
 
 	// 進化の輪表示
@@ -475,7 +505,7 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 //}
 
 // 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
-void GameMainScene::CheckDonutPlayerCollision(Donuts* donut)
+int GameMainScene::CheckDonutPlayerCollision(Donuts* donut)
 {
 	InputManager* input = InputManager::GetInstance();
 
@@ -498,14 +528,15 @@ void GameMainScene::CheckDonutPlayerCollision(Donuts* donut)
 	
 	if (dr < dl)
 	{
-		donut->SetPlayerCollisionFlg(true);
-		donut_collision = donut;
-		player->SetDonutCollision(true);
+		/*donut->SetPlayerCollisionFlg(true);
+		player->SetDonutCollision(true);*/
+		return 1;
 	}
 	else
 	{
-		donut->SetPlayerCollisionFlg(false);
-		player->SetDonutCollision(false);
+		/*donut->SetPlayerCollisionFlg(false);
+		player->SetDonutCollision(false);*/
+		return 0;
 	}
 	
 }
