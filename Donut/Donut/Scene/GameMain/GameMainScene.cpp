@@ -150,6 +150,7 @@ eSceneType GameMainScene::Update()
 			if (d_locy < upper_line && donut->GetLanded() == true)
 			{
 				is_gameover = true;
+				WaitTimer(2000);
 				return eSceneType::eResult;
 			}
 		}
@@ -388,6 +389,7 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			a->SetDonutType(static_cast<DonutType>(nextTypeIndex));
 			a->SetRadius(g_DonutInfoTable[nextTypeIndex].size);
 			a->SetMerged(true);
+			a->SetDonutMunyu(b);
 
 			// b‚ðíœ‘ÎÛ‚É
 			b->SetDead(true);
@@ -400,6 +402,8 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 		{
 			// Å‘å‚Ü‚Åi‰»‚µ‚½‚à‚Ì“¯Žm‚ª‡‘Ì‚·‚é‚ÆA—¼•ûÁ‚¦‚é
 			score += a->GetDonutScore(a->GetDonutType());
+
+			a->SetDonutMunyu(b);
 
 			// a‚ðíœ‘ÎÛ‚É
 			a->SetDead(true);

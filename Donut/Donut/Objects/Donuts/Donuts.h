@@ -50,6 +50,16 @@ private:
 	std::vector<Donuts*>* donutList;
 	bool player_collision; // プレイヤーと当たっているか？フラグ
 
+	float mergeScaleX;   // 横スケール
+	float mergeScaleY;   // 縦スケール
+	bool isMerging;      // 現在合体中か
+	float mergeTimer;    // 合体アニメーション進行用タイマー
+	float targetX;       // 合体先のX位置
+	float targetY;       // 合体先のY位置
+	Donuts* mergeTarget; // 合体相手
+
+	int circleGraph; // 円イメージ（白ベース）
+
 public:
 	// コンストラクタ
 	Donuts(DonutType type);
@@ -125,10 +135,14 @@ public:
 	// プレイヤーと当たっているか？フラグを取得
 	bool GetPlayerCollisionFlg() { return player_collision; }
 
+	void SetDonutMunyu(Donuts* other);
+
 private:
 	// ドーナツの枠はみ出し防止処理
 	void ClampToFrame(float left, float right, float top, float bottom);
 
 	// 衝突処理 (弾性衝突)
 	void HandleCollision(Donuts* other);
+
+	void DrawEllipseAA(float x, float y, float rx, float ry, unsigned int color) const;
 };

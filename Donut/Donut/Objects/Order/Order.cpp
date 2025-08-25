@@ -58,6 +58,10 @@ void Order::Draw() const
         SetFontSize(40);
 		DrawFormatString(ORDER_LX + 150, ORDER_LY + 70 + 95 * i, 0x000000, "x %d個", order_num[i]);
 	}
+
+    SetFontSize(20);
+    DrawFormatString(0, 100, 0x000000, "%dlevel", difficulty + 1);
+
 }
 
 void Order::Finalize()
@@ -68,10 +72,8 @@ void Order::Finalize()
 // オーダーをランダムに生成(引数：難易度(0～2))
 void Order::SetRandomOrder(int difficulty)
 {
-    // 難易度に応じた選択可能なインデックス数
-    int available_types = Clamp(difficulty + 4, 4, 6); // 4〜6種類から選べる
-
-    DonutType menu_list[6] =
+    // 全ドーナツ
+    DonutType all_menu[6] =
     {
         DonutType::DONUT_OLD_FASHIONED_VAR,
         DonutType::DONUT_GOLDEN_CHOCOLATE,
@@ -81,91 +83,96 @@ void Order::SetRandomOrder(int difficulty)
         DonutType::DONUT_PON_DE_RING
     };
 
-    // オーダークリアをリセット
+    // デバック用簡単版
+    /*DonutType all_menu[6] =
+    {
+        DonutType::DONUT_MINI_BASIC,
+        DonutType::DONUT_MINI_VARIANT,
+        DonutType::DONUT_FRENCH_CRULLER,
+        DonutType::DONUT_FRENCH_CRULLER_VAR,
+        DonutType::DONUT_OLD_FASHIONED,
+        DonutType::DONUT_OLD_FASHIONED_VAR,
+    };*/
+   
+
+    // 難易度ごとの使用可能範囲・個数幅
+    int min_index = 0, max_index = 5;
+    int min_count = 1, max_count = 1;
+
+    if (difficulty <= 0) { min_index = 0; max_index = 3; min_count = 1; max_count = 1; }
+    else if (difficulty == 1) { min_index = 1; max_index = 4; min_count = 1; max_count = 1; }
+    else if (difficulty == 2) { min_index = 1; max_index = 4; min_count = 1; max_count = 1; }
+    else if (difficulty == 3) { min_index = 2; max_index = 5; min_count = 1; max_count = 2; }
+    else if (difficulty == 4) { min_index = 2; max_index = 5; min_count = 1; max_count = 2; }
+    else                      { min_index = 2; max_index = 5; min_count = 2; max_count = 3; }
+
+    int available_types = max_index - min_index + 1;
+
     complete_order = false;
 
-    // シャッフル用にコピーを作成
-    std::vector<DonutType> shuffled_menu(menu_list, menu_list + available_types);
+    // 使用可能な種類だけコピー
+    std::vector<DonutType> menu_vec(all_menu + min_index, all_menu + max_index + 1);
 
     // シャッフル
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::shuffle(shuffled_menu.begin(), shuffled_menu.end(), gen);
+    std::shuffle(menu_vec.begin(), menu_vec.end(), gen);
 
-    // 最初の4つを order_list に設定
+    // ORDER_MAX個選択（種類が少ない場合はループ）
     for (int i = 0; i < ORDER_MAX; ++i)
-    {
-        order_list[i] = shuffled_menu[i];
-    }
+        order_list[i] = menu_vec[i % available_types];
 
-    // 難易度に応じた個数の範囲を設定
-    int min_count = 1;
-    int max_count = 2;
-
-    switch (difficulty)
-    {
-    case 0:
-        min_count = 1;
-        max_count = 1;
-        break;
-    case 1:
-        min_count = 1;
-        max_count = 2;
-        break;
-    case 2:
-    default:
-        min_count = 1;
-        max_count = 2;
-        break;
-    }
-
-    // 個数をランダムに設定
+    // 個数をランダム設定
     for (int i = 0; i < ORDER_MAX; ++i)
-    {
         order_num[i] = min_count + gen() % (max_count - min_count + 1);
-    }
 
-    // 難易度順に並べ替え（menu_list のインデックスが大きい順）
-    struct OrderItem 
-    {
-        DonutType type;
-        int count;
-    };
-
-    // ペア構造でまとめる
+    // 難易度順に並べ替え
+    struct OrderItem { DonutType type; int count; };
     std::vector<OrderItem> items;
-    for (int i = 0; i < ORDER_MAX; ++i) 
-    {
+    for (int i = 0; i < ORDER_MAX; ++i)
         items.push_back({ order_list[i], order_num[i] });
-    }
 
-    // DonutType の menu_list 添え字を使ってソート
-    auto get_index_in_menu = [](DonutType type) -> int 
+    auto get_index_in_menu = [](DonutType type) -> int
         {
             switch (type)
             {
-                case DonutType::DONUT_OLD_FASHIONED_VAR: return 0;
-                case DonutType::DONUT_GOLDEN_CHOCOLATE:  return 1;
-                case DonutType::DONUT_COCONUT_CHOCOLATE: return 2;
-                case DonutType::DONUT_HALF_CHOCOLATE:    return 3;
-                case DonutType::DONUT_HALF_STRAWBERRY:   return 4;
-                case DonutType::DONUT_PON_DE_RING:       return 5;
-                default: return -1; // 安全のため
+            case DonutType::DONUT_OLD_FASHIONED_VAR: return 0;
+            case DonutType::DONUT_GOLDEN_CHOCOLATE:  return 1;
+            case DonutType::DONUT_COCONUT_CHOCOLATE: return 2;
+            case DonutType::DONUT_HALF_CHOCOLATE:    return 3;
+            case DonutType::DONUT_HALF_STRAWBERRY:   return 4;
+            case DonutType::DONUT_PON_DE_RING:       return 5;
+            default: return -1;
             }
         };
 
+    // デバック用簡単版
+   /* auto get_index_in_menu = [](DonutType type) -> int
+        {
+            switch (type)
+            {
+            case DonutType::DONUT_MINI_BASIC:         return 0;
+            case DonutType::DONUT_MINI_VARIANT:       return 1;
+            case DonutType::DONUT_FRENCH_CRULLER:     return 2;
+            case DonutType::DONUT_FRENCH_CRULLER_VAR: return 3;
+            case DonutType::DONUT_OLD_FASHIONED:      return 4;
+            case DonutType::DONUT_OLD_FASHIONED_VAR:  return 5;
+            default: return -1;
+            }
+        };*/
+
     std::sort(items.begin(), items.end(), [&](const OrderItem& a, const OrderItem& b)
         {
-            return get_index_in_menu(a.type) > get_index_in_menu(b.type); // 降順
+            return get_index_in_menu(a.type) > get_index_in_menu(b.type);
         });
 
-    // 結果を order_list / order_num に戻す
-    for (int i = 0; i < ORDER_MAX; ++i) 
+    for (int i = 0; i < ORDER_MAX; ++i)
     {
         order_list[i] = items[i].type;
         order_num[i] = items[i].count;
     }
 }
+
 
 // ドーナツの数を減らす
 void Order::DecrementDonutNum(DonutType type)

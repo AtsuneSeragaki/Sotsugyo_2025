@@ -6,7 +6,7 @@
 #define ORDER_RX  ORDER_LX + 300   // オーダーの枠X座標(右下)
 #define ORDER_RY  680              // オーダーの枠Y座標(右下)
 #define ORDER_MAX 4                // オーダーの数
-#define DIFFICULTY_MAX 2           // 難易度MAXの数            
+#define DIFFICULTY_MAX 5           // 難易度MAXの数            
 
 class Order : public GameObject
 {

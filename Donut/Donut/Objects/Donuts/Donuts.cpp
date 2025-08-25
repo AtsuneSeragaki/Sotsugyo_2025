@@ -48,6 +48,16 @@ Donuts::Donuts(DonutType type)
 
     donutList = nullptr;
     player_collision = false;
+
+    mergeScaleX = 1.0f;
+    mergeScaleY = 1.0f;
+    isMerging = false;
+    mergeTimer = 0.0f;
+    mergeTarget = nullptr;
+    targetX = location.x;
+    targetY = location.y;
+
+    circleGraph = LoadGraph("../../Resource/Images/circle.png");
 }
 
 // デストラクタ
@@ -92,32 +102,89 @@ void Donuts::Update()
 
     // ドーナツの枠はみ出し防止処理
     ClampToFrame(400.0f, 880.0f, 100.0f, 680.0f);
+
+    // 合体アニメーション
+    if (isMerging && mergeTarget)
+    {
+        mergeTimer += 0.05f; // ゆっくり
+
+        mergeScaleX = 1.0f + 0.12f * sinf(mergeTimer * 3.14f); // 横控えめ
+        mergeScaleY = 1.0f - 0.12f * sinf(mergeTimer * 3.14f); // 縦控えめ
+
+        // 中心に少し寄せる
+        location.x += (targetX - location.x) * 0.08f;
+        location.y += (targetY - location.y) * 0.08f;
+
+        // アニメーション終了
+        if (mergeTimer > 3.14f)
+        {
+            mergeScaleX = 1.0f;
+            mergeScaleY = 1.0f;
+            isMerging = false;
+
+            // 合体後は位置を完全に揃える
+            location.x = targetX;
+            location.y = targetY;
+            mergeTarget->location.x = targetX;
+            mergeTarget->location.y = targetY;
+        }
+    }
+    else
+    {
+        mergeScaleX = 1.0f;
+        mergeScaleY = 1.0f;
+    }
 }
 
 // 描画処理
 void Donuts::Draw() const 
 {
-    // ドーナツ仮表示
+    //// ドーナツ仮表示
+    //if (player_collision == true)
+    //{
+    //    // ドーナツを暗くする
+    //    // 描画輝度のセット
+    //    SetDrawBright(128, 128, 128);
+    //    DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+    //    // 描画輝度を元に戻す
+    //    SetDrawBright(255, 255, 255);
+    //}
+    //else
+    //{
+    //    DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+    //}
+   
+    //SetFontSize(20);
+    //const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
+   
+    //// ドーナツ番号表示
+    //DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
+    //// ドーナツ着地フラグ表示
+    //DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
+
+    int drawColor = 0xD6A15D;
+
+    // 画像スケールに変換
+    float drawR_X = r * mergeScaleX;
+    float drawR_Y = r * mergeScaleY;
+
     if (player_collision == true)
     {
         // ドーナツを暗くする
         // 描画輝度のセット
         SetDrawBright(128, 128, 128);
-        DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+        DrawEllipseAA(location.x, location.y, drawR_X, drawR_Y, 0xD6A15D);
         // 描画輝度を元に戻す
         SetDrawBright(255, 255, 255);
     }
     else
     {
-        DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+        DrawEllipseAA(location.x, location.y, drawR_X, drawR_Y, 0xD6A15D);
     }
-   
+
     SetFontSize(20);
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
-   
-    // ドーナツ番号表示
     DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
-    // ドーナツ着地フラグ表示
     DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
 }
 
@@ -255,6 +322,13 @@ void Donuts::HandleCollision(Donuts* other)
         location.y += overlap * (dy / distance) * massRatioA;
         other->location.x -= overlap * (dx / distance) * massRatioB;
         other->location.y -= overlap * (dy / distance) * massRatioB;
+
+        // 合体開始
+        /*isMerging = true;
+        mergeTimer = 0.0f;
+        mergeTarget = other;
+        targetX = (location.x + other->location.x) / 2;
+        targetY = (location.y + other->location.y) / 2;*/
     }
 
     // 速度を分解して反発を計算
@@ -283,6 +357,33 @@ void Donuts::HandleCollision(Donuts* other)
     vy *= 0.85f;
     other->vx *= 0.85f;
     other->vy *= 0.85f;
+}
+
+void Donuts::DrawEllipseAA(float x, float y, float rx, float ry, unsigned int color) const
+{
+    const int segments = 32;
+    for (int i = 0; i < segments; i++)
+    {
+        float theta1 = (2.0f * 3.14159f * i) / segments;
+        float theta2 = (2.0f * 3.14159f * (i + 1)) / segments;
+
+        float x1 = x + rx * cosf(theta1);
+        float y1 = y + ry * sinf(theta1);
+        float x2 = x + rx * cosf(theta2);
+        float y2 = y + ry * sinf(theta2);
+
+        DrawLineAA(int(x1), int(y1), int(x2), int(y2), color, 1);
+    }
+}
+
+void Donuts::SetDonutMunyu(Donuts* other)
+{
+    // 合体開始
+    isMerging = true;
+    mergeTimer = 0.0f;
+    mergeTarget = other;
+    targetX = (location.x + other->location.x) / 2;
+    targetY = (location.y + other->location.y) / 2;
 }
 
 // ドーナツの枠はみ出し防止処理
