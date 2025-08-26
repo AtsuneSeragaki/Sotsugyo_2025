@@ -42,7 +42,7 @@ void SceneManager::Initialize()
 		throw("•`‰ææ‚Ìw’è‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½\n");
 	}
 
-	ChangeScene(eSceneType::eGameMain);
+	ChangeScene(eSceneType::eTitle);
 }
 
 void SceneManager::Update()

@@ -11,17 +11,21 @@
 #define PAUSE_RX PAUSE_LX + 100   // ポーズボタン右下X座標(左上X座標＋ボタンの幅)
 #define PAUSE_RY PAUSE_LY + 35    // ポーズボタン右下Y座標(左上Y座標＋ボタンの高さ)
 
+// ポーズ画面のボタン
+#define PAUSE_B1B2_WIDTH   300  // ポーズ画面のボタンの幅
+#define PAUSE_B1B2_HEIGHT  100  // ポーズ画面のボタンの高さ
+#define PAUSE_B1B2_SPACING 50   // ポーズ画面のボタン同士の間隔
+
+#define PAUSE_B1B2_LX 500                               // ポーズ画面ボタン左上X座標
+#define PAUSE_B1B2_RX PAUSE_B1B2_LX + PAUSE_B1B2_WIDTH  // ポーズ画面ボタン右下X座標(左上X座標＋ボタンの幅)
+
 // ポーズ画面のボタン(続ける)
-#define PAUSE_B1_LX 500                // ポーズ画面ボタン「続ける」左上X座標
-#define PAUSE_B1_LY 250                // ポーズ画面ボタン「続ける」左上Y座標
-#define PAUSE_B1_RX PAUSE_B1_LX + 300  // ポーズ画面ボタン「続ける」右下X座標(左上X座標＋ボタンの幅)
-#define PAUSE_B1_RY PAUSE_B1_LY + 100  // ポーズ画面ボタン「続ける」右下Y座標(左上Y座標＋ボタンの高さ)
+#define PAUSE_B1_LY 250                              // ポーズ画面ボタン「続ける」左上Y座標
+#define PAUSE_B1_RY PAUSE_B1_LY + PAUSE_B1B2_HEIGHT  // ポーズ画面ボタン「続ける」右下Y座標(左上Y座標＋ボタンの高さ)
 
 // ポーズ画面のボタン(タイトルに戻る)
-#define PAUSE_B2_LX 500                // ポーズ画面ボタン「タイトルに戻る」左上X座標
-#define PAUSE_B2_LY 400                // ポーズ画面ボタン「タイトルに戻る」左上Y座標
-#define PAUSE_B2_RX PAUSE_B2_LX + 300  // ポーズ画面ボタン「タイトルに戻る」右下X座標(左上X座標＋ボタンの幅)
-#define PAUSE_B2_RY PAUSE_B2_LY + 100  // ポーズ画面ボタン「タイトルに戻る」右下Y座標(左上Y座標＋ボタンの高さ)
+#define PAUSE_B2_LY PAUSE_B1_RY + PAUSE_B1B2_SPACING // ポーズ画面ボタン「タイトルに戻る」左上Y座標(「続ける」ボタンの右下Y座標＋ボタン同士の間隔)
+#define PAUSE_B2_RY PAUSE_B2_LY + PAUSE_B1B2_HEIGHT  // ポーズ画面ボタン「タイトルに戻る」右下Y座標(左上Y座標＋ボタンの高さ)
 
 class GameMainScene : public SceneBase
 {

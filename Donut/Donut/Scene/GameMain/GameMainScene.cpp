@@ -204,7 +204,7 @@ eSceneType GameMainScene::Update()
 	{// ポーズ状態のとき
 		
 		// 「続ける」ボタンとプレイヤーカーソルの当たり判定
-		if (CheckPlayerButtonCollision(PAUSE_B1_LX, PAUSE_B1_RX, PAUSE_B1_LY, PAUSE_B1_RY) == 1)
+		if (CheckPlayerButtonCollision(PAUSE_B1B2_LX, PAUSE_B1B2_RX, PAUSE_B1_LY, PAUSE_B1_RY) == 1)
 		{
 			// 当たっていたらフラグをtrueに
 			pause_b1_collision = true;
@@ -215,7 +215,7 @@ eSceneType GameMainScene::Update()
 		}
 
 		// 「タイトルに戻る」ボタンとプレイヤーカーソルの当たり判定
-		if (CheckPlayerButtonCollision(PAUSE_B2_LX, PAUSE_B2_RX, PAUSE_B2_LY, PAUSE_B2_RY) == 1)
+		if (CheckPlayerButtonCollision(PAUSE_B1B2_LX, PAUSE_B1B2_RX, PAUSE_B2_LY, PAUSE_B2_RY) == 1)
 		{
 			// 当たっていたらフラグをtrueに
 			pause_b2_collision = true;
@@ -302,31 +302,31 @@ void GameMainScene::Draw() const
 		if (pause_b1_collision == true)
 		{
 			SetDrawBright(128, 128, 128);
-			DrawBox(PAUSE_B1_LX, PAUSE_B1_LY, PAUSE_B1_RX, PAUSE_B1_RY, 0xffffff, TRUE);
+			DrawBox(PAUSE_B1B2_LX, PAUSE_B1_LY, PAUSE_B1B2_RX, PAUSE_B1_RY, 0xffffff, TRUE);
 			SetDrawBright(255, 255, 255);
 		}
 		else
 		{
-			DrawBox(PAUSE_B1_LX, PAUSE_B1_LY, PAUSE_B1_RX, PAUSE_B1_RY, 0xffffff, TRUE);
+			DrawBox(PAUSE_B1B2_LX, PAUSE_B1_LY, PAUSE_B1B2_RX, PAUSE_B1_RY, 0xffffff, TRUE);
 		}
 
 		SetFontSize(30);
-		DrawString(PAUSE_B1_LX + 105, PAUSE_B1_LY + 35, "続ける", 0x000000);
+		DrawString(PAUSE_B1B2_LX + 105, PAUSE_B1_LY + 35, "続ける", 0x000000);
 
 		// ポーズ画面のボタン(タイトルに戻る)表示
 		if (pause_b2_collision == true)
 		{
 			SetDrawBright(128, 128, 128);
-			DrawBox(PAUSE_B2_LX, PAUSE_B2_LY, PAUSE_B2_RX, PAUSE_B2_RY, 0xffffff, TRUE);
+			DrawBox(PAUSE_B1B2_LX, PAUSE_B2_LY, PAUSE_B1B2_RX, PAUSE_B2_RY, 0xffffff, TRUE);
 			SetDrawBright(255, 255, 255);
 		}
 		else
 		{
-			DrawBox(PAUSE_B2_LX, PAUSE_B2_LY, PAUSE_B2_RX, PAUSE_B2_RY, 0xffffff, TRUE);
+			DrawBox(PAUSE_B1B2_LX, PAUSE_B2_LY, PAUSE_B1B2_RX, PAUSE_B2_RY, 0xffffff, TRUE);
 		}
 
 		SetFontSize(30);
-		DrawString(PAUSE_B2_LX + 40, PAUSE_B2_LY + 35, "タイトルに戻る", 0x000000);
+		DrawString(PAUSE_B1B2_LX + 40, PAUSE_B2_LY + 35, "タイトルに戻る", 0x000000);
 	}
 }
 
@@ -389,7 +389,6 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			a->SetDonutType(static_cast<DonutType>(nextTypeIndex));
 			a->SetRadius(g_DonutInfoTable[nextTypeIndex].size);
 			a->SetMerged(true);
-			a->SetDonutMunyu(b);
 
 			// bを削除対象に
 			b->SetDead(true);
@@ -402,8 +401,6 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 		{
 			// 最大まで進化したもの同士が合体すると、両方消える
 			score += a->GetDonutScore(a->GetDonutType());
-
-			a->SetDonutMunyu(b);
 
 			// aを削除対象に
 			a->SetDead(true);

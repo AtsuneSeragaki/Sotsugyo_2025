@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 // コンストラクタ
-Player::Player() : is_click(false)
+Player::Player() : is_click(true)
 {
 	// 最初は1のドーナツを設定
 	donut_type = DonutType::DONUT_MINI_BASIC;
@@ -56,13 +56,6 @@ void Player::Draw() const
 	// 次に落とすドーナツ番号を表示
 	DrawFormatString((int)1067.0f, (int)170.0f - 3, 0x1A2E40, "%d", next_donut_number);
 	DrawCircle(1070, 150, 105, 0x1A2E40, FALSE);
-
-	InputManager* input = InputManager::GetInstance();
-	//DrawCircleAA(location.x, input->GetMouseLocation().y, 10, 32, 0xffffff, TRUE);
-
-	//DrawBox(input->GetMouseLocation().x - 5, input->GetMouseLocation().y, input->GetMouseLocation().x + 10, input->GetMouseLocation().y + 10, 0xffffff, TRUE);
-
-	//DrawFormatString(0, 100, 0xffffff, "%d", donut_collision);
 }
 
 // 終了時処理
