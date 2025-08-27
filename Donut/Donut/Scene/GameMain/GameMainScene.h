@@ -39,7 +39,7 @@ private:
 	bool pause_collision;            // ポーズボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
 	bool pause_b1_collision;         // ポーズ画面ボタン「続ける」とプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
 	bool pause_b2_collision;         // ポーズ画面ボタン「タイトルに戻る」とプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
-	int score;                       // スコア
+	static int score;                // スコア
 
 public:
 	// コンストラクタ
@@ -74,7 +74,4 @@ private:
 
 	// 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
 	int CheckDonutPlayerCollision(class Donuts* donut);
-
-	// プレイヤーカーソルとボタンの当たり判定(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
-	int CheckPlayerButtonCollision(int left,int right,int top,int bottom);
 };

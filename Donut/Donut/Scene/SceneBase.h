@@ -15,7 +15,7 @@ enum class eSceneType
 class SceneBase
 {
 protected:
-	int background_image;             // 背景画像データ
+	int background_image;   // 背景画像データ
 
 public:
 	SceneBase();
@@ -34,4 +34,7 @@ public:
 public:
 	// 現在のシーン情報を返す
 	virtual eSceneType  GetNowSceneType() const = 0;
+
+	// プレイヤーカーソルとボタンの当たり判定(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
+	int CheckPlayerButtonCollision(int left, int right, int top, int bottom);
 };

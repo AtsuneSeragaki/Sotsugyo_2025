@@ -5,6 +5,13 @@
 class ResultScene : public SceneBase
 {
 private:
+	int score;
+
+public:
+	// コンストラクタ
+	ResultScene(int score);
+	// デストラクタ
+	~ResultScene();
 
 public:
 	// 初期化処理
