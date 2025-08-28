@@ -8,7 +8,7 @@ void TitleScene::Initialize()
 	start_btn_collision = false;
 	help_btn_collision = false;
 	end_btn_collision = false;
-	canClick = false;
+	can_click = false;
 	frame_count = 0;
 }
 
@@ -18,7 +18,7 @@ eSceneType TitleScene::Update()
 	// フレームカウントが10以上になったらクリックできるようにする
 	if (frame_count >= 10)
 	{
-		canClick = true;
+		can_click = true;
 	}
 	else
 	{
@@ -61,7 +61,7 @@ eSceneType TitleScene::Update()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (canClick == true && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (can_click == true && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
 	{
 		if (start_btn_collision == true)
 		{
@@ -95,7 +95,11 @@ void TitleScene::Draw() const
 
 	int button_color = 0xD6A15D;         // ボタンのカラーコード
 	int button_string_color = 0xffffff;  // ボタンの文字のカラーコード
-	int button_string_spacing = 20;      // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+	int button_string_yspacing = 20;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+
+	int start_button_xspacing = 90; // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int help_button_xspacing = 75;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int end_button_xspacing = 105;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
 	// スタートボタン
@@ -105,14 +109,14 @@ void TitleScene::Draw() const
 		SetDrawBright(128, 128, 128);
 		DrawBox(BUTTON_LX, START_BUTTON_LY, BUTTON_RX, START_BUTTON_RY, button_color, TRUE);
 		SetFontSize(30);
-		DrawString(BUTTON_LX + 90, START_BUTTON_LY + button_string_spacing, "はじめる", button_string_color);
+		DrawString(BUTTON_LX + start_button_xspacing, START_BUTTON_LY + button_string_yspacing, "はじめる", button_string_color);
 		SetDrawBright(255, 255, 255);
 	}
 	else
 	{
 		DrawBox(BUTTON_LX, START_BUTTON_LY, BUTTON_RX, START_BUTTON_RY, button_color, TRUE);
 		SetFontSize(30);
-		DrawString(BUTTON_LX + 90, START_BUTTON_LY + button_string_spacing, "はじめる", button_string_color);
+		DrawString(BUTTON_LX + start_button_xspacing, START_BUTTON_LY + button_string_yspacing, "はじめる", button_string_color);
 	}
 
 	// ヘルプボタン
@@ -122,14 +126,14 @@ void TitleScene::Draw() const
 		SetDrawBright(128, 128, 128);
 		DrawBox(BUTTON_LX, HELP_BUTTON_LY, BUTTON_RX, HELP_BUTTON_RY, button_color, TRUE);
 		SetFontSize(30);
-		DrawString(BUTTON_LX + 75, HELP_BUTTON_LY + button_string_spacing, "あそびかた", button_string_color);
+		DrawString(BUTTON_LX + help_button_xspacing, HELP_BUTTON_LY + button_string_yspacing, "あそびかた", button_string_color);
 		SetDrawBright(255, 255, 255);
 	}
 	else
 	{
 		DrawBox(BUTTON_LX, HELP_BUTTON_LY, BUTTON_RX, HELP_BUTTON_RY, button_color, TRUE);
 		SetFontSize(30);
-		DrawString(BUTTON_LX + 75, HELP_BUTTON_LY + button_string_spacing, "あそびかた", button_string_color);
+		DrawString(BUTTON_LX + help_button_xspacing, HELP_BUTTON_LY + button_string_yspacing, "あそびかた", button_string_color);
 	}
 
 	// エンドボタン
@@ -139,14 +143,14 @@ void TitleScene::Draw() const
 		SetDrawBright(128, 128, 128);
 		DrawBox(BUTTON_LX, END_BUTTON_LY, BUTTON_RX, END_BUTTON_RY, button_color, TRUE);
 		SetFontSize(30);
-		DrawString(BUTTON_LX + 105, END_BUTTON_LY + button_string_spacing, "おわる", button_string_color);
+		DrawString(BUTTON_LX + end_button_xspacing, END_BUTTON_LY + button_string_yspacing, "おわる", button_string_color);
 		SetDrawBright(255, 255, 255);
 	}
 	else
 	{
 		DrawBox(BUTTON_LX, END_BUTTON_LY, BUTTON_RX, END_BUTTON_RY, button_color, TRUE);
 		SetFontSize(30);
-		DrawString(BUTTON_LX + 105, END_BUTTON_LY + button_string_spacing, "おわる", button_string_color);
+		DrawString(BUTTON_LX + end_button_xspacing, END_BUTTON_LY + button_string_yspacing, "おわる", button_string_color);
 
 	}
 }

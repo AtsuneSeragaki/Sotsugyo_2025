@@ -42,7 +42,7 @@ void SceneManager::Initialize()
 		throw("描画先の指定ができませんでした\n");
 	}
 
-	ChangeScene(eSceneType::eTitle);
+	ChangeScene(eSceneType::eResult);
 }
 
 void SceneManager::Update()
@@ -70,6 +70,7 @@ void SceneManager::Update()
 			// 現在のシーンと次のシーンが違っていたら、切り替え処理を行う
 			if (next != current_scene->GetNowSceneType())
 			{
+
 				ChangeScene(next);
 			}
 		}
@@ -86,15 +87,6 @@ void SceneManager::Update()
 			break;
 		}*/
 	}
-
-	/*eSceneType next_scene_type = current_scene->Update();
-
-	current_scene->Draw();
-
-	if (next_scene_type != current_scene->GetNowSceneType())
-	{
-		ChangeScene(next_scene_type);
-	}*/
 }
 
 void SceneManager::Finalize()
@@ -169,8 +161,11 @@ SceneBase* SceneManager::CreateScene(eSceneType new_scene_type)
 		return dynamic_cast<SceneBase*>(new HelpScene());
 
 	case eSceneType::eResult:
-		return dynamic_cast<SceneBase*>(new ResultScene());
-
+	{
+		GameMainScene* gm = dynamic_cast<GameMainScene*>(current_scene);
+		int score = gm ? gm->GetScore() : 0; // gmがnullptrなら0にする
+		return dynamic_cast<SceneBase*>(new ResultScene(score));
+	}
 	case eSceneType::eEnd:
 		return dynamic_cast<SceneBase*>(new EndScene());
 

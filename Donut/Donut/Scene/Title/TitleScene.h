@@ -27,8 +27,6 @@ private:
 	bool start_btn_collision; // スタートボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
 	bool help_btn_collision;  // ヘルプボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
 	bool end_btn_collision;   // エンドボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
-	bool canClick;            // クリックフラグ(false:クリックできない  true:クリックできる)
-	int  frame_count;         // フレームカウント(画面遷移後すぐはクリック出来ないようにするため)
 
 public:
 	// 初期化処理

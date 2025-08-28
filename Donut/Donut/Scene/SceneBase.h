@@ -12,10 +12,18 @@ enum class eSceneType
 	eEnd,
 };
 
+struct ButtonState {
+	int lx, rx, ly, ry;
+	bool collision = false;
+	eSceneType targetScene; // クリックで遷移するシーン
+};
+
 class SceneBase
 {
 protected:
-	int background_image;   // 背景画像データ
+	int background_image; // 背景画像データ
+	int frame_count;      // フレームカウント
+	bool can_click;       // クリックフラグ(false:クリックできない  true:クリックできる)
 
 public:
 	SceneBase();

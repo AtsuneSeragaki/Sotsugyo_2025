@@ -2,7 +2,7 @@
 #include "../Utility/InputManager.h"
 #include "DxLib.h"
 
-SceneBase::SceneBase() : background_image(NULL)
+SceneBase::SceneBase() : background_image(NULL),frame_count(0),can_click(false)
 {
 
 }

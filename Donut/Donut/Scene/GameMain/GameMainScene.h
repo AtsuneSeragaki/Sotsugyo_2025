@@ -65,6 +65,9 @@ public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
 
+	// スコアを返す処理(戻り値：スコア)
+	int GetScore(){ return score; }
+
 private:
 	// ドーナツ同士の当たり判定
 	void CollisionDonuts();

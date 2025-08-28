@@ -2,10 +2,27 @@
 
 #include "../SceneBase.h"
 
+// ボタン共通情報
+#define BUTTON_WIDTH   300  // ボタンの幅
+#define BUTTON_HEIGHT  70   // ボタンの高さ
+#define BUTTON_SPACING 70   // ボタン同士の間隔
+#define BUTTON_NUM 2        // ボタンの数
+#define BUTTON_LY  600                       // ボタン左上Y座標
+#define BUTTON_RY  BUTTON_LY + BUTTON_HEIGHT // ボタン右下Y座標
+
+// リスタートボタン
+#define RESTART_BUTTON_LX 340                               // リスタートボタン左上X座標
+#define RESTART_BUTTON_RX  RESTART_BUTTON_LX + BUTTON_WIDTH // リスタートボタン右下X座標(左上X座標＋ボタンの幅)
+
+// タイトルボタン
+#define TITLE_BUTTON_LX RESTART_BUTTON_RX + BUTTON_SPACING // タイトルボタン左上X座標(リスタートボタン右下X座標＋ボタン同士の間隔)
+#define TITLE_BUTTON_RX TITLE_BUTTON_LX  + BUTTON_WIDTH    // タイトルボタン右下X座標(左上X座標＋ボタンの高さ)
+
 class ResultScene : public SceneBase
 {
 private:
-	int score;
+	ButtonState button[2];
+	int score;       // スコア
 
 public:
 	// コンストラクタ

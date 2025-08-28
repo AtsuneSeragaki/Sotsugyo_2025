@@ -134,7 +134,7 @@ eSceneType GameMainScene::Update()
 			if (d_locy < upper_line && donut->GetLanded() == true)
 			{
 				is_gameover = true;
-				WaitTimer(2000);
+				WaitTimer(1000);
 				return eSceneType::eResult;
 			}
 		}
