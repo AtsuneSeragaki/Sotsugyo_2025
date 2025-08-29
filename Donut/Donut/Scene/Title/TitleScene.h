@@ -6,6 +6,7 @@
 #define BUTTON_WIDTH   300  // ボタンの幅
 #define BUTTON_HEIGHT  70   // ボタンの高さ
 #define BUTTON_SPACING 70   // ボタン同士の間隔
+#define BUTTON_NUM 3        // ボタンの数
 #define BUTTON_LX  505                       // ボタン左上X座標
 #define BUTTON_RX  BUTTON_LX + BUTTON_WIDTH  // ボタン右下X座標(左上X座標＋ボタンの幅)
 
@@ -24,9 +25,7 @@
 class TitleScene : public SceneBase
 {
 private:
-	bool start_btn_collision; // スタートボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
-	bool help_btn_collision;  // ヘルプボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
-	bool end_btn_collision;   // エンドボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
+	ButtonState button[BUTTON_NUM];  // ボタン情報
 
 public:
 	// 初期化処理

@@ -14,9 +14,15 @@ GameMainScene::GameMainScene()
 	order  = nullptr;
 	is_gameover = false;
 	pause = false;
-	pause_collision = false;
-	pause_b1_collision = false;
-	pause_b2_collision = false;
+
+	// ポーズボタン初期化
+	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain };
+
+	// 「続ける」ボタン初期化
+	button[1] = { PAUSE_B1B2_LX,PAUSE_B1B2_RX,PAUSE_B1_LY,PAUSE_B1_RY,false,eSceneType::eGameMain };
+
+	// 「タイトルに戻る」ボタン初期化
+	button[2] = { PAUSE_B1B2_LX,PAUSE_B1B2_RX,PAUSE_B2_LY,PAUSE_B2_RY,false,eSceneType::eTitle };
 }
 
 // デストラクタ
@@ -41,104 +47,35 @@ eSceneType GameMainScene::Update()
 {
 	InputManager* input = InputManager::GetInstance();
 
+	eSceneType next_scene;
+
 	if (!pause)
 	{// ポーズ状態じゃないとき
 		
-		if (CheckPlayerButtonCollision(PAUSE_LX, PAUSE_RX, PAUSE_LY, PAUSE_RY) == 1)
-		{
-			pause_collision = true;
-		}
-		else
-		{
-			pause_collision = false;
-		}
+		// ポーズボタンの当たり判定処理
+		PauseButtonCollision();
+		
+		// プレイヤーがクリックした時の処理
+		OnPlayerClick();
 
-		// プレイヤーが左クリックしたとき
-		if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
-		{
-			// ポーズボタンの上で左クリックしたら、ポーズ状態にする
-			if (pause_collision == true)
-			{
-				player->SetClickFlg(true);
-				pause = true;
-			}
-			else if (player->GetDonutCollision() == true && player->GetClickFlg() == false)
-			{// プレイヤーとドーナツが当たっていたら
-				
-				player->SetClickFlg(true);
-				
-				// 当たっているドーナツをすべて処理
-				for (Donuts* donut : donut_collision)
-				{
-					if (donut->GetPlayerCollisionFlg() == true)
-					{
-						order->DecrementDonutNum(donut->GetDonutType());
-						donut->SetDead(true);
-					}
-				}
-
-				player->SetDonutCollision(false);
-
-				// 処理が終わったのでクリア
-				donut_collision.clear(); 
-			}
-			else if (pause_b1_collision == false && player->GetClickFlg() == false)
-			{// 左クリックされたらドーナツを落とす
-
-				player->SetClickFlg(true);
-
-				// 落とすドーナツの種類を取得
-				DonutType type = player->GetDonutType();
-
-				// ドーナツを追加(落とす)
-				Donuts* donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f), type);
-
-				// 次に落とすドーナツの種類を決める
-				player->ChooseRandomDonut();
-
-				// 落とすドーナツの情報を変更する
-				player->SetDonutRadius(donut->GetDonutRadius(player->GetDonutType()));
-				player->SetDonutNumber(donut->GetDonutNumber(player->GetDonutType()));
-
-				// 次に落とすドーナツの情報を変更する
-				player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
-				player->SetNextDonutNumber(donut->GetDonutNumber(player->GetNextDonutType()));
-			}
-		}
-		else
-		{
-			player->SetClickFlg(false);
-		}
-
-		std::vector<Donuts*> donutList;
+		std::vector<Donuts*> donut_list;
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
 			Donuts* donut = dynamic_cast<Donuts*>(obj);
 
 			if (donut)
 			{
-				donutList.push_back(donut);
+				donut_list.push_back(donut);
 				donut->SetMerged(false);
 			}
 		}
 
-		// ドーナツ落下処理
-		for (Donuts* donut : donutList)
+		next_scene = FallDonut(donut_list);
+		if (GetNowSceneType() != next_scene)
 		{
-			donut->FallDonut(donutList);  // 他ドーナツ情報を渡す
-
-			float upper_line = 100.0f;    // 上枠の位置
-			float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
-
-			// ドーナツが上枠からはみ出していないか確認
-			if (d_locy < upper_line && donut->GetLanded() == true)
-			{
-				is_gameover = true;
-				WaitTimer(1000);
-				return eSceneType::eResult;
-			}
+			return next_scene;
 		}
-
+		
 		// 他のUpdate処理
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
@@ -148,74 +85,19 @@ eSceneType GameMainScene::Update()
 		// ドーナツ同士の当たり判定
 		CollisionDonuts();
 
-		// プレイヤーとドーナツの当たり判定
-		// まず、前フレームの当たり判定情報をクリア
-		donut_collision.clear();
-		player->SetDonutCollision(false);
-
-		// プレイヤーとドーナツの当たり判定
-		for (Donuts* donut : donutList)
-		{
-			if (order->GetDonutOrder(donut->GetDonutType()) == 1 && order->GetDonutOrderNum(donut->GetDonutType()) > 0)
-			{
-				if (CheckDonutPlayerCollision(donut) == 1)
-				{
-					donut->SetPlayerCollisionFlg(true);
-
-					// 当たっているドーナツが一つでもあればtrue
-					player->SetDonutCollision(true);
-
-					// 当たったドーナツをリストに追加
-					donut_collision.push_back(donut); 
-				}
-				else
-				{
-					donut->SetPlayerCollisionFlg(false);
-				}
-			}
-		}
-
+		// ドーナツとプレイヤーの当たり判定処理
+		HitDonutPlayerCollision(donut_list);
+		
 		// オブジェクトの削除
 		gameobjects->RemoveDeadObjects();
 	}
 	else
 	{// ポーズ状態のとき
 		
-		// 「続ける」ボタンとプレイヤーカーソルの当たり判定
-		if (CheckPlayerButtonCollision(PAUSE_B1B2_LX, PAUSE_B1B2_RX, PAUSE_B1_LY, PAUSE_B1_RY) == 1)
+		next_scene = PauseUpdate();
+		if (GetNowSceneType() != next_scene)
 		{
-			// 当たっていたらフラグをtrueに
-			pause_b1_collision = true;
-		}
-		else
-		{
-			pause_b1_collision = false;
-		}
-
-		// 「タイトルに戻る」ボタンとプレイヤーカーソルの当たり判定
-		if (CheckPlayerButtonCollision(PAUSE_B1B2_LX, PAUSE_B1B2_RX, PAUSE_B2_LY, PAUSE_B2_RY) == 1)
-		{
-			// 当たっていたらフラグをtrueに
-			pause_b2_collision = true;
-		}
-		else
-		{
-			pause_b2_collision = false;
-		}
-
-		// ボタンとカーソルが当たっているときに、プレイヤーが左クリックしたときの処理
-		if (pause_b1_collision == true && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
-		{
-			player->SetClickFlg(true);
-			// 「続ける」ボタンがクリックされたとき、ポーズ状態を解除
-			pause = false;
-			pause_b1_collision = false;
-		}
-		else if (pause_b2_collision == true && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
-		{
-			player->SetClickFlg(true);
-			// 「タイトルに戻る」ボタンがクリックされたとき、タイトルに画面に遷移
-			return eSceneType::eTitle;
+			return next_scene;
 		}
 	}
 
@@ -254,66 +136,25 @@ void GameMainScene::Draw() const
 	DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
 	// ポーズボタン
-	if (pause_collision == true || pause == true)
+	if (button[0].collision == true || pause == true)
 	{
 		SetDrawBright(128, 128, 128);
-		DrawBox(PAUSE_LX, PAUSE_LY, PAUSE_RX, PAUSE_RY, 0xffffff, TRUE);
+		DrawBox(button[0].lx, button[0].ly, button[0].rx, button[0].ry, 0xffffff, TRUE);
+		SetFontSize(17);
+		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
 		SetDrawBright(255, 255, 255);
 	}
 	else
 	{
-		DrawBox(PAUSE_LX, PAUSE_LY, PAUSE_RX, PAUSE_RY, 0xffffff, TRUE);
+		DrawBox(button[0].lx, button[0].ly, button[0].rx, button[0].ry, 0xffffff, TRUE);
+		SetFontSize(17);
+		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
 	}
-
-	SetFontSize(17);
-	DrawString(PAUSE_LX + 12, PAUSE_LY + 8, "中断する", 0x000000);
 
 	// ポーズ画面
 	if (pause)
 	{
-		// 背景
-		DrawBox(200, 70, 1080, 650, 0xfff8f0, TRUE);
-		DrawBox(200, 70, 1080, 650, 0x000000, FALSE);
-
-		// 画面名
-		SetFontSize(30);
-		DrawString(580, 120, "ポーズ画面", 0x000000);
-
-		int button_color = 0xffffff;        // ボタンのカラーコード
-		int button_string_color = 0x000000; // ボタンの文字のカラーコード
-		int button_string_spacing = 35;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
-
-		// 「続ける」ボタン
-		if (pause_b1_collision == true)
-		{
-			SetDrawBright(128, 128, 128);
-			DrawBox(PAUSE_B1B2_LX, PAUSE_B1_LY, PAUSE_B1B2_RX, PAUSE_B1_RY, button_color, TRUE);
-			SetFontSize(30);
-			DrawString(PAUSE_B1B2_LX + 105, PAUSE_B1_LY + button_string_spacing, "続ける", button_string_color);
-			SetDrawBright(255, 255, 255);
-		}
-		else
-		{
-			DrawBox(PAUSE_B1B2_LX, PAUSE_B1_LY, PAUSE_B1B2_RX, PAUSE_B1_RY, button_color, TRUE);
-			SetFontSize(30);
-			DrawString(PAUSE_B1B2_LX + 105, PAUSE_B1_LY + button_string_spacing, "続ける", button_string_color);
-		}
-
-		// 「タイトルに戻る」ボタン
-		if (pause_b2_collision == true)
-		{
-			SetDrawBright(128, 128, 128);
-			DrawBox(PAUSE_B1B2_LX, PAUSE_B2_LY, PAUSE_B1B2_RX, PAUSE_B2_RY, button_color, TRUE);
-			SetFontSize(30);
-			DrawString(PAUSE_B1B2_LX + 40, PAUSE_B2_LY + button_string_spacing, "タイトルに戻る", button_string_color);
-			SetDrawBright(255, 255, 255);
-		}
-		else
-		{
-			DrawBox(PAUSE_B1B2_LX, PAUSE_B2_LY, PAUSE_B1B2_RX, PAUSE_B2_RY, button_color, TRUE);
-			SetFontSize(30);
-			DrawString(PAUSE_B1B2_LX + 40, PAUSE_B2_LY + button_string_spacing, "タイトルに戻る", button_string_color);
-		}
+		PauseDraw();
 	}
 }
 
@@ -382,14 +223,14 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			// bを削除対象に
 			b->SetDead(true);
 
-			score += a->GetDonutScore(a->GetDonutType());
+			AddScore(a);
 
 			return;
 		}
 		else if (nextTypeIndex == MAX_DONUT_NUM)
 		{
 			// 最大まで進化したもの同士が合体すると、両方消える
-			score += a->GetDonutScore(a->GetDonutType());
+			AddScore(a);
 
 			// aを削除対象に
 			a->SetDead(true);
@@ -494,6 +335,37 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 //	b->SetVelocity(b->GetVelocity() - normal * 0.3f);
 //}
 
+// ドーナツとプレイヤーが当たった時の処理
+void GameMainScene::HitDonutPlayerCollision(std::vector<Donuts*> donut_list)
+{
+	// プレイヤーとドーナツの当たり判定
+	// まず、前フレームの当たり判定情報をクリア
+	donut_collision.clear();
+	player->SetDonutCollision(false);
+
+	// プレイヤーとドーナツの当たり判定
+	for (Donuts* donut : donut_list)
+	{
+		if (order->GetDonutOrder(donut->GetDonutType()) == 1 && order->GetDonutOrderNum(donut->GetDonutType()) > 0)
+		{
+			if (CheckDonutPlayerCollision(donut) == 1)
+			{
+				donut->SetPlayerCollisionFlg(true);
+
+				// 当たっているドーナツが一つでもあればtrue
+				player->SetDonutCollision(true);
+
+				// 当たったドーナツをリストに追加
+				donut_collision.push_back(donut);
+			}
+			else
+			{
+				donut->SetPlayerCollisionFlg(false);
+			}
+		}
+	}
+}
+
 // 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
 int GameMainScene::CheckDonutPlayerCollision(Donuts* donut)
 {
@@ -518,16 +390,223 @@ int GameMainScene::CheckDonutPlayerCollision(Donuts* donut)
 	
 	if (dr < dl)
 	{
-		/*donut->SetPlayerCollisionFlg(true);
-		player->SetDonutCollision(true);*/
 		return 1;
 	}
 	else
 	{
-		/*donut->SetPlayerCollisionFlg(false);
-		player->SetDonutCollision(false);*/
 		return 0;
 	}
 	
+}
+
+// ポーズ状態の時の更新処理
+eSceneType GameMainScene::PauseUpdate()
+{
+	InputManager* input = InputManager::GetInstance();
+
+	// ボタンとプレイヤーカーソルの当たり判定
+	for (int i = 1; i < BUTTON_NUM; i++)
+	{
+		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
+		{
+			button[i].collision = true;
+		}
+		else
+		{
+			button[i].collision = false;
+		}
+	}
+
+	// ボタンの上でクリックしたら、それぞれの画面に遷移する
+	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	{
+		for (int i = 1; i < BUTTON_NUM; i++)
+		{
+			if (button[i].collision == true)
+			{
+				if (i == 1)
+				{
+					player->SetClickFlg(true);
+					// 「続ける」ボタンがクリックされたとき、ポーズ状態を解除
+					pause = false;
+					button[i].collision = false;
+				}
+				else
+				{
+					player->SetClickFlg(true);
+					// それぞれの画面に遷移
+					return button[i].targetScene;
+				}
+
+			}
+		}
+	}
+
+	return eSceneType::eGameMain;
+}
+
+// ポーズ状態の時の描画処理
+void GameMainScene::PauseDraw() const
+{
+	// 背景
+	DrawBox(200, 70, 1080, 650, 0xfff8f0, TRUE);
+	DrawBox(200, 70, 1080, 650, 0x000000, FALSE);
+
+	// 画面名
+	SetFontSize(30);
+	DrawString(580, 120, "ポーズ画面", 0x000000);
+
+	int button_color = 0xffffff;        // ボタンのカラーコード
+	int button_string_color = 0x000000; // ボタンの文字のカラーコード
+	int button_string_spacing = 35;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+
+	for (int i = 1; i < BUTTON_NUM; i++)
+	{
+		if (button[i].collision == true)
+		{
+			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+			SetDrawBright(128, 128, 128);
+			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+			SetDrawBright(255, 255, 255);
+
+			// 仮表示用文字(画像が出来たら消す)
+			if (i == 1)
+			{
+				SetDrawBright(128, 128, 128);
+				SetFontSize(30);
+				DrawString(button[i].lx + 105, button[i].ly + button_string_spacing, "続ける", button_string_color);
+				SetDrawBright(255, 255, 255);
+			}
+			else
+			{
+				SetDrawBright(128, 128, 128);
+				SetFontSize(30);
+				DrawString(button[i].lx + 40, button[i].ly + button_string_spacing, "タイトルに戻る", button_string_color);
+				SetDrawBright(255, 255, 255);
+			}
+
+		}
+		else
+		{
+			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+
+			// 仮表示用文字(画像が出来たら消す)
+			if (i == 1)
+			{
+				SetFontSize(30);
+				DrawString(button[i].lx + 105, button[i].ly + button_string_spacing, "続ける", button_string_color);
+			}
+			else
+			{
+				SetFontSize(30);
+				DrawString(button[i].lx + 40, button[i].ly + button_string_spacing, "タイトルに戻る", button_string_color);
+			}
+		}
+	}
+}
+
+// スコア加算(引数：スコア加算するドーナツ情報)
+void GameMainScene::AddScore(Donuts* donut)
+{
+	score += donut->GetDonutScore(donut->GetDonutType());
+}
+
+// ドーナツ落下処理
+eSceneType GameMainScene::FallDonut(std::vector<Donuts*> donut_list)
+{
+	// ドーナツ落下処理
+	for (Donuts* donut : donut_list)
+	{
+		donut->FallDonut(donut_list);  // 他ドーナツ情報を渡す
+
+		float upper_line = 100.0f;    // 上枠の位置
+		float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
+
+		// ドーナツが上枠からはみ出していないか確認
+		if (d_locy < upper_line && donut->GetLanded() == true)
+		{
+			is_gameover = true;
+			WaitTimer(1000);
+			return eSceneType::eResult;
+		}
+	}
+
+	return eSceneType::eGameMain;
+}
+
+// ポーズボタンの当たり判定処理
+void GameMainScene::PauseButtonCollision()
+{
+	if (CheckPlayerButtonCollision(button[0].lx, button[0].rx, button[0].ly, button[0].ry) == 1)
+	{
+		button[0].collision = true;
+	}
+	else
+	{
+		button[0].collision = false;
+	}
+}
+
+// プレイヤーがクリックした時の処理(ポーズ状態じゃないとき)
+void GameMainScene::OnPlayerClick()
+{
+	InputManager* input = InputManager::GetInstance();
+
+	// プレイヤーが左クリックしたとき
+	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	{
+		// ポーズボタンの上で左クリックしたら、ポーズ状態にする
+		if (button[0].collision == true)
+		{
+			player->SetClickFlg(true);
+			pause = true;
+		}
+		else if (player->GetDonutCollision() == true && player->GetClickFlg() == false)
+		{// プレイヤーとドーナツが当たっていたら
+
+			player->SetClickFlg(true);
+
+			// 当たっているドーナツをすべて処理
+			for (Donuts* donut : donut_collision)
+			{
+				if (donut->GetPlayerCollisionFlg() == true)
+				{
+					order->DecrementDonutNum(donut->GetDonutType());
+					donut->SetDead(true);
+				}
+			}
+
+			player->SetDonutCollision(false);
+
+			// 処理が終わったのでクリア
+			donut_collision.clear();
+		}
+		else if (button[1].collision == false && player->GetClickFlg() == false)
+		{// 左クリックされたらドーナツを落とす
+
+			player->SetClickFlg(true);
+
+			// 落とすドーナツの種類を取得
+			DonutType type = player->GetDonutType();
+
+			// ドーナツを追加(落とす)
+			Donuts* donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f), type);
+
+			// 次に落とすドーナツの種類を決める
+			player->ChooseRandomDonut();
+
+			// 落とすドーナツの情報を変更する
+			player->SetDonutRadius(donut->GetDonutRadius(player->GetDonutType()));
+			player->SetDonutNumber(donut->GetDonutNumber(player->GetDonutType()));
+
+			// 次に落とすドーナツの情報を変更する
+			player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
+			player->SetNextDonutNumber(donut->GetDonutNumber(player->GetNextDonutType()));
+		}
+	}
+	else
+	{
+		player->SetClickFlg(false);
+	}
 }
 

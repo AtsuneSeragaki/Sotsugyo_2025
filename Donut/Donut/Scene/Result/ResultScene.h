@@ -7,11 +7,11 @@
 #define BUTTON_HEIGHT  70   // ボタンの高さ
 #define BUTTON_SPACING 70   // ボタン同士の間隔
 #define BUTTON_NUM 2        // ボタンの数
-#define BUTTON_LY  600                       // ボタン左上Y座標
+#define BUTTON_LY  610                       // ボタン左上Y座標
 #define BUTTON_RY  BUTTON_LY + BUTTON_HEIGHT // ボタン右下Y座標
 
 // リスタートボタン
-#define RESTART_BUTTON_LX 340                               // リスタートボタン左上X座標
+#define RESTART_BUTTON_LX 305                               // リスタートボタン左上X座標
 #define RESTART_BUTTON_RX  RESTART_BUTTON_LX + BUTTON_WIDTH // リスタートボタン右下X座標(左上X座標＋ボタンの幅)
 
 // タイトルボタン
@@ -21,9 +21,9 @@
 class ResultScene : public SceneBase
 {
 private:
-	ButtonState button[2];
-	int score;       // スコア
-
+	int score;             // スコア
+	ButtonState button[BUTTON_NUM]; // ボタン情報
+	
 public:
 	// コンストラクタ
 	ResultScene(int score);

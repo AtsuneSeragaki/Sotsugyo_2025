@@ -5,6 +5,8 @@
 #include "../../Objects/Player/Player.h"
 #include <vector>
 
+#define BUTTON_NUM 3  // ボタンの数
+
 // ポーズボタン
 #define PAUSE_LX 1170             // ポーズボタン左上X座標
 #define PAUSE_LY 10               // ポーズボタン左上Y座標
@@ -36,9 +38,7 @@ private:
 	class Order* order;              // オーダークラスのオブジェクト
 	bool is_gameover;                // ゲームオーバーフラグ(false:ゲームオーバーじゃない  true:ゲームオーバー)
 	bool pause;                      // ポーズフラグ(false:ポーズ状態じゃない  true:ポーズ状態)
-	bool pause_collision;            // ポーズボタンとプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
-	bool pause_b1_collision;         // ポーズ画面ボタン「続ける」とプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
-	bool pause_b2_collision;         // ポーズ画面ボタン「タイトルに戻る」とプレイヤーカーソルの当たり判定フラグ(false:当たっていない  true:当たっている)
+	ButtonState button[BUTTON_NUM];  // ボタン情報
 	static int score;                // スコア
 
 public:
@@ -73,8 +73,29 @@ private:
 	void CollisionDonuts();
 
 	// ドーナツ同士が当たった時の処理(引数：ドーナツ1(仮)の情報、ドーナツ2(仮)の情報)
-	void ResolveDonutCollision(class Donuts* a, class Donuts* b);
+	void ResolveDonutCollision(Donuts* a,Donuts* b);
+
+	// ドーナツとプレイヤーが当たった時の処理
+	void HitDonutPlayerCollision(std::vector<Donuts*> donut_list);
 
 	// 枠内にあるドーナツとプレイヤーの当たり判定処理(戻り値：0→当たってない 1→当たっている)
-	int CheckDonutPlayerCollision(class Donuts* donut);
+	int CheckDonutPlayerCollision(Donuts* donut);
+
+	// ポーズ状態の時の更新処理
+	eSceneType PauseUpdate();
+
+	// ポーズ状態の時の描画処理
+	void PauseDraw() const;
+
+	// スコア加算(引数：スコア加算するドーナツ情報)
+	void AddScore(Donuts* donut);
+
+	// ドーナツ落下処理
+	eSceneType FallDonut(std::vector<Donuts*> donut_list);
+
+	// ポーズボタンの当たり判定処理
+	void PauseButtonCollision();
+
+	// プレイヤーがクリックした時の処理(ポーズ状態じゃないとき)
+	void OnPlayerClick();
 };

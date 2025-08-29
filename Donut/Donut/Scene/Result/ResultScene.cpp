@@ -37,8 +37,7 @@ eSceneType ResultScene::Update()
 
 	InputManager* input = InputManager::GetInstance();
 
-	// リスタートボタンとプレイヤーカーソルの当たり判定
-
+	// ボタンとプレイヤーカーソルの当たり判定
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
 		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
@@ -74,11 +73,24 @@ void ResultScene::Draw() const
 
 	// タイトル
 	SetFontSize(90);
-	DrawString(540, 80, "Result", 0xffffff);
+	DrawString(500, 35, "Result", 0xffffff);
+
+	DrawBox(340, 150, 940, 560, 0xffffff, TRUE);
 
 	// スコア
-	SetFontSize(30);
-	DrawFormatString(540, 150, 0xffffff, "スコア：%d", score);
+	SetFontSize(40);
+	DrawFormatString(540, 170, 0x000000, "Your score");
+	SetFontSize(70);
+	DrawFormatString(502, 230, 0x000000, "%08d", score);
+
+	// ランキング表示
+	SetFontSize(40);
+	DrawFormatString(580, 320, 0x000000, "Ranking");
+	SetFontSize(40);
+	DrawFormatString(520, 380, 0x000000, "No.1:%08d", score);
+	DrawFormatString(520, 440, 0x000000, "No.2:%08d", score);
+	DrawFormatString(520, 500, 0x000000, "No.3:%08d", score);
+
 
 	int button_color = 0xD6A15D;        // ボタンのカラーコード
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
@@ -88,8 +100,6 @@ void ResultScene::Draw() const
 	int title_button_xspacing = 45;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
-	// リスタートボタン
-
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
 		if (button[i].collision == true)
@@ -97,48 +107,42 @@ void ResultScene::Draw() const
 			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
 			SetDrawBright(128, 128, 128);
 			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-			SetFontSize(30);
-			DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もう一度遊ぶ", button_string_color);
 			SetDrawBright(255, 255, 255);
+
+			// 仮表示用文字(画像が出来たら消す)
+			if (i == 0)
+			{
+				SetDrawBright(128, 128, 128);
+				SetFontSize(30);
+				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もう一度遊ぶ", button_string_color);
+				SetDrawBright(255, 255, 255);
+			}
+			else
+			{
+				SetDrawBright(128, 128, 128);
+				SetFontSize(30);
+				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルに戻る", button_string_color);
+				SetDrawBright(255, 255, 255);
+			}
+			
 		}
 		else
 		{
+			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
 
+			// 仮表示用文字(画像が出来たら消す)
+			if (i == 0)
+			{
+				SetFontSize(30);
+				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もう一度遊ぶ", button_string_color);
+			}
+			else
+			{
+				SetFontSize(30);
+				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルに戻る", button_string_color);
+			}
 		}
 	}
-
-	//if (restart_btn_collision == true)
-	//{
-	//	// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
-	//	SetDrawBright(128, 128, 128);
-	//	DrawBox(RESTART_BUTTON_LX, BUTTON_LY, RESTART_BUTTON_RX, BUTTON_RY, button_color, TRUE);
-	//	SetFontSize(30);
-	//	DrawString(RESTART_BUTTON_LX + restart_button_xspacing, BUTTON_LY + button_string_yspacing, "もう一度遊ぶ", button_string_color);
-	//	SetDrawBright(255, 255, 255);
-	//}
-	//else
-	//{
-	//	DrawBox(RESTART_BUTTON_LX, BUTTON_LY, RESTART_BUTTON_RX, BUTTON_RY, button_color, TRUE);
-	//	SetFontSize(30);
-	//	DrawString(RESTART_BUTTON_LX + restart_button_xspacing,BUTTON_LY + button_string_yspacing, "もう一度遊ぶ", button_string_color);
-	//}
-
-	//// タイトルボタン
-	//if (title_btn_collision == true)
-	//{
-	//	// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
-	//	SetDrawBright(128, 128, 128);
-	//	DrawBox(TITLE_BUTTON_LX, BUTTON_LY, TITLE_BUTTON_RX, BUTTON_RY, button_color, TRUE);
-	//	SetFontSize(30);
-	//	DrawString(TITLE_BUTTON_LX + title_button_xspacing, BUTTON_LY + button_string_yspacing, "タイトルに戻る", button_string_color);
-	//	SetDrawBright(255, 255, 255);
-	//}
-	//else
-	//{
-	//	DrawBox(TITLE_BUTTON_LX, BUTTON_LY, TITLE_BUTTON_RX, BUTTON_RY, button_color, TRUE);
-	//	SetFontSize(30);
-	//	DrawString(TITLE_BUTTON_LX + title_button_xspacing, BUTTON_LY + button_string_yspacing, "タイトルに戻る", button_string_color);
-	//}
 }
 
 void ResultScene::Finalize()
