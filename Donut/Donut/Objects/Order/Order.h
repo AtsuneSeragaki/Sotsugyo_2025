@@ -15,6 +15,7 @@ private:
 	int order_num[ORDER_MAX];        // それぞれのオーダーの個数
 	bool complete_order;             // オーダー全てクリアしたか？フラグ
 	int difficulty;                  // 難易度
+	int clear_timer;                 //	クリアの文字を出す時間
 
 public:
 	// コンストラクタ
@@ -43,8 +44,8 @@ public:
 	// ドーナツの数を減らす処理(引数：減らしたいドーナツの種類)
 	void DecrementDonutNum(DonutType type);
 
-	// オーダーのドーナツの種類を返す処理(引数：ドーナツの種類　戻り値：オーダーリスト)
-	int GetDonutOrder(DonutType type);
+	// オーダーにあるドーナツか判定(引数：ドーナツの種類　戻り値：0→オーダーにない 1→オーダーにある)
+	int CheckDonutOrder(DonutType type);
 
 	// オーダーにあるドーナツの個数を返す処理(引数：ドーナツの種類　戻り値：ドーナツの個数)
 	int GetDonutOrderNum(DonutType type);

@@ -42,11 +42,11 @@ eSceneType TitleScene::Update()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (can_click == true && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
 	{
 		for (int i = 0; i < BUTTON_NUM; i++)
 		{
-			if (button[i].collision == true)
+			if (button[i].collision)
 			{
 				// それぞれの画面に遷移
 				return button[i].targetScene;
@@ -81,7 +81,7 @@ void TitleScene::Draw() const
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
-		if (button[i].collision == true)
+		if (button[i].collision)
 		{
 			if (i == 0)
 			{

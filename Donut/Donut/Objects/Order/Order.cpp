@@ -2,21 +2,32 @@
 #include "DxLib.h"
 #include <random>
 
+// コンストラクタ
 Order::Order()
 {
     difficulty = 0;
     // オーダーを設定
     SetRandomOrder(difficulty);
+    complete_order = false;
+    clear_timer = 0;
 }
 
+// デストラクタ
 Order::~Order()
 {
 }
 
+// 初期化処理
 void Order::Initialize()
 {
+    difficulty = 0;
+    // オーダーを設定
+    SetRandomOrder(difficulty);
+    complete_order = false;
+    clear_timer = 0;
 }
 
+// 更新処理
 void Order::Update()
 {
     // オーダーのドーナツの個数が全て0になったらクリアしたことにする
@@ -26,18 +37,26 @@ void Order::Update()
     }
 
     // オーダーを全てクリアしたら、次のオーダーを設定
-    if (complete_order == true)
+    if (complete_order)
     {
-        // 難易度MAXじゃなかったら、難易度を1上げる
-        if (difficulty < DIFFICULTY_MAX)
+        if (clear_timer <= 80)
         {
-            difficulty++;
+            clear_timer++;
         }
-        
-        SetRandomOrder(difficulty);
+        else
+        {
+            // 難易度MAXじゃなかったら、難易度を1上げる
+            if (difficulty < DIFFICULTY_MAX)
+            {
+                difficulty++;
+            }
+
+            SetRandomOrder(difficulty);
+        }
     }
 }
 
+// 描画処理
 void Order::Draw() const
 {
 	// オーダーの枠を表示
@@ -59,11 +78,18 @@ void Order::Draw() const
 		DrawFormatString(ORDER_LX + 150, ORDER_LY + 70 + 95 * i, 0x000000, "x %d個", order_num[i]);
 	}
 
+    if (complete_order && clear_timer <= 80)
+    {
+        SetFontSize(80);
+        DrawString(ORDER_LX + 15, ORDER_LY + 170, "クリア!", 0xff5555);
+    }
+
     SetFontSize(20);
     DrawFormatString(0, 100, 0x000000, "%dlevel", difficulty + 1);
 
 }
 
+// 終了時処理
 void Order::Finalize()
 {
 
@@ -174,7 +200,7 @@ void Order::SetRandomOrder(int difficulty)
 }
 
 
-// ドーナツの数を減らす
+// ドーナツの数を減らす処理(引数：減らしたいドーナツの種類)
 void Order::DecrementDonutNum(DonutType type)
 {
     int num = 0;
@@ -196,7 +222,8 @@ void Order::DecrementDonutNum(DonutType type)
     }
 }
 
-int Order::GetDonutOrder(DonutType type)
+// オーダーにあるドーナツか判定(引数：ドーナツの種類　戻り値：0→オーダーにない 1→オーダーにある)
+int Order::CheckDonutOrder(DonutType type)
 {
     for (int i = 0; i < ORDER_MAX; i++)
     {
@@ -209,6 +236,7 @@ int Order::GetDonutOrder(DonutType type)
     return 0;
 }
 
+// オーダーにあるドーナツの個数を返す処理(引数：ドーナツの種類　戻り値：ドーナツの個数)
 int Order::GetDonutOrderNum(DonutType type)
 {
     for (int i = 0; i < ORDER_MAX; i++)

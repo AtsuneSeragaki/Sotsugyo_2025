@@ -83,7 +83,7 @@ void Donuts::Update()
 void Donuts::Draw() const 
 {
     // ドーナツ仮表示
-    if (player_collision == true)
+    if (player_collision)
     {
         // ドーナツを暗くする
         // 描画輝度のセット
@@ -125,6 +125,7 @@ int Donuts::GetDonutNumber(DonutType dtype)
     return info.number;
 }
 
+// ドーナツのスコアを返す処理(引数：ドーナツの種類　戻り値：スコア)
 int Donuts::GetDonutScore(DonutType dtype)
 {
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(dtype)];
@@ -186,18 +187,6 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
             landedOnSomething = true;
             break;
         }
-
-        //float distCenter = sqrtf(distX * distX + distY * distY);
-        //float threshold = r + other->r - 0.8f; // 少し余裕を持たせる
-
-        //if (distCenter < threshold && location.y < other->location.y)
-        //{
-        //    // 接地処理
-        //    location.y = other->location.y - r - other->r;
-        //    vy = 0.0f;
-        //    landedOnSomething = true;
-        //    break;
-        //}
     }
 
     if (landedOnSomething || IsSupported(others)) 
@@ -327,70 +316,4 @@ bool Donuts::IsSupported(const std::vector<Donuts*>& others)
         }
     }
     return false;
-
-    //// 地面に接地している
-    //if (location.y + r >= 680.0f)
-    //{
-    //    return true;
-    //}
-
-    //bool supportBelow = false;
-    //bool supportLeft = false;
-    //bool supportRight = false;
-    //bool supportLeftBelow = false;
-    //bool supportRightBelow = false;
-
-    //for (Donuts* other : others) 
-    //{
-    //    if (other == this)
-    //    {
-    //        continue;
-    //    }
-
-    //    float dx = location.x - other->location.x;
-    //    float dy = other->location.y - location.y;
-
-    //    float distX = (float)fabs(dx);
-    //    float distY = (float)fabs(location.y - other->location.y);
-    //    float combinedRadius = r + other->r;
-
-    //    // 真下に支えがあるかチェック
-    //    if (distX < combinedRadius * 0.8f) 
-    //    {
-    //        float verticalGap = other->location.y - location.y;
-
-    //        if (verticalGap > 0 && verticalGap < 5.0f) 
-    //        {
-    //            supportBelow = true;
-    //        }
-    //    }
-
-    //    // 左右に支えがあるかチェック
-    //    if (distY < combinedRadius * 0.8f) 
-    //    {
-    //        if (dx > 0 && dx < combinedRadius * 0.9f) 
-    //        {
-    //            supportLeft = true;
-    //        }
-    //        else if (dx < 0 && dx > -combinedRadius * 0.9f) 
-    //        {
-    //            supportRight = true;
-    //        }
-    //    }
-
-    //    // 左下にドーナツがあるかチェック
-    //    if (dx > combinedRadius * 0.3f && dx < combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
-    //    {
-    //        supportLeftBelow = true;
-    //    }
-
-    //    // 右下にドーナツがあるかチェック
-    //    if (dx < -combinedRadius * 0.3f && dx > -combinedRadius * 1.1f && dy > 0 && dy < combinedRadius * 1.1f) 
-    //    {
-    //        supportRightBelow = true;
-    //    }
-    //}
-
-    //// 最終的な支え判定
-    //return supportBelow || (supportLeft && supportRight) || (supportLeftBelow && supportRightBelow);  // 両側にある時のみOK
 }

@@ -44,22 +44,19 @@ void Player::Update()
 // 描画処理
 void Player::Draw() const
 {
-	// ドーナツ仮表示
+	// 落とすドーナツ仮描画
 	DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
-	// ドーナツ番号を表示
+	// 落とすドーナツ番号の描画
 	DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", donut_number);
 
 	SetFontSize(20);
 	DrawString(1030, 90, "ネクスト", 0x1A2E40);
-	// 次に落とすドーナツを表示(右上)
+	// 次に落とすドーナツの描画(右上)
 	DrawCircleAA(1070.0f, 175.0f, next_r, 32, 0xD6A15D, TRUE);
-	// 次に落とすドーナツ番号を表示
+	// 次に落とすドーナツ番号の描画(右上)
 	DrawFormatString((int)1067.0f, (int)170.0f - 3, 0x1A2E40, "%d", next_donut_number);
+	// ネクスト枠の描画(右上)
 	DrawCircle(1070, 150, 105, 0x1A2E40, FALSE);
-
-	InputManager* input = InputManager::GetInstance();
-
-	DrawBox((int)input->GetMouseLocation().x, (int)input->GetMouseLocation().y, (int)input->GetMouseLocation().x + 5, (int)input->GetMouseLocation().y + 10, 0xffffff, TRUE);
 }
 
 // 終了時処理
@@ -77,7 +74,7 @@ void Player::ChooseRandomDonut()
 	next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_OLD_FASHIONED) + 1));
 }
 
-// ドーナツを落とす枠の範囲しか移動出来ないようにする処理
+// ドーナツを落とす枠の範囲しか横移動出来ないようにする処理
 void Player::LocXControl()
 {
 	if (location.x > (float)FRAME_RX - r)

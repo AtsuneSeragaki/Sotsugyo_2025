@@ -70,6 +70,6 @@ public:
 	void SetPlayerPosX(float pos_x) { location.x = pos_x; }
 
 private:
-	// ドーナツを落とす枠の範囲しか移動出来ないようにする処理
+	// ドーナツを落とす枠の範囲しか横移動出来ないようにする処理
 	void LocXControl();
 };

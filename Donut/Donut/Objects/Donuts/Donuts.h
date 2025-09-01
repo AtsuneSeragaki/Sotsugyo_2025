@@ -77,7 +77,7 @@ public:
 	// ドーナツの番号を返す処理(引数：ドーナツの種類　戻り値：番号)
 	int GetDonutNumber(DonutType dtype);
 
-	// ドーナツのスコアを返す処理
+	// ドーナツのスコアを返す処理(引数：ドーナツの種類　戻り値：スコア)
 	int GetDonutScore(DonutType dtype);
 	
 	// 重力を返す処理(戻り値：重力)

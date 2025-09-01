@@ -55,7 +55,7 @@ eSceneType ResultScene::Update()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (can_click == true && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
 	{
 		for (int i = 0; i < BUTTON_NUM; i++)
 		{
@@ -101,20 +101,20 @@ void ResultScene::Draw() const
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
-		if (button[i].collision == true)
+		if (button[i].collision)
 		{
 			if (i == 0)
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もう一度遊ぶ", button_string_color);
+				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もういちど", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルに戻る", button_string_color);
+				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルにもどる", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			
@@ -124,12 +124,12 @@ void ResultScene::Draw() const
 			if (i == 0)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もう一度遊ぶ", button_string_color);
+				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もういちど", button_string_color);
 			}
 			else
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルに戻る", button_string_color);
+				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルにもどる", button_string_color);
 			}
 		}
 	}

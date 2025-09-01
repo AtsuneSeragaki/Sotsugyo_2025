@@ -63,7 +63,7 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button,int button_
 {
 	for (int i = 0; i < button_num; i++)
 	{
-		if (button[i].collision == true)
+		if (button[i].collision)
 		{
 			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
 			SetDrawBright(128, 128, 128);
