@@ -21,7 +21,7 @@
 class ResultScene : public SceneBase
 {
 private:
-	int score;             // スコア
+	int score;  // スコア
 	ButtonState button[BUTTON_NUM]; // ボタン情報
 	
 public:
@@ -43,4 +43,10 @@ public:
 public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
+
+private:
+	// スコア描画処理
+	void DrawScore() const;
+	// ランキング描画処理
+	void DrawRanking() const;
 };

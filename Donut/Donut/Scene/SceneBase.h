@@ -3,6 +3,9 @@
 #include "../Utility/Vector2D.h"
 #include <vector>
 
+#define WINDOW_WIDTH  1280 // 画面の幅
+#define WINDOW_HEIGHT 720  // 画面の高さ
+
 enum class eSceneType
 {
 	eTitle,
@@ -40,9 +43,12 @@ public:
 	virtual void Finalize();
 
 public:
-	// 現在のシーン情報を返す
+	// 現在のシーン情報を返す処理
 	virtual eSceneType  GetNowSceneType() const = 0;
 
-	// プレイヤーカーソルとボタンの当たり判定(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
+	// プレイヤーカーソルとボタンの当たり判定処理(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
 	int CheckPlayerButtonCollision(int left, int right, int top, int bottom);
+
+	// ボタン描画処理(引数：ボタンの数)
+	void DrawButton(int button_num,const ButtonState* button,int button_color) const;
 };

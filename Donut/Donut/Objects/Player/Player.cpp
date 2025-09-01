@@ -80,12 +80,12 @@ void Player::ChooseRandomDonut()
 // ドーナツを落とす枠の範囲しか移動出来ないようにする処理
 void Player::LocXControl()
 {
-	if (location.x > 880.0f - r)
+	if (location.x > (float)FRAME_RX - r)
 	{// 右側
-		location.x = 880.0f - r;
+		location.x = (float)FRAME_RX - r;
 	}
-	else if (location.x < 400.0f + r)
+	else if (location.x < (float)FRAME_LX + r)
 	{// 左側
-		location.x = 400.0f + r;
+		location.x = (float)FRAME_LX + r;
 	}
 }

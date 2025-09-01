@@ -65,21 +65,6 @@ void Donuts::Update()
 {
     isMerged = false;
 
-    //// 横方向の移動
-    //location.x += vx;
-
-    //// 壁で跳ね返り（画面サイズ: 640x480 を前提）
-    //if (location.x < 400.0f + r)
-    //{
-    //    location.x = r;
-    //    vx *= -0.3f;
-    //}
-    //if (location.x > 880.0f - r)
-    //{
-    //    location.x = 880.0f - r;
-    //    vx *= -0.3f;
-    //}
-
     // 着地中なら摩擦で減速
     if (landed)
     {
@@ -91,7 +76,7 @@ void Donuts::Update()
     }
 
     // ドーナツの枠はみ出し防止処理
-    ClampToFrame(400.0f, 880.0f, 100.0f, 680.0f);
+    ClampToFrame((float)FRAME_LX, (float)FRAME_RX, (float)FRAME_LY, (float)FRAME_RY);
 }
 
 // 描画処理

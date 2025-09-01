@@ -8,15 +8,9 @@ void TitleScene::Initialize()
 	can_click = false;
 	frame_count = 0;
 
-	// スタートボタン初期化
-	button[0] = { BUTTON_LX,BUTTON_RX,START_BUTTON_LY,START_BUTTON_RY,false,eSceneType::eGameMain };
-
-	// ヘルプボタン初期化
+	button[0] = { BUTTON_LX, BUTTON_RX, START_BUTTON_LY, START_BUTTON_RY, false, eSceneType::eGameMain };
 	button[1] = { BUTTON_LX,BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eHelp };
-
-	// エンドボタン初期化
 	button[2] = { BUTTON_LX,BUTTON_RX,END_BUTTON_LY,END_BUTTON_RY,false,eSceneType::eEnd };
-
 }
 
 // 更新処理
@@ -67,7 +61,7 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, 1280, 720, 0xFFC0CB, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
 
 	// タイトル
 	SetFontSize(90);
@@ -82,16 +76,13 @@ void TitleScene::Draw() const
 	int end_button_xspacing = 105;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
+	DrawButton(BUTTON_NUM, button, button_color);
+
+	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
 		if (button[i].collision == true)
 		{
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
-			SetDrawBright(128, 128, 128);
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-			SetDrawBright(255, 255, 255);
-
-			// 仮表示用文字(画像が出来たら消す)
 			if (i == 0)
 			{
 				SetDrawBright(128, 128, 128);
@@ -117,9 +108,6 @@ void TitleScene::Draw() const
 		}
 		else
 		{
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-
-			// 仮表示用文字(画像が出来たら消す)
 			if (i == 0)
 			{
 				SetFontSize(30);

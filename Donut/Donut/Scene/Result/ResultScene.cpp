@@ -2,6 +2,7 @@
 #include "../../Utility/InputManager.h"
 #include "DxLib.h"
 
+// コンストラクタ
 ResultScene::ResultScene(int score)
 {
 	this->score = score;
@@ -15,14 +16,17 @@ ResultScene::ResultScene(int score)
 	button[1] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,BUTTON_LY,BUTTON_RY,false,eSceneType::eTitle };
 }
 
+// デストラクタ
 ResultScene::~ResultScene()
 {
 }
 
+// 初期化処理
 void ResultScene::Initialize()
 {
 }
 
+// 更新処理
 eSceneType ResultScene::Update()
 {
 	// フレームカウントが10以上になったらクリックできるようにする
@@ -66,10 +70,11 @@ eSceneType ResultScene::Update()
 	return GetNowSceneType();
 }
 
+// 描画処理
 void ResultScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, 1280, 720, 0xFFC0CB, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
 
 	// タイトル
 	SetFontSize(90);
@@ -78,19 +83,10 @@ void ResultScene::Draw() const
 	DrawBox(340, 150, 940, 560, 0xffffff, TRUE);
 
 	// スコア
-	SetFontSize(40);
-	DrawFormatString(540, 170, 0x000000, "Your score");
-	SetFontSize(70);
-	DrawFormatString(502, 230, 0x000000, "%08d", score);
+	DrawScore();
 
 	// ランキング表示
-	SetFontSize(40);
-	DrawFormatString(580, 320, 0x000000, "Ranking");
-	SetFontSize(40);
-	DrawFormatString(520, 380, 0x000000, "No.1:%08d", score);
-	DrawFormatString(520, 440, 0x000000, "No.2:%08d", score);
-	DrawFormatString(520, 500, 0x000000, "No.3:%08d", score);
-
+	DrawRanking();
 
 	int button_color = 0xD6A15D;        // ボタンのカラーコード
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
@@ -100,16 +96,13 @@ void ResultScene::Draw() const
 	int title_button_xspacing = 45;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
+	DrawButton(BUTTON_NUM, button, button_color);
+
+	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
 		if (button[i].collision == true)
 		{
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
-			SetDrawBright(128, 128, 128);
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-			SetDrawBright(255, 255, 255);
-
-			// 仮表示用文字(画像が出来たら消す)
 			if (i == 0)
 			{
 				SetDrawBright(128, 128, 128);
@@ -128,9 +121,6 @@ void ResultScene::Draw() const
 		}
 		else
 		{
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-
-			// 仮表示用文字(画像が出来たら消す)
 			if (i == 0)
 			{
 				SetFontSize(30);
@@ -145,11 +135,33 @@ void ResultScene::Draw() const
 	}
 }
 
+// 終了時処理
 void ResultScene::Finalize()
 {
 }
 
+// 現在のシーン情報を返す
 eSceneType ResultScene::GetNowSceneType() const
 {
 	return eSceneType::eResult;
+}
+
+// スコア描画処理
+void ResultScene::DrawScore() const
+{
+	SetFontSize(40);
+	DrawFormatString(540, 170, 0x000000, "Your score");
+	SetFontSize(70);
+	DrawFormatString(502, 230, 0x000000, "%08d", score);
+}
+
+// ランキング描画処理
+void ResultScene::DrawRanking() const
+{
+	SetFontSize(40);
+	DrawFormatString(580, 320, 0x000000, "Ranking");
+	SetFontSize(40);
+	DrawFormatString(520, 380, 0x000000, "No.1:%08d", score);
+	DrawFormatString(520, 440, 0x000000, "No.2:%08d", score);
+	DrawFormatString(520, 500, 0x000000, "No.3:%08d", score);
 }

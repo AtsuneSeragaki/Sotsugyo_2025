@@ -28,7 +28,7 @@ void SceneManager::Initialize()
 	}
 
 	// ウィンドウサイズの設定
-	SetGraphMode(1280, 720, 32);
+	SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);
 
 	// DXライブラリの初期化
 	if (DxLib_Init() == -1)
@@ -42,7 +42,7 @@ void SceneManager::Initialize()
 		throw("描画先の指定ができませんでした\n");
 	}
 
-	ChangeScene(eSceneType::eResult);
+	ChangeScene(eSceneType::eTitle);
 }
 
 void SceneManager::Update()
@@ -121,11 +121,11 @@ void SceneManager::Draw() const
 
 void SceneManager::ChangeScene(eSceneType new_scene_type)
 {
-	if (new_scene_type == eSceneType::eEnd)
+	/*if (new_scene_type == eSceneType::eEnd)
 	{
 		loop_flag = false;
 		return;
-	}
+	}*/
 
 	SceneBase* new_scene = CreateScene(new_scene_type);
 

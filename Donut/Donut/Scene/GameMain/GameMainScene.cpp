@@ -7,13 +7,26 @@
 int GameMainScene::score = 0;
 
 // コンストラクタ
-GameMainScene::GameMainScene()
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{}
+{
+}
+
+// デストラクタ
+GameMainScene::~GameMainScene()
+{
+	
+}
+
+// 初期化処理
+void GameMainScene::Initialize()
 {
 	gameobjects = new GameObjectManager();
-	player = nullptr;
-	order  = nullptr;
-	is_gameover = false;
+	score = 0;
 	pause = false;
+	is_gameover = false;
+	gameover_timer = 0;
+	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 60.0f));
+	order  = gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
 
 	// ポーズボタン初期化
 	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain };
@@ -25,57 +38,37 @@ GameMainScene::GameMainScene()
 	button[2] = { PAUSE_B1B2_LX,PAUSE_B1B2_RX,PAUSE_B2_LY,PAUSE_B2_RY,false,eSceneType::eTitle };
 }
 
-// デストラクタ
-GameMainScene::~GameMainScene()
-{
-	delete player;
-	delete gameobjects;
-	delete order;
-	donut_collision.clear();
-}
-
-// 初期化処理
-void GameMainScene::Initialize()
-{
-	score = 0;
-	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 60.0f));
-	order  = gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
-}
-
 // 更新処理
 eSceneType GameMainScene::Update()
 {
 	InputManager* input = InputManager::GetInstance();
 
-	eSceneType next_scene;
+	if (is_gameover)
+	{
+		gameover_timer++;
+
+		if (gameover_timer > 90)
+		{
+			return eSceneType::eResult;
+		}
+
+		return eSceneType::eGameMain;
+	}
 
 	if (!pause)
 	{// ポーズ状態じゃないとき
-		
 		// ポーズボタンの当たり判定処理
 		PauseButtonCollision();
-		
-		// プレイヤーがクリックした時の処理
+
+		// プレイヤーが左クリックした時の処理
 		OnPlayerClick();
 
-		std::vector<Donuts*> donut_list;
-		for (GameObject* obj : gameobjects->GetObjectList())
-		{
-			Donuts* donut = dynamic_cast<Donuts*>(obj);
+		// ドーナツリストを作成
+		MakeDonutList();
 
-			if (donut)
-			{
-				donut_list.push_back(donut);
-				donut->SetMerged(false);
-			}
-		}
+		// ドーナツの落下処理(戻り値：シーン名)
+		FallDonut();
 
-		next_scene = FallDonut(donut_list);
-		if (GetNowSceneType() != next_scene)
-		{
-			return next_scene;
-		}
-		
 		// 他のUpdate処理
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
@@ -86,15 +79,18 @@ eSceneType GameMainScene::Update()
 		CollisionDonuts();
 
 		// ドーナツとプレイヤーの当たり判定処理
-		HitDonutPlayerCollision(donut_list);
-		
+		HitDonutPlayerCollision();
+
 		// オブジェクトの削除
 		gameobjects->RemoveDeadObjects();
 	}
 	else
 	{// ポーズ状態のとき
 		
-		next_scene = PauseUpdate();
+		// 更新処理(戻り値：シーン名)
+		eSceneType next_scene = PauseUpdate();
+
+		// 更新処理からの戻り値が現在のシーン名と違う場合、次のシーンに遷移
 		if (GetNowSceneType() != next_scene)
 		{
 			return next_scene;
@@ -107,53 +103,70 @@ eSceneType GameMainScene::Update()
 // 描画処理
 void GameMainScene::Draw() const
 {
-	// ゲームメイン背景
-	DrawBox(0, 0, 1280, 720, 0xD8C3A5, TRUE);
 
-	// 画面名
+	// ゲームメイン背景描画
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
+
+	// 画面名描画
 	SetFontSize(20);
 	DrawString(0, 0, "GameMain", 0x1A2E40);
 
-	// オブジェクト
+	// オブジェクト描画
 	for (GameObject* obj : gameobjects->GetObjectList())
 	{
 		obj->Draw();
 	}
 
-	// ドーナツを落とす枠
-	DrawBox(400, 100, 880, 680, 0x1A2E40, FALSE);
+	// ドーナツを落とす枠描画
+	DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0x1A2E40, FALSE);
 
-	// スコア
-	SetFontSize(20);
-	DrawString(170, 80, "スコア", 0x1A2E40);
-	SetFontSize(40);
-	DrawFormatString(118, 125, 0x1A2E40, "%08d", score);
-	DrawCircle(200, 135,100, 0x1A2E40, FALSE);
+	// スコア描画
+	DrawScore();
 
-	// 進化の輪
+	// 進化の輪描画
 	SetFontSize(30);
 	DrawString(1015, 300, "進化の輪", 0x1A2E40);
 	DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
-	// ポーズボタン
-	if (button[0].collision == true || pause == true)
+	// ポーズボタン描画
+	DrawPauseButton();
+
+	if (is_gameover)
 	{
-		SetDrawBright(128, 128, 128);
-		DrawBox(button[0].lx, button[0].ly, button[0].rx, button[0].ry, 0xffffff, TRUE);
-		SetFontSize(17);
-		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
-		SetDrawBright(255, 255, 255);
-	}
-	else
-	{
-		DrawBox(button[0].lx, button[0].ly, button[0].rx, button[0].ry, 0xffffff, TRUE);
-		SetFontSize(17);
-		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
+		SetFontSize(60);
+		DrawString(495, 350, "Game Over!", 0x000000);
 	}
 
-	// ポーズ画面
+	// ポーズ画面描画
 	if (pause)
 	{
+		// ゲームメイン背景描画
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
+
+		// 画面名描画
+		SetFontSize(20);
+		DrawString(0, 0, "GameMain", 0x1A2E40);
+
+		// オブジェクト描画
+		for (GameObject* obj : gameobjects->GetObjectList())
+		{
+			obj->Draw();
+		}
+
+		// ドーナツを落とす枠描画
+		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0x1A2E40, FALSE);
+
+		// スコア描画
+		DrawScore();
+
+		// 進化の輪描画
+		SetFontSize(30);
+		DrawString(1015, 300, "進化の輪", 0x1A2E40);
+		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
+
+		// ポーズボタン描画
+		DrawPauseButton();
+
 		PauseDraw();
 	}
 }
@@ -161,6 +174,11 @@ void GameMainScene::Draw() const
 // 終了時処理
 void GameMainScene::Finalize()
 {
+	delete player;
+	delete gameobjects;
+	delete order;
+	donut_list.clear();
+	donut_collision.clear();
 }
 
 // 現在のシーン情報を返す
@@ -198,6 +216,12 @@ void GameMainScene::CollisionDonuts()
 			{
 				// 当たってるので反発 or 位置修正などを行う
 				ResolveDonutCollision(a, b);
+			}
+			else
+			{
+				// 枠からはみ出していないか確認
+				CheckDonutOutOfFrame(a);
+				CheckDonutOutOfFrame(b);
 			}
 		}
 	}
@@ -279,64 +303,14 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	// 新しい速度をセット（反発係数0.85を適用）
 	a->SetVelocity(v_a_new * 0.85f);
 	b->SetVelocity(v_b_new * 0.85f);
+
+	// 枠からはみ出していないか確認
+	CheckDonutOutOfFrame(a);
+	CheckDonutOutOfFrame(b);
 }
-//void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
-//{
-//	if (a->IsDead() || b->IsDead()) return;
-//
-//	// 同じタイプ & まだ進化していない
-//	if (a->GetDonutType() == b->GetDonutType() && !a->IsMerged() && !b->IsMerged())
-//	{
-//		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
-//
-//		if (nextTypeIndex < MAX_DONUT_NUM)
-//		{
-//			// aを進化させる
-//			a->SetDonutType(static_cast<DonutType>(nextTypeIndex));
-//			a->SetRadius(g_DonutInfoTable[nextTypeIndex].size);
-//			a->SetMerged(true);
-//
-//			// bを削除対象に
-//			b->SetDead(true);
-//
-//			score += a->GetDonutScore(a->GetDonutType());
-//
-//			return; // 衝突解決は不要（1つになるため）
-//		}
-//		else if (nextTypeIndex == MAX_DONUT_NUM)
-//		{// 最大まで進化したもの同士が合体すると、両方消える
-//
-//			score += a->GetDonutScore(a->GetDonutType());
-//
-//			// aを削除対象に
-//			a->SetDead(true);
-//
-//			// bを削除対象に
-//			b->SetDead(true);
-//
-//			return; // 衝突解決は不要（両方消えるため）
-//		}
-//	}
-//
-//	// 通常の衝突処理（反発）
-//	Vector2D delta = a->GetLocation() - b->GetLocation();
-//	float dist = sqrtf(delta.x * delta.x + delta.y * delta.y);
-//	float rSum = a->GetRadiusSize() + b->GetRadiusSize();
-//
-//	if (dist == 0.0f) return;
-//
-//	float overlap = rSum - dist;
-//	Vector2D normal = delta / dist;
-//
-//	a->SetLocation(a->GetLocation() + normal * (overlap / 2.0f));
-//	b->SetLocation(b->GetLocation() - normal * (overlap / 2.0f));
-//
-//	a->SetVelocity(a->GetVelocity() + normal * 0.3f);
-//	b->SetVelocity(b->GetVelocity() - normal * 0.3f);
-//}
 
 // ドーナツとプレイヤーが当たった時の処理
-void GameMainScene::HitDonutPlayerCollision(std::vector<Donuts*> donut_list)
+void GameMainScene::HitDonutPlayerCollision()
 {
 	// プレイヤーとドーナツの当たり判定
 	// まず、前フレームの当たり判定情報をクリア
@@ -460,16 +434,19 @@ void GameMainScene::PauseDraw() const
 	int button_string_color = 0x000000; // ボタンの文字のカラーコード
 	int button_string_spacing = 35;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
+	// ポーズ画面ボタンだけの新しい変数を作成
+	ButtonState pause_button[2];
+	pause_button[0] = button[1];
+	pause_button[1] = button[2];
+
+	// ボタン描画
+	DrawButton(2, pause_button, button_color);
+
+	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 1; i < BUTTON_NUM; i++)
 	{
 		if (button[i].collision == true)
 		{
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
-			SetDrawBright(128, 128, 128);
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-			SetDrawBright(255, 255, 255);
-
-			// 仮表示用文字(画像が出来たら消す)
 			if (i == 1)
 			{
 				SetDrawBright(128, 128, 128);
@@ -488,9 +465,6 @@ void GameMainScene::PauseDraw() const
 		}
 		else
 		{
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-
-			// 仮表示用文字(画像が出来たら消す)
 			if (i == 1)
 			{
 				SetFontSize(30);
@@ -512,26 +486,17 @@ void GameMainScene::AddScore(Donuts* donut)
 }
 
 // ドーナツ落下処理
-eSceneType GameMainScene::FallDonut(std::vector<Donuts*> donut_list)
+void GameMainScene::FallDonut()
 {
 	// ドーナツ落下処理
 	for (Donuts* donut : donut_list)
 	{
-		donut->FallDonut(donut_list);  // 他ドーナツ情報を渡す
+		// 他ドーナツ情報を渡す
+		donut->FallDonut(donut_list); 
 
-		float upper_line = 100.0f;    // 上枠の位置
-		float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
-
-		// ドーナツが上枠からはみ出していないか確認
-		if (d_locy < upper_line && donut->GetLanded() == true)
-		{
-			is_gameover = true;
-			WaitTimer(1000);
-			return eSceneType::eResult;
-		}
+		// 枠からはみ出していないか確認
+		CheckDonutOutOfFrame(donut);
 	}
-
-	return eSceneType::eGameMain;
 }
 
 // ポーズボタンの当たり判定処理
@@ -560,6 +525,7 @@ void GameMainScene::OnPlayerClick()
 		{
 			player->SetClickFlg(true);
 			pause = true;
+			button[0].collision = false;
 		}
 		else if (player->GetDonutCollision() == true && player->GetClickFlg() == false)
 		{// プレイヤーとドーナツが当たっていたら
@@ -607,6 +573,66 @@ void GameMainScene::OnPlayerClick()
 	else
 	{
 		player->SetClickFlg(false);
+	}
+}
+
+// ドーナツリストを作成する処理
+void GameMainScene::MakeDonutList()
+{
+	donut_list.clear();
+
+	for (GameObject* obj : gameobjects->GetObjectList())
+	{
+		Donuts* donut = dynamic_cast<Donuts*>(obj);
+
+		if (donut)
+		{
+			donut_list.push_back(donut);
+			donut->SetMerged(false);
+		}
+	}
+}
+
+// スコア描画処理
+void GameMainScene::DrawScore() const
+{
+	SetFontSize(20);
+	DrawString(170, 80, "スコア", 0x1A2E40);
+	SetFontSize(40);
+	DrawFormatString(118, 125, 0x1A2E40, "%08d", score);
+	DrawCircle(200, 135, 100, 0x1A2E40, FALSE);
+}
+
+// ポーズボタン描画
+void GameMainScene::DrawPauseButton() const
+{
+	DrawButton(1, button, 0xffffff);
+
+	// 文字描画
+	if (button[0].collision == true || pause == true)
+	{
+		SetDrawBright(128, 128, 128);
+		SetFontSize(17);
+		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
+		SetDrawBright(255, 255, 255);
+	}
+	else
+	{
+		SetFontSize(17);
+		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
+	}
+}
+
+// ドーナツが枠からはみ出していないか確認する処理
+void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
+{
+	float upper_line = 100.0f;    // 上枠の位置
+	float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
+
+	// ドーナツが上枠からはみ出していないか確認
+	if (d_locy < upper_line && donut->GetLanded() == true)
+	{
+		is_gameover = true;
 	}
 }
 

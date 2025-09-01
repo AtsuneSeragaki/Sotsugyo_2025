@@ -58,3 +58,21 @@ int SceneBase::CheckPlayerButtonCollision(int left, int right, int top, int bott
 
 	return 0;
 }
+
+void SceneBase::DrawButton(int button_num, const ButtonState* button,int button_color) const
+{
+	for (int i = 0; i < button_num; i++)
+	{
+		if (button[i].collision == true)
+		{
+			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+			SetDrawBright(128, 128, 128);
+			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+			SetDrawBright(255, 255, 255);
+		}
+		else
+		{
+			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+		}
+	}
+}
