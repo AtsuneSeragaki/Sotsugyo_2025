@@ -12,7 +12,9 @@ enum class eSceneType
 	eGameMain,
 	eResult,
 	eHelp,
+	eRanking,
 	eEnd,
+	eNone,
 };
 
 struct ButtonState {

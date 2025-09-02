@@ -78,7 +78,7 @@ void ResultScene::Draw() const
 
 	// タイトル
 	SetFontSize(90);
-	DrawString(500, 35, "Result", 0xffffff);
+	DrawString(510, 35, "RESULT", 0xffffff);
 
 	DrawBox(340, 150, 940, 560, 0xffffff, TRUE);
 
@@ -92,8 +92,8 @@ void ResultScene::Draw() const
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
 	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
-	int restart_button_xspacing = 55;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int title_button_xspacing = 45;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int restart_button_xspacing = 75;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int title_button_xspacing = 50;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
 	DrawButton(BUTTON_NUM, button, button_color);
@@ -107,14 +107,14 @@ void ResultScene::Draw() const
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もういちど", button_string_color);
+				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルにもどる", button_string_color);
+				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			
@@ -124,12 +124,12 @@ void ResultScene::Draw() const
 			if (i == 0)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "もういちど", button_string_color);
+				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
 			}
 			else
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "タイトルにもどる", button_string_color);
+				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
 			}
 		}
 	}

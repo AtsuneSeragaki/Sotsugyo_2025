@@ -65,15 +65,15 @@ void TitleScene::Draw() const
 
 	// タイトル
 	SetFontSize(90);
-	DrawString(540, 80, "Title", 0xffffff);
+	DrawString(540, 80, "TITLE", 0xffffff);
 
 	int button_color = 0xD6A15D;         // ボタンのカラーコード
 	int button_string_color = 0xffffff;  // ボタンの文字のカラーコード
 	int button_string_yspacing = 20;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
-	int start_button_xspacing = 90; // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int help_button_xspacing = 75;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int end_button_xspacing = 105;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int start_button_xspacing = 115; // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int help_button_xspacing = 70;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int end_button_xspacing = 125;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
 	DrawButton(BUTTON_NUM, button, button_color);
@@ -87,21 +87,21 @@ void TitleScene::Draw() const
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "はじめる", button_string_color);
+				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			else if(i == 1)
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "あそびかた", button_string_color);
+				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "おわる", button_string_color);
+				DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "EXIT", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 
@@ -111,17 +111,17 @@ void TitleScene::Draw() const
 			if (i == 0)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "はじめる", button_string_color);
+				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
 			}
 			else if(i == 1)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "あそびかた", button_string_color);
+				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
 			}
 			else
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "おわる", button_string_color);
+				DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "EXIT", button_string_color);
 			}
 		}
 	}

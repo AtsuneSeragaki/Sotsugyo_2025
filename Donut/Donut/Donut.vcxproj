@@ -156,6 +156,7 @@
     <ClCompile Include="Scene\End\EndScene.cpp" />
     <ClCompile Include="Scene\GameMain\GameMainScene.cpp" />
     <ClCompile Include="Scene\Help\HelpScene.cpp" />
+    <ClCompile Include="Scene\Ranking\RankingScene.cpp" />
     <ClCompile Include="Scene\Result\ResultScene.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Scene\End\EndScene.h" />
     <ClInclude Include="Scene\GameMain\GameMainScene.h" />
     <ClInclude Include="Scene\Help\HelpScene.h" />
+    <ClInclude Include="Scene\Ranking\RankingScene.h" />
     <ClInclude Include="Scene\Result\ResultScene.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />

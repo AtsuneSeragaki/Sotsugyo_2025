@@ -4,6 +4,7 @@
 #include "GameMain/GameMainScene.h"
 #include "Help/HelpScene.h"
 #include "Result/ResultScene.h"
+#include "Ranking/RankingScene.h"
 #include "End/EndScene.h"
 
 
@@ -42,7 +43,7 @@ void SceneManager::Initialize()
 		throw("描画先の指定ができませんでした\n");
 	}
 
-	ChangeScene(eSceneType::eGameMain);
+	ChangeScene(eSceneType::eTitle);
 }
 
 void SceneManager::Update()
@@ -81,16 +82,16 @@ void SceneManager::Update()
 			break;
 		}
 
-		// エンドカウントが180より大きかったらゲームを終了する
-		/*if (EndScene::cnt > 180)
+		if (!LoopCheck())
 		{
 			break;
-		}*/
+		}
 	}
 }
 
 void SceneManager::Finalize()
 {
+
 	if (current_scene != nullptr)
 	{
 		current_scene->Finalize();
@@ -121,11 +122,11 @@ void SceneManager::Draw() const
 
 void SceneManager::ChangeScene(eSceneType new_scene_type)
 {
-	/*if (new_scene_type == eSceneType::eEnd)
+	if (new_scene_type == eSceneType::eNone)
 	{
-		loop_flag = false;
+		loop_flag = false;  // ループ終了
 		return;
-	}*/
+	}
 
 	SceneBase* new_scene = CreateScene(new_scene_type);
 
@@ -166,6 +167,10 @@ SceneBase* SceneManager::CreateScene(eSceneType new_scene_type)
 		int score = gm ? gm->GetScore() : 0; // gmがnullptrなら0にする
 		return dynamic_cast<SceneBase*>(new ResultScene(score));
 	}
+
+	case eSceneType::eRanking:
+		return dynamic_cast<SceneBase*>(new RankingScene());
+
 	case eSceneType::eEnd:
 		return dynamic_cast<SceneBase*>(new EndScene());
 

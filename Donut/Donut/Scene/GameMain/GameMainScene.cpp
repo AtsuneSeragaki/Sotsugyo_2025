@@ -435,12 +435,15 @@ void GameMainScene::PauseDraw() const
 	DrawBox(200, 70, 1080, 650, 0x000000, FALSE);
 
 	// 画面名
-	SetFontSize(30);
-	DrawString(580, 120, "ポーズ画面", 0x000000);
+	SetFontSize(80);
+	DrawString(555, 120, "PAUSE", 0x000000);
 
 	int button_color = 0xffffff;        // ボタンのカラーコード
 	int button_string_color = 0x000000; // ボタンの文字のカラーコード
-	int button_string_spacing = 35;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+	int resume_xspacing = 105;          // RESUMEボタンの文字の表示する高さ(ボタン左上X座標からの距離)
+	int title_xspacing = 50;            // BACK TO TITLEボタンの文字の表示する高さ(ボタン左上X座標からの距離)
+	int button_string_yspacing = 35;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+
 
 	// ポーズ画面ボタンだけの新しい変数を作成
 	ButtonState pause_button[2];
@@ -459,14 +462,14 @@ void GameMainScene::PauseDraw() const
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + 105, button[i].ly + button_string_spacing, "続ける", button_string_color);
+				DrawString(button[i].lx + resume_xspacing, button[i].ly + button_string_yspacing, "RESUME", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + 40, button[i].ly + button_string_spacing, "タイトルに戻る", button_string_color);
+				DrawString(button[i].lx + title_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
 
@@ -476,12 +479,12 @@ void GameMainScene::PauseDraw() const
 			if (i == 1)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + 105, button[i].ly + button_string_spacing, "続ける", button_string_color);
+				DrawString(button[i].lx + resume_xspacing, button[i].ly + button_string_yspacing, "RESUME", button_string_color);
 			}
 			else
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + 40, button[i].ly + button_string_spacing, "タイトルに戻る", button_string_color);
+				DrawString(button[i].lx + title_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
 			}
 		}
 	}
@@ -616,18 +619,21 @@ void GameMainScene::DrawPauseButton() const
 {
 	DrawButton(1, button, 0xffffff);
 
+	int pause_xspacing = 25;
+	int pause_yspacing = 9;
+
 	// 文字描画
 	if (button[0].collision || pause)
 	{
 		SetDrawBright(128, 128, 128);
-		SetFontSize(17);
-		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
+		SetFontSize(20);
+		DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0x000000);
 		SetDrawBright(255, 255, 255);
 	}
 	else
 	{
-		SetFontSize(17);
-		DrawString(button[0].lx + 12, button[0].ly + 8, "中断する", 0x000000);
+		SetFontSize(20);
+		DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0x000000);
 	}
 }
 

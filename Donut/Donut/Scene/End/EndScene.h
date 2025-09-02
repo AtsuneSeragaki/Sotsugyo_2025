@@ -5,6 +5,13 @@
 class EndScene : public SceneBase
 {
 private:
+	int end_timer; // 終わるまでの時間
+
+public:
+	// コンストラクタ
+	EndScene();
+	// デストラクタ
+	~EndScene();
 
 public:
 	// 初期化処理
@@ -19,4 +26,6 @@ public:
 public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
+	// 終わるまでの時間経過を返す
+	int GetEndTimer() { return end_timer; }
 };

@@ -18,13 +18,13 @@
 // ポーズ画面のボタン
 #define PAUSE_B1B2_WIDTH   300  // ポーズ画面のボタンの幅
 #define PAUSE_B1B2_HEIGHT  100  // ポーズ画面のボタンの高さ
-#define PAUSE_B1B2_SPACING 50   // ポーズ画面のボタン同士の間隔
+#define PAUSE_B1B2_SPACING 60   // ポーズ画面のボタン同士の間隔
 
 #define PAUSE_B1B2_LX 500                               // ポーズ画面ボタン左上X座標
 #define PAUSE_B1B2_RX PAUSE_B1B2_LX + PAUSE_B1B2_WIDTH  // ポーズ画面ボタン右下X座標(左上X座標＋ボタンの幅)
 
 // ポーズ画面のボタン(続ける)
-#define PAUSE_B1_LY 250                              // ポーズ画面ボタン「続ける」左上Y座標
+#define PAUSE_B1_LY 270                              // ポーズ画面ボタン「続ける」左上Y座標
 #define PAUSE_B1_RY PAUSE_B1_LY + PAUSE_B1B2_HEIGHT  // ポーズ画面ボタン「続ける」右下Y座標(左上Y座標＋ボタンの高さ)
 
 // ポーズ画面のボタン(タイトルに戻る)
