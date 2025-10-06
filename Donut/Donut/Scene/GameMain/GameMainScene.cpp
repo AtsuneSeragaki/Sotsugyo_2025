@@ -36,6 +36,10 @@ void GameMainScene::Initialize()
 
 	// 「タイトルに戻る」ボタン初期化
 	button[2] = { PAUSE_B1B2_LX,PAUSE_B1B2_RX,PAUSE_B2_LY,PAUSE_B2_RY,false,eSceneType::eTitle };
+
+	ResourceManager* rm = ResourceManager::GetInstance();
+	marge_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
+	ChangeVolumeSoundMem(150, marge_se);
 }
 
 // 更新処理
@@ -245,6 +249,8 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	{
 		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
 
+		PlaySoundMem(marge_se, DX_PLAYTYPE_BACK, TRUE);
+
 		if (nextTypeIndex < MAX_DONUT_NUM)
 		{
 			// aを進化させる
@@ -401,13 +407,14 @@ eSceneType GameMainScene::PauseUpdate()
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
 	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
-	{
+	{		
 		for (int i = 1; i < BUTTON_NUM; i++)
 		{
 			if (button[i].collision)
 			{
 				if (i == 1)
 				{
+					PlayButtonSound();
 					player->SetClickFlg(true);
 					// 「続ける」ボタンがクリックされたとき、ポーズ状態を解除
 					pause = false;
@@ -415,6 +422,7 @@ eSceneType GameMainScene::PauseUpdate()
 				}
 				else
 				{
+					PlayButtonSound();
 					player->SetClickFlg(true);
 					// それぞれの画面に遷移
 					return button[i].targetScene;
@@ -534,6 +542,7 @@ void GameMainScene::OnPlayerClick()
 		// ポーズボタンの上で左クリックしたら、ポーズ状態にする
 		if (button[0].collision)
 		{
+			PlayButtonSound();
 			player->SetClickFlg(true);
 			pause = true;
 			button[0].collision = false;

@@ -59,6 +59,8 @@ eSceneType HelpScene::Update()
 	{
 		for (int i = 0; i < BUTTON_NUM; i++)
 		{
+			PlayButtonSound();
+
 			if (button[i].collision == true)
 			{
 				// ‚»‚ê‚¼‚ê‚Ì‰æ–Ê‚É‘JˆÚ

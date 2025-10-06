@@ -1,10 +1,12 @@
 #include "SceneBase.h"
 #include "../Utility/InputManager.h"
+#include "../Utility/ResourceManager.h"
 #include "DxLib.h"
 
-SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),bgm(0)
+SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),button_se_handle(0)
 {
-
+	ResourceManager* rm = ResourceManager::GetInstance();
+	button_se_handle = rm->GetSounds("Resource/Sounds/button_se.mp3");
 }
 
 SceneBase::~SceneBase()
@@ -74,4 +76,9 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button,int button_
 			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
 		}
 	}
+}
+
+void SceneBase::PlayButtonSound()
+{
+	PlaySoundMem(button_se_handle, DX_PLAYTYPE_BACK, TRUE);
 }

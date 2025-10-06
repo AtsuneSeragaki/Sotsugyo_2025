@@ -1,4 +1,5 @@
 ﻿#include "Order.h"
+#include "../../Utility/ResourceManager.h"
 #include "DxLib.h"
 #include <random>
 
@@ -10,6 +11,9 @@ Order::Order()
     SetRandomOrder(difficulty);
     complete_order = false;
     clear_timer = 0;
+
+    ResourceManager* rm = ResourceManager::GetInstance();
+    clear_se = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
 }
 
 // デストラクタ
@@ -41,6 +45,11 @@ void Order::Update()
     {
         if (clear_timer <= 80)
         {
+            if (clear_timer == 0)
+            {
+                PlaySoundMem(clear_se, DX_PLAYTYPE_BACK, TRUE);
+            }
+
             clear_timer++;
         }
         else

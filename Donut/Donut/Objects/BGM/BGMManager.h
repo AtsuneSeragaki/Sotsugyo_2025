@@ -3,7 +3,7 @@
 class BGMManager 
 {
 private:
-    static int bgmHandle;   // BGMデータ
+    static int bgm_handle;   // BGMデータ
 
 public:
     // 初期化処理（読み込み＆再生）

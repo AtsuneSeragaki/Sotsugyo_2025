@@ -2,31 +2,32 @@
 #include "DxLib.h"
 #include "../../Utility/ResourceManager.h"
 
-int BGMManager::bgmHandle = -1;
+int BGMManager::bgm_handle = -1;
 
 void BGMManager::Initialize()
 {
 	ResourceManager* rm = ResourceManager::GetInstance();
-	bgmHandle = rm->GetSounds("Resource/Sounds/title_bgm.mp3");
+	bgm_handle = rm->GetSounds("Resource/Sounds/bgm.mp3");
+	ChangeVolumeSoundMem(150, bgm_handle);
 
-	if (!CheckSoundMem(bgmHandle))
+	if (!CheckSoundMem(bgm_handle))
 	{
-		PlaySoundMem(bgmHandle, DX_PLAYTYPE_LOOP, TRUE);
+		PlaySoundMem(bgm_handle, DX_PLAYTYPE_LOOP, TRUE);
 	}
 }
 
 void BGMManager::Stop()
 {
-	if (CheckSoundMem(bgmHandle))
+	if (CheckSoundMem(bgm_handle))
 	{
-		StopSoundMem(bgmHandle);
+		StopSoundMem(bgm_handle);
 	}
 }
 
 void BGMManager::Release()
 {
-	if (bgmHandle)
+	if (bgm_handle)
 	{
-		DeleteSoundMem(bgmHandle);
+		DeleteSoundMem(bgm_handle);
 	}
 }

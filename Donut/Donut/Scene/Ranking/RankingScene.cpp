@@ -50,6 +50,8 @@ eSceneType RankingScene::Update()
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
 	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
 	{
+		PlayButtonSound();
+
 		for (int i = 0; i < BUTTON_NUM; i++)
 		{
 			if (button[i].collision == true)

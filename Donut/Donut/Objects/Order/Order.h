@@ -16,6 +16,7 @@ private:
 	bool complete_order;             // オーダー全てクリアしたか？フラグ
 	int difficulty;                  // 難易度
 	int clear_timer;                 //	クリアの文字を出す時間
+	int clear_se;                    // クリアした時の効果音データ
 
 public:
 	// コンストラクタ

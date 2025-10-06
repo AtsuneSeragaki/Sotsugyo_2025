@@ -27,7 +27,7 @@ class SceneBase
 {
 protected:
 	int background_image; // 背景画像データ
-	int bgm;              // BGMデータ               
+	int button_se_handle;
 	int frame_count;      // フレームカウント
 	bool can_click;       // クリックフラグ(false:クリックできない  true:クリックできる)
 
@@ -54,4 +54,7 @@ public:
 
 	// ボタン描画処理(引数：ボタンの数)
 	void DrawButton(int button_num,const ButtonState* button,int button_color) const;
+
+	// ボタンの効果音を鳴らす処理
+	void PlayButtonSound();
 };
