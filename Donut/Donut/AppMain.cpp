@@ -2,6 +2,7 @@
 #include "Utility/InputManager.h"
 #include "Utility/ResourceManager.h"
 #include "Scene/SceneManager.h"
+#include "Objects/BGM/BGMManager.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
@@ -26,6 +27,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SceneManager* manager = nullptr;
 	ResourceManager* rm = ResourceManager::GetInstance();
 	int result = 0;
+
+	// BGM再生（最初に一度だけ呼ぶ）
+	BGMManager::Initialize();
 
 	try
 	{
@@ -53,6 +57,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		manager->Finalize();
 		delete manager;
 	}
+
+	BGMManager::Stop();
+	BGMManager::Release();
 
 	// 入力機能のインスタンスを削除する
 	InputManager::DeleteInstance();

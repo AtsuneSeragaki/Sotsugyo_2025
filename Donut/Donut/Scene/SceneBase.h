@@ -27,6 +27,7 @@ class SceneBase
 {
 protected:
 	int background_image; // 背景画像データ
+	int bgm;              // BGMデータ               
 	int frame_count;      // フレームカウント
 	bool can_click;       // クリックフラグ(false:クリックできない  true:クリックできる)
 

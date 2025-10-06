@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Objects\BGM\BGMManager.cpp" />
     <ClCompile Include="Objects\Donuts\Donuts.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Objects\GameObjectManager.cpp" />
@@ -169,6 +170,7 @@
     <None Include="x64\Debug\Donut.ilk" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\BGM\BGMManager.h" />
     <ClInclude Include="Objects\Donuts\Donuts.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="Objects\GameObjectManager.h" />
@@ -189,6 +191,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource\Images\circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resource\Sounds\title_bgm.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,22 +5,26 @@
 // ボタン共通情報
 #define BUTTON_WIDTH   300  // ボタンの幅
 #define BUTTON_HEIGHT  70   // ボタンの高さ
-#define BUTTON_SPACING 70   // ボタン同士の間隔
-#define BUTTON_NUM 3        // ボタンの数
+#define BUTTON_SPACING 40   // ボタン同士の間隔
+#define BUTTON_NUM 4        // ボタンの数
 #define BUTTON_LX  505                       // ボタン左上X座標
 #define BUTTON_RX  BUTTON_LX + BUTTON_WIDTH  // ボタン右下X座標(左上X座標＋ボタンの幅)
 
 // スタートボタン
-#define START_BUTTON_LY 270                             // スタートボタン左上Y座標
+#define START_BUTTON_LY 240                             // スタートボタン左上Y座標
 #define START_BUTTON_RY START_BUTTON_LY + BUTTON_HEIGHT // スタートボタン右下Y座標(左上Y座標＋ボタンの高さ)
 
 // ヘルプボタン
 #define HELP_BUTTON_LY START_BUTTON_RY + BUTTON_SPACING  // ヘルプボタン左上Y座標(スタートボタン右下Y座標＋ボタン同士の間隔)
 #define HELP_BUTTON_RY HELP_BUTTON_LY  + BUTTON_HEIGHT   // ヘルプボタン右下Y座標(左上Y座標＋ボタンの高さ)
 
+// ランキングボタン
+#define RANKING_BUTTON_LY HELP_BUTTON_RY + BUTTON_SPACING   // ランキングボタン左上Y座標(ヘルプボタン右下Y座標＋ボタン同士の間隔)
+#define RANKING_BUTTON_RY RANKING_BUTTON_LY + BUTTON_HEIGHT // ランキングボタン右下Y座標(左上Y座標＋ボタンの高さ)
+
 // エンドボタン
-#define END_BUTTON_LY HELP_BUTTON_RY + BUTTON_SPACING // エンドボタン左上Y座標(ヘルプボタン右下Y座標＋ボタン同士の間隔)
-#define END_BUTTON_RY END_BUTTON_LY  + BUTTON_HEIGHT  // エンドボタン右下Y座標(左上Y座標＋ボタンの高さ)
+#define END_BUTTON_LY RANKING_BUTTON_RY + BUTTON_SPACING // エンドボタン左上Y座標(ランキングボタン右下Y座標＋ボタン同士の間隔)
+#define END_BUTTON_RY END_BUTTON_LY  + BUTTON_HEIGHT     // エンドボタン右下Y座標(左上Y座標＋ボタンの高さ)
 
 class TitleScene : public SceneBase
 {

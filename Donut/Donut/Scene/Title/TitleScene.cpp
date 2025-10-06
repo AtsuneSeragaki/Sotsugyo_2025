@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "TitleScene.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/ResourceManager.h"
 
 // 初期化処理
 void TitleScene::Initialize()
@@ -10,7 +11,10 @@ void TitleScene::Initialize()
 
 	button[0] = { BUTTON_LX, BUTTON_RX, START_BUTTON_LY, START_BUTTON_RY, false, eSceneType::eGameMain };
 	button[1] = { BUTTON_LX,BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eHelp };
-	button[2] = { BUTTON_LX,BUTTON_RX,END_BUTTON_LY,END_BUTTON_RY,false,eSceneType::eEnd };
+	button[2] = { BUTTON_LX,BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eRanking };
+	button[3] = { BUTTON_LX,BUTTON_RX,END_BUTTON_LY,END_BUTTON_RY,false,eSceneType::eEnd };
+
+	ResourceManager* rm = ResourceManager::GetInstance();
 }
 
 // 更新処理
@@ -71,9 +75,11 @@ void TitleScene::Draw() const
 	int button_string_color = 0xffffff;  // ボタンの文字のカラーコード
 	int button_string_yspacing = 20;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
-	int start_button_xspacing = 115; // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int help_button_xspacing = 70;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int end_button_xspacing = 125;  // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	// ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int start_button_xspacing = 115;
+	int help_button_xspacing = 70; 
+	int ranking_button_xspacing = 100;
+	int end_button_xspacing = 125;
 
 	// メニューボタン
 	DrawButton(BUTTON_NUM, button, button_color);
@@ -97,6 +103,13 @@ void TitleScene::Draw() const
 				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
 				SetDrawBright(255, 255, 255);
 			}
+			else if (i == 2)
+			{
+				SetDrawBright(128, 128, 128);
+				SetFontSize(30);
+				DrawString(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, "RANKING", button_string_color);
+				SetDrawBright(255, 255, 255);
+			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
@@ -117,6 +130,11 @@ void TitleScene::Draw() const
 			{
 				SetFontSize(30);
 				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
+			}
+			else if (i == 2)
+			{
+				SetFontSize(30);
+				DrawString(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, "RANKING", button_string_color);
 			}
 			else
 			{

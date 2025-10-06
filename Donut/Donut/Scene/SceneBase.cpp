@@ -2,7 +2,7 @@
 #include "../Utility/InputManager.h"
 #include "DxLib.h"
 
-SceneBase::SceneBase() : background_image(NULL),frame_count(0),can_click(false)
+SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),bgm(0)
 {
 
 }
@@ -19,7 +19,6 @@ void SceneBase::Initialize()
 
 eSceneType SceneBase::Update()
 {
-
 	return GetNowSceneType();
 }
 
