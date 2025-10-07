@@ -115,11 +115,11 @@ void GameMainScene::Draw() const
 		SetDrawBright(128, 128, 128);
 
 		// ゲームメイン背景描画
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
+		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
 
-		// 画面名描画
-		SetFontSize(20);
-		DrawString(0, 0, "GameMain", 0x1A2E40);
+		// ドーナツを落とす枠描画
+		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
 
 		// オブジェクト描画
 		for (GameObject* obj : gameobjects->GetObjectList())
@@ -135,7 +135,8 @@ void GameMainScene::Draw() const
 
 		// 進化の輪描画
 		SetFontSize(30);
-		DrawString(1015, 300, "進化の輪", 0x1A2E40);
+		DrawString(960, 300, "Donut Evolution Chart", 0x1A2E40);
+		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
 		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
 		// ポーズボタン描画
@@ -149,12 +150,12 @@ void GameMainScene::Draw() const
 	else
 	{
 		// ゲームメイン背景描画
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
+		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
 
-		// 画面名描画
-		SetFontSize(20);
-		DrawString(0, 0, "GameMain", 0x1A2E40);
-
+		// ドーナツを落とす枠描画
+		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
+		
 		// オブジェクト描画
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
@@ -168,8 +169,9 @@ void GameMainScene::Draw() const
 		DrawScore();
 
 		// 進化の輪描画
-		SetFontSize(30);
-		DrawString(1015, 300, "進化の輪", 0x1A2E40);
+		SetFontSize(20);
+		DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
+		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
 		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
 		// ポーズボタン描画
@@ -178,7 +180,7 @@ void GameMainScene::Draw() const
 		if (is_gameover)
 		{
 			SetFontSize(60);
-			DrawString(495, 350, "Game Over!", 0x000000);
+			DrawString(495, 350, "GAME OVER!", 0x000000);
 		}
 	}
 }
@@ -439,7 +441,8 @@ eSceneType GameMainScene::PauseUpdate()
 void GameMainScene::PauseDraw() const
 {
 	// 背景
-	DrawBox(200, 70, 1080, 650, 0xfff8f0, TRUE);
+	DrawBox(200, 70, 1080, 650, 0xD8C3A5, TRUE);
+	//DrawBox(200, 70, 1080, 650, 0xfff8f0, TRUE);
 	DrawBox(200, 70, 1080, 650, 0x000000, FALSE);
 
 	// 画面名
@@ -616,11 +619,12 @@ void GameMainScene::MakeDonutList()
 // スコア描画処理
 void GameMainScene::DrawScore() const
 {
+	DrawCircle(200, 135, 100, 0xD8C3A5, TRUE);
+	DrawCircle(200, 135, 100, 0x1A2E40, FALSE);
 	SetFontSize(20);
-	DrawString(170, 80, "スコア", 0x1A2E40);
+	DrawString(175, 80, "SCORE", 0x1A2E40);
 	SetFontSize(40);
 	DrawFormatString(118, 125, 0x1A2E40, "%08d", score);
-	DrawCircle(200, 135, 100, 0x1A2E40, FALSE);
 }
 
 // ポーズボタン描画

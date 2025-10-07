@@ -71,30 +71,30 @@ void Order::Draw() const
 	// オーダーの枠を表示
 	DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
 	SetFontSize(20);
-	DrawString(ORDER_LX + 115, ORDER_LY + 15, "オーダー", 0x000000);
+	DrawString(ORDER_LX + 130, ORDER_LY + 15, "ORDER", 0x000000);
 
     // オーダーのドーナツを表示
 	for (int i = 0; i < ORDER_MAX; i++)
 	{
         // ドーナツ表示
-		DrawCircle(ORDER_LX + 85, ORDER_LY + 85 + 95 * i, 40, 0xD6A15D, TRUE);
+		DrawCircle(ORDER_LX + 110, ORDER_LY + 85 + 95 * i, 40, 0xD6A15D, TRUE);
 		Donuts* donut = new Donuts(order_list[i]);
 		SetFontSize(20);
-		DrawFormatString(ORDER_LX + 80, ORDER_LY + 85 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
+		DrawFormatString(ORDER_LX + 105, ORDER_LY + 85 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
 		
         // ドーナツの個数を表示
         SetFontSize(40);
-		DrawFormatString(ORDER_LX + 150, ORDER_LY + 70 + 95 * i, 0x000000, "x %d個", order_num[i]);
+		DrawFormatString(ORDER_LX + 170, ORDER_LY + 70 + 95 * i, 0x000000, "x %d", order_num[i]);
 	}
 
     if (complete_order && clear_timer <= 80)
     {
         SetFontSize(80);
-        DrawString(ORDER_LX + 15, ORDER_LY + 170, "クリア!", 0xff5555);
+        DrawString(ORDER_LX + 33, ORDER_LY + 170, "Clear!", 0xff5555);
     }
 
-    SetFontSize(20);
-    DrawFormatString(0, 100, 0x000000, "%dlevel", difficulty + 1);
+    /*SetFontSize(20);
+    DrawFormatString(0, 100, 0x000000, "%dlevel", difficulty + 1);*/
 
 }
 
