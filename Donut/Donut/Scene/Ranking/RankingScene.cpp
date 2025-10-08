@@ -6,7 +6,7 @@
 RankingScene::RankingScene()
 {
 	// タイトルボタン初期化
-	button[0] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,BUTTON_LY,BUTTON_RY,false,eSceneType::eTitle };
+	button[0] = { RANKING_TITLE_BUTTON_LX,RANKING_TITLE_BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eTitle };
 }
 
 // デストラクタ
@@ -35,7 +35,7 @@ eSceneType RankingScene::Update()
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < RANKING_BUTTON_NUM; i++)
 	{
 		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
 		{
@@ -52,7 +52,7 @@ eSceneType RankingScene::Update()
 	{
 		PlayButtonSound();
 
-		for (int i = 0; i < BUTTON_NUM; i++)
+		for (int i = 0; i < RANKING_BUTTON_NUM; i++)
 		{
 			if (button[i].collision == true)
 			{
@@ -82,10 +82,10 @@ void RankingScene::Draw() const
 	int title_button_xspacing = 50;
 
 	// メニューボタン
-	DrawButton(BUTTON_NUM, button, button_color);
+	DrawButton(RANKING_BUTTON_NUM, button, button_color);
 
 	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < RANKING_BUTTON_NUM; i++)
 	{
 		if (button[i].collision)
 		{

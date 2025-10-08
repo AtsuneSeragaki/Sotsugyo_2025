@@ -10,10 +10,10 @@ ResultScene::ResultScene(int score)
 	can_click = false;
 
 	// リスタートボタン初期化
-	button[0] = { RESTART_BUTTON_LX,RESTART_BUTTON_RX,BUTTON_LY,BUTTON_RY,false,eSceneType::eGameMain };
+	button[0] = { RESULT_RESTART_BUTTON_LX,RESULT_RESTART_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eGameMain };
 
 	// タイトルボタン初期化
-	button[1] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,BUTTON_LY,BUTTON_RY,false,eSceneType::eTitle };
+	button[1] = { RESULT_TITLE_BUTTON_LX,RESULT_TITLE_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eTitle };
 }
 
 // デストラクタ
@@ -42,7 +42,7 @@ eSceneType ResultScene::Update()
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < RESULT_BUTTON_NUM; i++)
 	{
 		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
 		{
@@ -59,7 +59,7 @@ eSceneType ResultScene::Update()
 	{
 		PlayButtonSound();
 
-		for (int i = 0; i < BUTTON_NUM; i++)
+		for (int i = 0; i < RESULT_BUTTON_NUM; i++)
 		{
 			if (button[i].collision == true)
 			{
@@ -98,10 +98,10 @@ void ResultScene::Draw() const
 	int title_button_xspacing = 50;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
-	DrawButton(BUTTON_NUM, button, button_color);
+	DrawButton(RESULT_BUTTON_NUM, button, button_color);
 
 	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < RESULT_BUTTON_NUM; i++)
 	{
 		if (button[i].collision)
 		{

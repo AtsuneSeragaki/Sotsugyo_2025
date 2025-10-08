@@ -3,25 +3,25 @@
 #include "../SceneBase.h"
 
 // ボタン共通情報
-#define BUTTON_WIDTH   300  // ボタンの幅
-#define BUTTON_HEIGHT  70   // ボタンの高さ
-#define BUTTON_SPACING 100   // ボタン同士の間隔
-#define BUTTON_NUM 2        // ボタンの数
-#define BUTTON_LY  610                       // ボタン左上Y座標
-#define BUTTON_RY  BUTTON_LY + BUTTON_HEIGHT // ボタン右下Y座標
+#define HELP_BUTTON_WIDTH   300  // ボタンの幅
+#define HELP_BUTTON_HEIGHT  70   // ボタンの高さ
+#define HELP_BUTTON_SPACING 100   // ボタン同士の間隔
+#define HELP_BUTTON_NUM 2        // ボタンの数
+#define HELP_BUTTON_LY  610                       // ボタン左上Y座標
+#define HELP_BUTTON_RY  HELP_BUTTON_LY + HELP_BUTTON_HEIGHT // ボタン右下Y座標
 
 // スタートボタン
-#define START_BUTTON_LX 305                              // スタートボタン左上X座標
-#define START_BUTTON_RX  START_BUTTON_LX + BUTTON_WIDTH  // スタートボタン右下X座標(左上X座標＋ボタンの幅)
+#define HELP_START_BUTTON_LX 305                              // スタートボタン左上X座標
+#define HELP_START_BUTTON_RX  HELP_START_BUTTON_LX + HELP_BUTTON_WIDTH  // スタートボタン右下X座標(左上X座標＋ボタンの幅)
 
 // タイトルボタン
-#define TITLE_BUTTON_LX START_BUTTON_RX + BUTTON_SPACING // タイトルボタン左上X座標(スタートボタン右下X座標＋ボタン同士の間隔)
-#define TITLE_BUTTON_RX TITLE_BUTTON_LX  + BUTTON_WIDTH  // タイトルボタン右下X座標(左上X座標＋ボタンの高さ)
+#define HELP_TITLE_BUTTON_LX HELP_START_BUTTON_RX + HELP_BUTTON_SPACING // タイトルボタン左上X座標(スタートボタン右下X座標＋ボタン同士の間隔)
+#define HELP_TITLE_BUTTON_RX HELP_TITLE_BUTTON_LX + HELP_BUTTON_WIDTH  // タイトルボタン右下X座標(左上X座標＋ボタンの高さ)
 
 class HelpScene : public SceneBase
 {
 private:
-	ButtonState button[BUTTON_NUM]; // ボタン情報
+	ButtonState button[HELP_BUTTON_NUM]; // ボタン情報
 
 public:
 	// コンストラクタ

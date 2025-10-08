@@ -5,7 +5,7 @@
 #include "../../Objects/Player/Player.h"
 #include <vector>
 
-#define BUTTON_NUM 3  // ボタンの数
+#define GAMEMAIN_BUTTON_NUM 3  // ボタンの数
 
 // ポーズボタン
 #define PAUSE_WIDTH  100                  // ポーズボタンの幅
@@ -41,7 +41,7 @@ private:
 	class Order* order;                   // オーダークラスのオブジェクト
 	bool is_gameover;                     // ゲームオーバーフラグ(false:ゲームオーバーじゃない  true:ゲームオーバー)
 	bool pause;                           // ポーズフラグ(false:ポーズ状態じゃない  true:ポーズ状態)
-	ButtonState button[BUTTON_NUM];       // ボタン情報(0:ポーズボタン 1:「続ける」ボタン 2:「タイトルに戻る」ボタン)
+	ButtonState button[GAMEMAIN_BUTTON_NUM];       // ボタン情報(0:ポーズボタン 1:「続ける」ボタン 2:「タイトルに戻る」ボタン)
 	static int score;                     // スコア
 	int gameover_timer;                   // ゲームオーバーになってから、次の画面に遷移するまでの時間
 	int marge_se;                         // ドーナツが合体する時の効果音データ

@@ -401,7 +401,7 @@ eSceneType GameMainScene::PauseUpdate()
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
-	for (int i = 1; i < BUTTON_NUM; i++)
+	for (int i = 1; i < GAMEMAIN_BUTTON_NUM; i++)
 	{
 		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
 		{
@@ -416,7 +416,7 @@ eSceneType GameMainScene::PauseUpdate()
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
 	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
 	{		
-		for (int i = 1; i < BUTTON_NUM; i++)
+		for (int i = 1; i < GAMEMAIN_BUTTON_NUM; i++)
 		{
 			if (button[i].collision)
 			{
@@ -471,7 +471,7 @@ void GameMainScene::PauseDraw() const
 	DrawButton(2, pause_button, button_color);
 
 	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 1; i < BUTTON_NUM; i++)
+	for (int i = 1; i < GAMEMAIN_BUTTON_NUM; i++)
 	{
 		if (button[i].collision)
 		{

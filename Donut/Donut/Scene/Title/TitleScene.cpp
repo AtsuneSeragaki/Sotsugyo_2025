@@ -9,10 +9,10 @@ void TitleScene::Initialize()
 	can_click = false;
 	frame_count = 0;
 
-	button[0] = { BUTTON_LX, BUTTON_RX, START_BUTTON_LY, START_BUTTON_RY, false, eSceneType::eGameMain };
-	button[1] = { BUTTON_LX,BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eHelp };
-	button[2] = { BUTTON_LX,BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eRanking };
-	button[3] = { BUTTON_LX,BUTTON_RX,END_BUTTON_LY,END_BUTTON_RY,false,eSceneType::eEnd };
+	button[0] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX, TITLE_START_BUTTON_LY, TITLE_START_BUTTON_RY, false, eSceneType::eGameMain };
+	button[1] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_HELP_BUTTON_LY,TITLE_HELP_BUTTON_RY,false,eSceneType::eHelp };
+	button[2] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_RANKING_BUTTON_LY,TITLE_RANKING_BUTTON_RY,false,eSceneType::eRanking };
+	button[3] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_END_BUTTON_LY,TITLE_END_BUTTON_RY,false,eSceneType::eEnd };
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 }
@@ -33,7 +33,7 @@ eSceneType TitleScene::Update()
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < TITLE_BUTTON_NUM; i++)
 	{
 		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
 		{
@@ -50,7 +50,7 @@ eSceneType TitleScene::Update()
 	{
 		PlayButtonSound();
 
-		for (int i = 0; i < BUTTON_NUM; i++)
+		for (int i = 0; i < TITLE_BUTTON_NUM; i++)
 		{
 			if (button[i].collision)
 			{
@@ -84,10 +84,10 @@ void TitleScene::Draw() const
 	int end_button_xspacing = 125;
 
 	// メニューボタン
-	DrawButton(BUTTON_NUM, button, button_color);
+	DrawButton(TITLE_BUTTON_NUM, button, button_color);
 
 	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < TITLE_BUTTON_NUM; i++)
 	{
 		if (button[i].collision)
 		{

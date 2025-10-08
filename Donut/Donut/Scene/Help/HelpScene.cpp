@@ -9,10 +9,10 @@ HelpScene::HelpScene()
 	can_click = false;
 
 	// リスタートボタン初期化
-	button[0] = { START_BUTTON_LX,START_BUTTON_RX,BUTTON_LY,BUTTON_RY,false,eSceneType::eGameMain };
+	button[0] = { HELP_START_BUTTON_LX,HELP_START_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eGameMain };
 
 	// タイトルボタン初期化
-	button[1] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,BUTTON_LY,BUTTON_RY,false,eSceneType::eTitle };
+	button[1] = { HELP_TITLE_BUTTON_LX,HELP_TITLE_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eTitle };
 }
 
 // デストラクタ
@@ -42,7 +42,7 @@ eSceneType HelpScene::Update()
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < HELP_BUTTON_NUM; i++)
 	{
 		if (CheckPlayerButtonCollision(button[i].lx, button[i].rx, button[i].ly, button[i].ry) == 1)
 		{
@@ -57,7 +57,7 @@ eSceneType HelpScene::Update()
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
 	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
 	{
-		for (int i = 0; i < BUTTON_NUM; i++)
+		for (int i = 0; i < HELP_BUTTON_NUM; i++)
 		{
 			PlayButtonSound();
 
@@ -90,10 +90,10 @@ void HelpScene::Draw() const
 	int title_button_xspacing = 50;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
-	DrawButton(BUTTON_NUM, button, button_color);
+	DrawButton(HELP_BUTTON_NUM, button, button_color);
 
 	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < HELP_BUTTON_NUM; i++)
 	{
 		if (button[i].collision)
 		{
