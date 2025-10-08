@@ -45,6 +45,8 @@ private:
 	static int score;                     // スコア
 	int gameover_timer;                   // ゲームオーバーになってから、次の画面に遷移するまでの時間
 	int marge_se;                         // ドーナツが合体する時の効果音データ
+	int drop_se;                          // ドーナツを落とす時の効果音データ
+	int delete_se;                        // ドーナツを消す時の効果音データ
 
 public:
 	// コンストラクタ

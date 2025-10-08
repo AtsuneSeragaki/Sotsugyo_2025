@@ -7,7 +7,7 @@
 int GameMainScene::score = 0;
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{}
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0)
 {
 }
 
@@ -39,7 +39,13 @@ void GameMainScene::Initialize()
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	marge_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
-	ChangeVolumeSoundMem(150, marge_se);
+	ChangeVolumeSoundMem(200, marge_se);
+
+	drop_se = rm->GetSounds("Resource/Sounds/GameMain/drop_se.mp3");
+	ChangeVolumeSoundMem(170, drop_se);
+
+	delete_se = rm->GetSounds("Resource/Sounds/GameMain/delete_se.mp3");
+	ChangeVolumeSoundMem(200, delete_se);
 }
 
 // 更新処理
@@ -565,6 +571,8 @@ void GameMainScene::OnPlayerClick()
 				}
 			}
 
+			PlaySoundMem(delete_se, DX_PLAYTYPE_BACK, TRUE);
+
 			player->SetDonutCollision(false);
 
 			// 処理が終わったのでクリア
@@ -580,6 +588,8 @@ void GameMainScene::OnPlayerClick()
 
 			// ドーナツを追加(落とす)
 			Donuts* donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f), type);
+
+			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 
 			// 次に落とすドーナツの種類を決める
 			player->ChooseRandomDonut();
@@ -653,7 +663,7 @@ void GameMainScene::DrawPauseButton() const
 // ドーナツが枠からはみ出していないか確認する処理
 void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 {
-	float upper_line = 100.0f;    // 上枠の位置
+	float upper_line = FRAME_LY;    // 上枠の位置
 	float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
 
 	// ドーナツが上枠からはみ出していないか確認

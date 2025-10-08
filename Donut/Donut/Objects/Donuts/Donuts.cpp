@@ -103,7 +103,7 @@ void Donuts::Draw() const
     // ドーナツ番号表示
     DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
     // ドーナツ着地フラグ表示
-    DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
+    //DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
 }
 
 // 終了時処理
