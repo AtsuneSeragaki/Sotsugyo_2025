@@ -61,6 +61,8 @@ void Order::Update()
             }
 
             SetRandomOrder(difficulty);
+
+            clear_timer = 0;
         }
     }
 }
@@ -207,7 +209,6 @@ void Order::SetRandomOrder(int difficulty)
         order_num[i] = items[i].count;
     }
 }
-
 
 // ドーナツの数を減らす処理(引数：減らしたいドーナツの種類)
 void Order::DecrementDonutNum(DonutType type)

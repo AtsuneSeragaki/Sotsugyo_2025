@@ -59,7 +59,7 @@ eSceneType GameMainScene::Update()
 
 		if (gameover_timer > 90)
 		{
-			return eSceneType::eResult;
+			//return eSceneType::eResult;
 		}
 
 		return eSceneType::eGameMain;
@@ -244,6 +244,12 @@ void GameMainScene::CollisionDonuts()
 				CheckDonutOutOfFrame(b);
 			}
 		}
+	}
+
+	for (Donuts* donut : donut_list)
+	{
+		// 枠からはみ出していないか確認
+		CheckDonutOutOfFrame(donut);
 	}
 }
 
@@ -521,9 +527,6 @@ void GameMainScene::FallDonut()
 	{
 		// 他ドーナツ情報を渡す
 		donut->FallDonut(donut_list); 
-
-		// 枠からはみ出していないか確認
-		CheckDonutOutOfFrame(donut);
 	}
 }
 
