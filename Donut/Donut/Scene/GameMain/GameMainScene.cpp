@@ -102,10 +102,10 @@ eSceneType GameMainScene::Update()
 		HitDonutPlayerCollision();
 
 		for (Donuts* donut : donut_list)
-	{
-		// 他ドーナツ情報を渡す
-		donut->FallDonut(donut_list);
-	}
+		{
+			// 他ドーナツ情報を渡す
+			donut->CheckDonutLanded(donut_list);
+		}
 
 		// オブジェクトの削除
 		gameobjects->RemoveDeadObjects();
