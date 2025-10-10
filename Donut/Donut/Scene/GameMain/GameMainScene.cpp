@@ -7,7 +7,7 @@
 int GameMainScene::score = 0;
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true)
 {
 }
 
@@ -46,20 +46,24 @@ void GameMainScene::Initialize()
 
 	delete_se = rm->GetSounds("Resource/Sounds/GameMain/delete_se.mp3");
 	ChangeVolumeSoundMem(200, delete_se);
+
+	donut_creat_flg = true;
+	donut_creat_count = 0;
 }
 
 // 更新処理
 eSceneType GameMainScene::Update()
 {
+
 	InputManager* input = InputManager::GetInstance();
 
 	if (is_gameover)
 	{
 		gameover_timer++;
 
-		if (gameover_timer > 90)
+		if (gameover_timer > 110)
 		{
-			//return eSceneType::eResult;
+			return eSceneType::eResult;
 		}
 
 		return eSceneType::eGameMain;
@@ -67,6 +71,12 @@ eSceneType GameMainScene::Update()
 
 	if (!pause)
 	{// ポーズ状態じゃないとき
+
+		if (!donut_creat_flg)
+		{
+			CountDonutCreateTime();
+		}
+
 		// ポーズボタンの当たり判定処理
 		PauseButtonCollision();
 
@@ -90,6 +100,12 @@ eSceneType GameMainScene::Update()
 
 		// ドーナツとプレイヤーの当たり判定処理
 		HitDonutPlayerCollision();
+
+		for (Donuts* donut : donut_list)
+	{
+		// 他ドーナツ情報を渡す
+		donut->FallDonut(donut_list);
+	}
 
 		// オブジェクトの削除
 		gameobjects->RemoveDeadObjects();
@@ -244,12 +260,6 @@ void GameMainScene::CollisionDonuts()
 				CheckDonutOutOfFrame(b);
 			}
 		}
-	}
-
-	for (Donuts* donut : donut_list)
-	{
-		// 枠からはみ出していないか確認
-		CheckDonutOutOfFrame(donut);
 	}
 }
 
@@ -526,7 +536,7 @@ void GameMainScene::FallDonut()
 	for (Donuts* donut : donut_list)
 	{
 		// 他ドーナツ情報を渡す
-		donut->FallDonut(donut_list); 
+		donut->FallDonut(donut_list);
 	}
 }
 
@@ -547,6 +557,7 @@ void GameMainScene::PauseButtonCollision()
 void GameMainScene::OnPlayerClick()
 {
 	InputManager* input = InputManager::GetInstance();
+	Donuts* donut = nullptr;
 
 	// プレイヤーが左クリックしたとき
 	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
@@ -558,6 +569,7 @@ void GameMainScene::OnPlayerClick()
 			player->SetClickFlg(true);
 			pause = true;
 			button[0].collision = false;
+			player->SetClickFlg(false);
 		}
 		else if (player->GetDonutCollision() && !player->GetClickFlg())
 		{// プレイヤーとドーナツが当たっていたら
@@ -581,16 +593,18 @@ void GameMainScene::OnPlayerClick()
 			// 処理が終わったのでクリア
 			donut_collision.clear();
 		}
-		else if (!button[1].collision && !player->GetClickFlg())
+		else if (!button[1].collision && !player->GetClickFlg() && donut_creat_flg == true)
 		{// 左クリックされたらドーナツを落とす
 
 			player->SetClickFlg(true);
+
+			donut_creat_flg = false;
 
 			// 落とすドーナツの種類を取得
 			DonutType type = player->GetDonutType();
 
 			// ドーナツを追加(落とす)
-			Donuts* donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f), type);
+			donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f), type);
 
 			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 
@@ -673,6 +687,25 @@ void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 	if (d_locy < upper_line && donut->GetLanded())
 	{
 		is_gameover = true;
+	}
+}
+
+// 次のドーナツを生成できる時間をカウントする処理
+void GameMainScene::CountDonutCreateTime()
+{
+	if (donut_creat_count < 20)
+	{
+		donut_creat_count++;
+	}
+	else
+	{
+		for (Donuts* donut : donut_list)
+		{
+			// 枠からはみ出していないか確認
+			CheckDonutOutOfFrame(donut);
+		}
+		donut_creat_flg = true;
+		donut_creat_count = 0;
 	}
 }
 

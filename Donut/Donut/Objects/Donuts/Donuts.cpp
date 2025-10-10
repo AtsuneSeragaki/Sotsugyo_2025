@@ -48,6 +48,8 @@ Donuts::Donuts(DonutType type)
 
     donutList = nullptr;
     player_collision = false;
+
+    landedOnSomething = false;
 }
 
 // デストラクタ
@@ -156,7 +158,7 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
         }
     }
 
-    bool landedOnSomething = false;
+   landedOnSomething = false;
 
     // 地面に着地したかチェック
     if (location.y + r >= 680.0f)
@@ -187,11 +189,6 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
             landedOnSomething = true;
             break;
         }
-    }
-
-    if (landedOnSomething || IsSupported(others)) 
-    {
-        landed = true;
     }
 
     // 地面への着地判定と反発
@@ -257,6 +254,14 @@ void Donuts::HandleCollision(Donuts* other)
     vy *= 0.85f;
     other->vx *= 0.85f;
     other->vy *= 0.85f;
+}
+
+void Donuts::CheckDonutLanded(const std::vector<Donuts*>& others)
+{
+    if (landedOnSomething || IsSupported(others))
+    {
+        landed = true;
+    }
 }
 
 // ドーナツの枠はみ出し防止処理

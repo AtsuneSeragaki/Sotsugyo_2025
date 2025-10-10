@@ -14,6 +14,8 @@ Order::Order()
 
     ResourceManager* rm = ResourceManager::GetInstance();
     clear_se = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
+
+    next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 }
 
 // デストラクタ
@@ -61,6 +63,8 @@ void Order::Update()
             }
 
             SetRandomOrder(difficulty);
+
+            //PlaySoundMem(next_order_se, DX_PLAYTYPE_BACK, TRUE);
 
             clear_timer = 0;
         }

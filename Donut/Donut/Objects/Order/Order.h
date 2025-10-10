@@ -17,6 +17,7 @@ private:
 	int difficulty;                  // 難易度
 	int clear_timer;                 //	クリアの文字を出す時間
 	int clear_se;                    // クリアした時の効果音データ
+	int next_order_se;               // 次のオーダーに変わる時の効果音データ
 
 public:
 	// コンストラクタ

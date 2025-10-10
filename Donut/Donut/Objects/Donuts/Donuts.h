@@ -49,6 +49,7 @@ private:
 	const float rollingSpeed = 1.0f;          // 1フレームあたりの転がる速度
 	std::vector<Donuts*>* donutList;
 	bool player_collision; // プレイヤーと当たっているか？フラグ
+	bool landedOnSomething;
 
 public:
 	// コンストラクタ
@@ -124,6 +125,9 @@ public:
 
 	// プレイヤーと当たっているか？フラグを取得
 	bool GetPlayerCollisionFlg() { return player_collision; }
+
+	// ドーナツが着地したか確認する処理
+	void CheckDonutLanded(const std::vector<Donuts*>& others);
 
 private:
 	// ドーナツの枠はみ出し防止処理

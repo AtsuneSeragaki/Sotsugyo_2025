@@ -59,7 +59,7 @@ void Player::Draw() const
 	// 次に落とすドーナツの描画(右上)
 	DrawCircleAA(1070.0f, 175.0f, next_r, 32, 0xD6A15D, TRUE);
 	// 次に落とすドーナツ番号の描画(右上)
-	DrawFormatString((int)1067.0f, (int)170.0f - 3, 0x1A2E40, "%d", next_donut_number);
+	DrawFormatString((int)1070.0f, (int)175.0f - 3, 0x1A2E40, "%d", next_donut_number);
 }
 
 // 終了時処理

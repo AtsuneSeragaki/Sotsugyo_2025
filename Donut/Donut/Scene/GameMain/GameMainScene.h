@@ -47,6 +47,9 @@ private:
 	int marge_se;                         // ドーナツが合体する時の効果音データ
 	int drop_se;                          // ドーナツを落とす時の効果音データ
 	int delete_se;                        // ドーナツを消す時の効果音データ
+	int donut_creat_flg;                  // ドーナツを生成できるかフラグ（false:できない true:できる）
+	int donut_creat_count;                // 次のドーナツを生成できる時間のカウント
+
 
 public:
 	// コンストラクタ
@@ -117,4 +120,7 @@ private:
 
 	// ドーナツが枠からはみ出していないか確認する処理
 	void CheckDonutOutOfFrame(Donuts* donut);
+
+	// 次のドーナツを生成できる時間をカウントする処理
+	void CountDonutCreateTime();
 };
