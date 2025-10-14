@@ -71,7 +71,6 @@ eSceneType GameMainScene::Update()
 
 	if (!pause)
 	{// ポーズ状態じゃないとき
-
 		if (!donut_creat_flg)
 		{
 			CountDonutCreateTime();
@@ -105,6 +104,12 @@ eSceneType GameMainScene::Update()
 		{
 			// 他ドーナツ情報を渡す
 			donut->CheckDonutLanded(donut_list);
+		}
+
+		for (Donuts* donut : donut_list)
+		{
+			// 枠からはみ出していないか確認
+			CheckDonutOutOfFrame(donut);
 		}
 
 		// オブジェクトの削除
@@ -526,7 +531,16 @@ void GameMainScene::PauseDraw() const
 // スコア加算(引数：スコア加算するドーナツ情報)
 void GameMainScene::AddScore(Donuts* donut)
 {
-	score += donut->GetDonutScore(donut->GetDonutType());
+	int add_score = score + donut->GetDonutScore(donut->GetDonutType());
+
+	if (add_score < 99999999)
+	{
+		score = add_score;
+	}
+	else
+	{
+		score = 99999999;
+	}
 }
 
 // ドーナツ落下処理

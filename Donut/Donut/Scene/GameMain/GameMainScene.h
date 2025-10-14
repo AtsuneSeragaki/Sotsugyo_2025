@@ -41,14 +41,15 @@ private:
 	class Order* order;                   // オーダークラスのオブジェクト
 	bool is_gameover;                     // ゲームオーバーフラグ(false:ゲームオーバーじゃない  true:ゲームオーバー)
 	bool pause;                           // ポーズフラグ(false:ポーズ状態じゃない  true:ポーズ状態)
-	ButtonState button[GAMEMAIN_BUTTON_NUM];       // ボタン情報(0:ポーズボタン 1:「続ける」ボタン 2:「タイトルに戻る」ボタン)
 	static int score;                     // スコア
 	int gameover_timer;                   // ゲームオーバーになってから、次の画面に遷移するまでの時間
 	int marge_se;                         // ドーナツが合体する時の効果音データ
 	int drop_se;                          // ドーナツを落とす時の効果音データ
 	int delete_se;                        // ドーナツを消す時の効果音データ
-	int donut_creat_flg;                  // ドーナツを生成できるかフラグ（false:できない true:できる）
+	bool donut_creat_flg;                 // ドーナツを生成できるかフラグ（false:できない true:できる）
 	int donut_creat_count;                // 次のドーナツを生成できる時間のカウント
+	ButtonState button[GAMEMAIN_BUTTON_NUM];  // ボタン情報(0:ポーズボタン 1:「続ける」ボタン 2:「タイトルに戻る」ボタン)
+	bool can_check_gameover;              // ゲームオーバー判定してもいいかフラグ（false:だめ true:してもいい）
 
 
 public:

@@ -3,34 +3,34 @@
 #include <math.h>
 
 // 全ドーナツの情報設定(変更不可)
-//DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
-//        { DonutType::DONUT_MINI_BASIC,        10.0f, 0, "images/donut_mini_basic.png" ,1},
-//        { DonutType::DONUT_MINI_VARIANT,      20.0f, 20, "images/donut_mini_variant.png",2 },
-//        { DonutType::DONUT_FRENCH_CRULLER,    30.0f, 50, "images/french_cruller.png" ,3},
-//        { DonutType::DONUT_FRENCH_CRULLER_VAR,40.0f, 70, "images/french_cruller_var.png",4 },
-//        { DonutType::DONUT_OLD_FASHIONED,     50.0f, 100, "images/old_fashioned.png" ,5},
-//        { DonutType::DONUT_OLD_FASHIONED_VAR, 60.0f, 150, "images/old_fashioned_var.png",6 },
-//        { DonutType::DONUT_GOLDEN_CHOCOLATE,  70.0f, 200, "images/golden_chocolate.png" ,7},
-//        { DonutType::DONUT_COCONUT_CHOCOLATE, 80.0f, 250, "images/coconut_chocolate.png" ,8},
-//        { DonutType::DONUT_HALF_CHOCOLATE,    90.0f, 300, "images/half_chocolate.png" ,9},
-//        { DonutType::DONUT_HALF_STRAWBERRY,   100.0f, 350, "images/half_strawberry.png" ,10},
-//        { DonutType::DONUT_PON_DE_RING,       110.0f, 400, "images/pon_de_ring.png",11 }
-//};
+DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
+        { DonutType::DONUT_MINI_BASIC,        10.0f, 0, "images/donut_mini_basic.png" ,1},
+        { DonutType::DONUT_MINI_VARIANT,      20.0f, 20, "images/donut_mini_variant.png",2 },
+        { DonutType::DONUT_FRENCH_CRULLER,    30.0f, 50, "images/french_cruller.png" ,3},
+        { DonutType::DONUT_FRENCH_CRULLER_VAR,40.0f, 70, "images/french_cruller_var.png",4 },
+        { DonutType::DONUT_OLD_FASHIONED,     50.0f, 100, "images/old_fashioned.png" ,5},
+        { DonutType::DONUT_OLD_FASHIONED_VAR, 60.0f, 150, "images/old_fashioned_var.png",6 },
+        { DonutType::DONUT_GOLDEN_CHOCOLATE,  80.0f, 200, "images/golden_chocolate.png" ,7},
+        { DonutType::DONUT_COCONUT_CHOCOLATE, 100.0f, 250, "images/coconut_chocolate.png" ,8},
+        { DonutType::DONUT_HALF_CHOCOLATE,    120.0f, 300, "images/half_chocolate.png" ,9},
+        { DonutType::DONUT_HALF_STRAWBERRY,   140.0f, 350, "images/half_strawberry.png" ,10},
+        { DonutType::DONUT_PON_DE_RING,       160.0f, 400, "images/pon_de_ring.png",11 }
+};
 
 // テスト用ドーナツ情報(変更可)
-DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
-        { DonutType::DONUT_MINI_BASIC,        10.0f, 100, "images/donut_mini_basic.png" ,1},
-        { DonutType::DONUT_MINI_VARIANT,      20.0f, 120, "images/donut_mini_variant.png",2 },
-        { DonutType::DONUT_FRENCH_CRULLER,    30.0f, 150, "images/french_cruller.png" ,3},
-        { DonutType::DONUT_FRENCH_CRULLER_VAR,40.0f, 160, "images/french_cruller_var.png",4 },
-        { DonutType::DONUT_OLD_FASHIONED,     50.0f, 130, "images/old_fashioned.png" ,5},
-        { DonutType::DONUT_OLD_FASHIONED_VAR, 60.0f, 140, "images/old_fashioned_var.png",6 },
-        { DonutType::DONUT_GOLDEN_CHOCOLATE,  80.0f, 200, "images/golden_chocolate.png" ,7},
-        { DonutType::DONUT_COCONUT_CHOCOLATE, 100.0f, 200, "images/coconut_chocolate.png" ,8},
-        { DonutType::DONUT_HALF_CHOCOLATE,    120.0f, 170, "images/half_chocolate.png" ,9},
-        { DonutType::DONUT_HALF_STRAWBERRY,   140.0f, 170, "images/half_strawberry.png" ,10},
-        { DonutType::DONUT_PON_DE_RING,       160.0f, 180, "images/pon_de_ring.png",11 }
-};
+//DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
+//        { DonutType::DONUT_MINI_BASIC,        10.0f, 100, "images/donut_mini_basic.png" ,1},
+//        { DonutType::DONUT_MINI_VARIANT,      20.0f, 120, "images/donut_mini_variant.png",2 },
+//        { DonutType::DONUT_FRENCH_CRULLER,    30.0f, 150, "images/french_cruller.png" ,3},
+//        { DonutType::DONUT_FRENCH_CRULLER_VAR,40.0f, 160, "images/french_cruller_var.png",4 },
+//        { DonutType::DONUT_OLD_FASHIONED,     50.0f, 130, "images/old_fashioned.png" ,5},
+//        { DonutType::DONUT_OLD_FASHIONED_VAR, 60.0f, 140, "images/old_fashioned_var.png",6 },
+//        { DonutType::DONUT_GOLDEN_CHOCOLATE,  80.0f, 200, "images/golden_chocolate.png" ,7},
+//        { DonutType::DONUT_COCONUT_CHOCOLATE, 100.0f, 200, "images/coconut_chocolate.png" ,8},
+//        { DonutType::DONUT_HALF_CHOCOLATE,    120.0f, 170, "images/half_chocolate.png" ,9},
+//        { DonutType::DONUT_HALF_STRAWBERRY,   140.0f, 170, "images/half_strawberry.png" ,10},
+//        { DonutType::DONUT_PON_DE_RING,       160.0f, 180, "images/pon_de_ring.png",11 }
+//};
 
 // コンストラクタ
 Donuts::Donuts(DonutType type)
@@ -105,7 +105,7 @@ void Donuts::Draw() const
     // ドーナツ番号表示
     DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
     // ドーナツ着地フラグ表示
-    //DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
+    DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
 }
 
 // 終了時処理
@@ -181,7 +181,7 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
         float distY = location.y - other->location.y;
 
         // 横方向は近く、縦方向は下にちょっと接触しているか？
-        if(distX < (r + other->r) * 0.8f &&distY > 0 && distY < 5.0f)
+        if(distX < (r + other->r) * 0.9f &&distY > 0 && distY < 5.0f)
         {
             // ドーナツの上に着地とみなす
             location.y = other->location.y - r - other->r;
