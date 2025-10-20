@@ -15,6 +15,9 @@ void TitleScene::Initialize()
 	button[3] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_END_BUTTON_LY,TITLE_END_BUTTON_RY,false,eSceneType::eEnd };
 
 	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages("Resource/Images/back.png");
+	background_image = tmp[0];
 }
 
 // 更新処理
@@ -67,7 +70,8 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+	DrawGraph(0, 0, background_image, TRUE);
 
 	// タイトル
 	SetFontSize(90);
