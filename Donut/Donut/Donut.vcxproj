@@ -154,6 +154,7 @@
     <ClCompile Include="Objects\GameObjectManager.cpp" />
     <ClCompile Include="Objects\Order\Order.cpp" />
     <ClCompile Include="Objects\Player\Player.cpp" />
+    <ClCompile Include="Objects\Ranking\RankingData.cpp" />
     <ClCompile Include="Scene\End\EndScene.cpp" />
     <ClCompile Include="Scene\GameMain\GameMainScene.cpp" />
     <ClCompile Include="Scene\Help\HelpScene.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Objects\GameObjectManager.h" />
     <ClInclude Include="Objects\Order\Order.h" />
     <ClInclude Include="Objects\Player\Player.h" />
+    <ClInclude Include="Objects\Ranking\RankingData.h" />
     <ClInclude Include="Scene\End\EndScene.h" />
     <ClInclude Include="Scene\GameMain\GameMainScene.h" />
     <ClInclude Include="Scene\Help\HelpScene.h" />

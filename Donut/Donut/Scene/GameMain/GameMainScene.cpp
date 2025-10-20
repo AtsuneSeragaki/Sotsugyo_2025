@@ -2,12 +2,13 @@
 #include "../../Utility/InputManager.h"
 #include "../../Utility/ResourceManager.h"
 #include "../../Objects/Order/Order.h"
+#include "../../Objects/Ranking/RankingData.h"
 #include "DxLib.h"
 
 int GameMainScene::score = 0;
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false)
 {
 }
 
@@ -27,6 +28,7 @@ void GameMainScene::Initialize()
 	gameover_timer = 0;
 	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 60.0f));
 	order  = gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
+	ranking_data = new RankingData();
 
 	// ポーズボタン初期化
 	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain };
@@ -215,6 +217,8 @@ void GameMainScene::Draw() const
 // 終了時処理
 void GameMainScene::Finalize()
 {
+	ranking_data->Initialize();
+	ranking_data->SetRankingData(score);
 	delete player;
 	delete gameobjects;
 	delete order;

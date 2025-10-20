@@ -36,6 +36,7 @@ class GameMainScene : public SceneBase
 private:
 	GameObjectManager* gameobjects;       // ゲームオブジェクトクラスのオブジェクト
 	class Player* player;                 // プレイヤークラスのオブジェクト
+	class RankingData* ranking_data;      // ランキングデータクラスのオブジェクト
 	std::vector<Donuts*> donut_collision; // プレイヤーと当たっているドーナツの情報
 	std::vector<Donuts*> donut_list;      // 画面にある全てのドーナツ情報
 	class Order* order;                   // オーダークラスのオブジェクト

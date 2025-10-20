@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "../../Objects/Ranking/RankingData.h"
 #include "../../Utility/InputManager.h"
 #include "DxLib.h"
 
@@ -160,10 +161,14 @@ void ResultScene::DrawScore() const
 // ƒ‰ƒ“ƒLƒ“ƒO•`‰æˆ—
 void ResultScene::DrawRanking() const
 {
+	RankingData* ranking = new RankingData();
+	ranking->Initialize();
+
 	SetFontSize(40);
 	DrawFormatString(580, 320, 0x000000, "Ranking");
 	SetFontSize(40);
-	DrawFormatString(520, 380, 0x000000, "No.1:%08d", score);
-	DrawFormatString(520, 440, 0x000000, "No.2:%08d", score);
-	DrawFormatString(520, 500, 0x000000, "No.3:%08d", score);
+	for (int i = 0; i < RANKING_DATA_MAX - 2; i++)
+	{
+		DrawFormatString(515, 380 + i * 60, 0x000000, "No.%d:%08d",i + 1,ranking->GetScore(i));
+	}
 }

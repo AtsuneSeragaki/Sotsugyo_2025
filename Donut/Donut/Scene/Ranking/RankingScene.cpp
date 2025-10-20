@@ -1,4 +1,5 @@
 #include "RankingScene.h"
+#include "../../Objects/Ranking/RankingData.h"
 #include "DxLib.h"
 #include "../../Utility/InputManager.h"
 
@@ -74,6 +75,15 @@ void RankingScene::Draw() const
 	// タイトル
 	SetFontSize(90);
 	DrawString(500, 35, "RANKING", 0xffffff);
+
+	RankingData* ranking = new RankingData();
+	ranking->Initialize();
+
+	SetFontSize(65);
+	for (int i = 0; i < RANKING_DATA_MAX; i++)
+	{
+		DrawFormatString(425, 155 + i * 90, 0x000000, "No.%d:%08d", i + 1, ranking->GetScore(i));
+	}
 
 	int button_color = 0xD6A15D;         // ボタンのカラーコード
 	int button_string_color = 0xffffff;  // ボタンの文字のカラーコード
