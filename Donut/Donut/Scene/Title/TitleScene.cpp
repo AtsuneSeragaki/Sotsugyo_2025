@@ -70,16 +70,17 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
-	//DrawGraph(0, 0, background_image, TRUE);
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+	DrawGraph(0, 0, background_image, TRUE);
 
 	// タイトル
-	SetFontSize(90);
-	DrawString(540, 80, "TITLE", 0xffffff);
+	SetFontSize(100);
+	DrawString(525, 100, "TITLE", 0xffffff);
 
-	int button_color = 0xD6A15D;         // ボタンのカラーコード
-	int button_string_color = 0xffffff;  // ボタンの文字のカラーコード
-	int button_string_yspacing = 20;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+	int button_color = 0xf4b183;        // ボタンのカラーコード
+	int button_line_color = 0x843c0c;   // ボタン枠のカラーコード
+	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
+	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
 	// ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 	int start_button_xspacing = 115;
@@ -88,7 +89,7 @@ void TitleScene::Draw() const
 	int end_button_xspacing = 125;
 
 	// メニューボタン
-	DrawButton(TITLE_BUTTON_NUM, button, button_color);
+	DrawButton(TITLE_BUTTON_NUM, button, button_color,button_line_color);
 
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < TITLE_BUTTON_NUM; i++)

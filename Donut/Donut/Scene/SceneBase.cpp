@@ -26,7 +26,6 @@ eSceneType SceneBase::Update()
 
 void SceneBase::Draw() const
 {
-	//DrawGraph(0, 0, background_image, TRUE);
 }
 
 void SceneBase::Finalize()
@@ -60,24 +59,46 @@ int SceneBase::CheckPlayerButtonCollision(int left, int right, int top, int bott
 	return 0;
 }
 
-void SceneBase::DrawButton(int button_num, const ButtonState* button,int button_color) const
+// ƒ{ƒ^ƒ“•`‰æˆ—(ˆø”Fƒ{ƒ^ƒ“‚Ì”)
+void SceneBase::DrawButton(int button_num, const ButtonState* button,int button_color, int button_line_color) const
 {
 	for (int i = 0; i < button_num; i++)
 	{
+		// ƒ{ƒ^ƒ“˜g‚Ì‘¾‚³
+		int button_line_width = 3;
+
 		if (button[i].collision)
 		{
 			// ƒvƒŒƒCƒ„[ƒJ[ƒ\ƒ‹‚ª“–‚½‚Á‚Ä‚¢‚é‚ÍAƒ{ƒ^ƒ“‚ÌF‚ğˆÃ‚­‚·‚é
 			SetDrawBright(128, 128, 128);
+
+			// ƒ{ƒ^ƒ“”wŒi•`‰æ
 			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+
+			// ƒ{ƒ^ƒ“˜g•`‰æ(˜g‚ğ‘¾‚­‚·‚é‚½‚ß‚É•¡”•`‰æ)
+			for (int j = 0; j < button_line_width; j++)
+			{
+				DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
+			}
+
+			// •`‰æ‹P“x‚ğŒ³‚É–ß‚·
 			SetDrawBright(255, 255, 255);
 		}
 		else
 		{
+			// ƒ{ƒ^ƒ“”wŒi•`‰æ
 			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+
+			// ƒ{ƒ^ƒ“˜g•`‰æ(˜g‚ğ‘¾‚­‚·‚é‚½‚ß‚É•¡”•`‰æ)
+			for (int j = 0; j < button_line_width; j++)
+			{
+				DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
+			}
 		}
 	}
 }
 
+// ƒ{ƒ^ƒ“‚ÌŒø‰Ê‰¹‚ğ–Â‚ç‚·ˆ—
 void SceneBase::PlayButtonSound()
 {
 	PlaySoundMem(button_se_handle, DX_PLAYTYPE_BACK, TRUE);

@@ -92,7 +92,7 @@ void RankingScene::Draw() const
 	int title_button_xspacing = 50;
 
 	// メニューボタン
-	DrawButton(RANKING_BUTTON_NUM, button, button_color);
+	DrawButton(RANKING_BUTTON_NUM, button, button_color,button_color);
 
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < RANKING_BUTTON_NUM; i++)

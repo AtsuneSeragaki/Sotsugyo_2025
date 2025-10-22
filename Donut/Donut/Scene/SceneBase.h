@@ -53,7 +53,7 @@ public:
 	int CheckPlayerButtonCollision(int left, int right, int top, int bottom);
 
 	// ボタン描画処理(引数：ボタンの数)
-	void DrawButton(int button_num,const ButtonState* button,int button_color) const;
+	void DrawButton(int button_num,const ButtonState* button,int button_color,int button_line_color) const;
 
 	// ボタンの効果音を鳴らす処理
 	void PlayButtonSound();

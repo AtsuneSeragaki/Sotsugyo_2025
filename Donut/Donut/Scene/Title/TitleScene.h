@@ -5,13 +5,13 @@
 // ボタン共通情報
 #define TITLE_BUTTON_WIDTH   300  // ボタンの幅
 #define TITLE_BUTTON_HEIGHT  70   // ボタンの高さ
-#define TITLE_BUTTON_SPACING 40   // ボタン同士の間隔
+#define TITLE_BUTTON_SPACING 30   // ボタン同士の間隔
 #define TITLE_BUTTON_NUM 4        // ボタンの数
 #define TITLE_BUTTON_LX  505                       // ボタン左上X座標
 #define TITLE_BUTTON_RX  TITLE_BUTTON_LX + TITLE_BUTTON_WIDTH  // ボタン右下X座標(左上X座標＋ボタンの幅)
 
 // スタートボタン
-#define TITLE_START_BUTTON_LY 240                             // スタートボタン左上Y座標
+#define TITLE_START_BUTTON_LY 270                             // スタートボタン左上Y座標
 #define TITLE_START_BUTTON_RY TITLE_START_BUTTON_LY + TITLE_BUTTON_HEIGHT // スタートボタン右下Y座標(左上Y座標＋ボタンの高さ)
 
 // ヘルプボタン
