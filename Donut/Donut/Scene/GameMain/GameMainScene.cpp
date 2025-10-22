@@ -174,8 +174,8 @@ void GameMainScene::Draw() const
 		DrawScore();
 
 		// êiâªÇÃó÷ï`âÊ
-		SetFontSize(30);
-		DrawString(960, 300, "Donut Evolution Chart", 0x1A2E40);
+		SetFontSize(20);
+		DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
 		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
