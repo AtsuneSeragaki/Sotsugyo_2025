@@ -70,8 +70,8 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// ”wŒi
-	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
-	DrawGraph(0, 0, background_image, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+	//DrawGraph(0, 0, background_image, TRUE);
 
 	// ƒ^ƒCƒgƒ‹
 	SetFontSize(90);

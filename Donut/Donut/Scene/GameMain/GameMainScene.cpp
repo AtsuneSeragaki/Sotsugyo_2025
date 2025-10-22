@@ -59,6 +59,16 @@ eSceneType GameMainScene::Update()
 
 	InputManager* input = InputManager::GetInstance();
 
+	// Update() 冒頭などに追加
+	if (!can_check_gameover)
+	{
+		if (gameover_timer++ > 30) // 30フレーム後に再び有効化
+		{
+			can_check_gameover = true;
+			gameover_timer = 0;
+		}
+	}
+
 	if (is_gameover)
 	{
 		gameover_timer++;
@@ -73,6 +83,7 @@ eSceneType GameMainScene::Update()
 
 	if (!pause)
 	{// ポーズ状態じゃないとき
+
 		if (!donut_creat_flg)
 		{
 			CountDonutCreateTime();
@@ -283,6 +294,10 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
 
 		PlaySoundMem(marge_se, DX_PLAYTYPE_BACK, TRUE);
+
+		// 合体後しばらくゲームオーバー判定を無効にする
+		can_check_gameover = false;
+		gameover_timer = 0;
 
 		if (nextTypeIndex < MAX_DONUT_NUM)
 		{
@@ -698,11 +713,24 @@ void GameMainScene::DrawPauseButton() const
 // ドーナツが枠からはみ出していないか確認する処理
 void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 {
-	float upper_line = FRAME_LY;    // 上枠の位置
-	float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
+	//float upper_line = FRAME_LY;    // 上枠の位置
+	//float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
 
-	// ドーナツが上枠からはみ出していないか確認
-	if (d_locy < upper_line && donut->GetLanded())
+	//// ドーナツが上枠からはみ出していないか確認
+	//if (d_locy < upper_line && donut->GetLanded())
+	//{
+	//	is_gameover = true;
+	//}
+
+	// 合体直後の不安定時間はスキップ
+	if (!can_check_gameover)
+		return;
+
+	float upper_line = FRAME_LY;
+	float d_locy = donut->GetLocation().y - donut->GetRadiusSize();
+
+	// ドーナツが上枠を超えていて、ほぼ静止しているならゲームオーバー
+	if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
 	{
 		is_gameover = true;
 	}
