@@ -508,7 +508,7 @@ void GameMainScene::PauseDraw() const
 	pause_button[1] = button[2];
 
 	// ボタン描画
-	DrawButton(2, pause_button, button_color,button_color);
+	DrawButton(2, pause_button);
 
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 1; i < GAMEMAIN_BUTTON_NUM; i++)
@@ -690,7 +690,7 @@ void GameMainScene::DrawScore() const
 // ポーズボタン描画
 void GameMainScene::DrawPauseButton() const
 {
-	DrawButton(1, button, 0xffffff,0xffffff);
+	DrawButton(1, button);
 
 	int pause_xspacing = 25;
 	int pause_yspacing = 9;

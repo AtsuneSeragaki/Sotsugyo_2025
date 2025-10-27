@@ -90,7 +90,7 @@ void HelpScene::Draw() const
 	int title_button_xspacing = 50;    // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
-	DrawButton(HELP_BUTTON_NUM, button, button_color,button_color);
+	DrawButton(HELP_BUTTON_NUM, button);
 
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < HELP_BUTTON_NUM; i++)

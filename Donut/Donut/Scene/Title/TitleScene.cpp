@@ -2,6 +2,7 @@
 #include "TitleScene.h"
 #include "../../Utility/InputManager.h"
 #include "../../Utility/ResourceManager.h"
+#include "../../Utility/FontManager.h"
 
 // 初期化処理
 void TitleScene::Initialize()
@@ -75,21 +76,27 @@ void TitleScene::Draw() const
 
 	// タイトル
 	SetFontSize(100);
-	DrawString(525, 100, "TITLE", 0xffffff);
+	//DrawString(525, 100, "TITLE", 0xffffff);
+
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+	DrawExtendStringToHandle(355, 100, 1, 1, "DONUT POP", 0xffffff, FontManager::GetFontHandle());
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
 
 	int button_color = 0xf4b183;        // ボタンのカラーコード
 	int button_line_color = 0x843c0c;   // ボタン枠のカラーコード
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
-	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+	int button_string_yspacing = 15;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
 	// ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int start_button_xspacing = 115;
-	int help_button_xspacing = 70; 
-	int ranking_button_xspacing = 100;
-	int end_button_xspacing = 125;
+	int start_button_xspacing = 100;
+	int help_button_xspacing = 20; 
+	int ranking_button_xspacing = 70;
+	int end_button_xspacing = 115;
 
 	// メニューボタン
-	DrawButton(TITLE_BUTTON_NUM, button, button_color,button_line_color);
+	DrawButton(TITLE_BUTTON_NUM, button);
 
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < TITLE_BUTTON_NUM; i++)
@@ -100,56 +107,70 @@ void TitleScene::Draw() const
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
+				//DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "START", 0xffffff, FontManager::GetFontHandle());
 				SetDrawBright(255, 255, 255);
 			}
 			else if(i == 1)
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
+				//DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "HOW TO PLAY", 0xffffff, FontManager::GetFontHandle());
 				SetDrawBright(255, 255, 255);
 			}
 			else if (i == 2)
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, "RANKING", button_string_color);
+				//DrawString(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, "RANKING", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "RANKING", 0xffffff, FontManager::GetFontHandle());
 				SetDrawBright(255, 255, 255);
 			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "EXIT", button_string_color);
+				//DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "EXIT", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "EXIT", 0xffffff, FontManager::GetFontHandle());
 				SetDrawBright(255, 255, 255);
 			}
 
 		}
 		else
 		{
+			//バイリニア法で描画する
+			SetDrawMode(DX_DRAWMODE_BILINEAR);
 			if (i == 0)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
+				//DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "START", 0xffffff, FontManager::GetFontHandle());
 			}
 			else if(i == 1)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
+				//DrawString(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, "HOW TO PLAY", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + help_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "HOW TO PLAY", 0xffffff, FontManager::GetFontHandle());
 			}
 			else if (i == 2)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, "RANKING", button_string_color);
+				//DrawString(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, "RANKING", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + ranking_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "RANKING", 0xffffff, FontManager::GetFontHandle());
 			}
 			else
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "EXIT", button_string_color);
+				//DrawString(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, "EXIT", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + end_button_xspacing, button[i].ly + button_string_yspacing, 0.4, 0.4, "EXIT", 0xffffff, FontManager::GetFontHandle());
 			}
+			// ネアレストネイバー法で描画する(標準)
+			SetDrawMode(DX_DRAWMODE_NEAREST);
 		}
 	}
+
+	
 }
 
 // 終了時処理

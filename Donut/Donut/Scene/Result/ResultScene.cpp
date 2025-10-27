@@ -1,6 +1,7 @@
 #include "ResultScene.h"
 #include "../../Objects/Ranking/RankingData.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/FontManager.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -81,7 +82,13 @@ void ResultScene::Draw() const
 
 	// タイトル
 	SetFontSize(90);
-	DrawString(510, 35, "RESULT", 0xffffff);
+	//DrawString(510, 35, "RESULT", 0x000000);
+
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+	DrawExtendStringToHandle(480, 30, 1, 1, "RESULT", 0xffffff, FontManager::GetFontHandle());
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
 
 	DrawBox(340, 150, 940, 560, 0xffffff, TRUE);
 
@@ -93,13 +100,16 @@ void ResultScene::Draw() const
 
 	int button_color = 0xD6A15D;        // ボタンのカラーコード
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
-	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+	int button_string_yspacing = 17;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 
-	int restart_button_xspacing = 75;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int title_button_xspacing = 50;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int restart_button_xspacing = 55;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int title_button_xspacing = 32;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
-	DrawButton(RESULT_BUTTON_NUM, button, button_color,button_color);
+	DrawButton(RESULT_BUTTON_NUM, button);
+
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
 	// ボタン文字描画(画像が出来たら消す)
 	for (int i = 0; i < RESULT_BUTTON_NUM; i++)
@@ -110,14 +120,16 @@ void ResultScene::Draw() const
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
+				//DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "PLAY AGAIN", 0xffffff, FontManager::GetFontHandle());
 				SetDrawBright(255, 255, 255);
 			}
 			else
 			{
 				SetDrawBright(128, 128, 128);
 				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
+				//DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "BACK TO TITLE", 0xffffff, FontManager::GetFontHandle());
 				SetDrawBright(255, 255, 255);
 			}
 			
@@ -127,15 +139,19 @@ void ResultScene::Draw() const
 			if (i == 0)
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
+				//DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "PLAY AGAIN", 0xffffff, FontManager::GetFontHandle());
 			}
 			else
 			{
 				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
+				//DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
+				DrawExtendStringToHandle(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "BACK TO TITLE", 0xffffff, FontManager::GetFontHandle());
 			}
 		}
 	}
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
 }
 
 // 終了時処理

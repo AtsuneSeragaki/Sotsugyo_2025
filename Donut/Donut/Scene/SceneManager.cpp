@@ -6,6 +6,7 @@
 #include "Result/ResultScene.h"
 #include "Ranking/RankingScene.h"
 #include "End/EndScene.h"
+#include "../Utility/FontManager.h"
 
 
 SceneManager::SceneManager() : current_scene(nullptr), loop_flag(true)
@@ -43,7 +44,9 @@ void SceneManager::Initialize()
 		throw("•`‰ææ‚Ìw’è‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½\n");
 	}
 
-	ChangeScene(eSceneType::eTitle);
+	FontManager::Initialize();
+
+	ChangeScene(eSceneType::eResult);
 }
 
 void SceneManager::Update()
@@ -91,6 +94,7 @@ void SceneManager::Update()
 
 void SceneManager::Finalize()
 {
+	FontManager::Cleanup();
 
 	if (current_scene != nullptr)
 	{

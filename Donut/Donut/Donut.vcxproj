@@ -163,6 +163,7 @@
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\Title\TitleScene.cpp" />
+    <ClCompile Include="Utility\FontManager.cpp" />
     <ClCompile Include="Utility\InputManager.cpp" />
     <ClCompile Include="Utility\ResourceManager.cpp" />
     <ClCompile Include="Utility\Vector2D.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\Title\TitleScene.h" />
+    <ClInclude Include="Utility\FontManager.h" />
     <ClInclude Include="Utility\InputManager.h" />
     <ClInclude Include="Utility\ResourceManager.h" />
     <ClInclude Include="Utility\UserTemplate.h" />
@@ -197,6 +199,9 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resource\Sounds\title_bgm.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resource\Font\Guanine.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
