@@ -46,7 +46,7 @@ void SceneManager::Initialize()
 
 	FontManager::Initialize();
 
-	ChangeScene(eSceneType::eResult);
+	ChangeScene(eSceneType::eGameMain);
 }
 
 void SceneManager::Update()

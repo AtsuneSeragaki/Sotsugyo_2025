@@ -86,7 +86,7 @@ void ResultScene::Draw() const
 
 	//バイリニア法で描画する
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	DrawExtendStringToHandle(480, 30, 1, 1, "RESULT", 0xffffff, FontManager::GetFontHandle());
+	DrawExtendStringToHandle(475, 30, 1, 1, "RESULT", 0xffffff, FontManager::GetFontHandle());
 	// ネアレストネイバー法で描画する(標準)
 	SetDrawMode(DX_DRAWMODE_NEAREST);
 
@@ -169,9 +169,19 @@ eSceneType ResultScene::GetNowSceneType() const
 void ResultScene::DrawScore() const
 {
 	SetFontSize(40);
-	DrawFormatString(540, 170, 0x000000, "Your score");
-	SetFontSize(70);
-	DrawFormatString(502, 230, 0x000000, "%08d", score);
+	//DrawFormatString(540, 170, 0x000000, "Your score");
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+	DrawExtendStringToHandle(540 - 20, 170, 0.4, 0.4, "YOUR SCORE", 0x000000, FontManager::GetFontHandle());
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
+	//SetFontSize(70);
+	//DrawFormatString(502, 230, 0x000000, "%08d", score);
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+	DrawExtendFormatStringToHandle(502 -55, 230, 0.7, 0.7, 0x000000, FontManager::GetFontHandle(), "%08d", score);
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
 }
 
 // ランキング描画処理
@@ -181,10 +191,35 @@ void ResultScene::DrawRanking() const
 	ranking->Initialize();
 
 	SetFontSize(40);
-	DrawFormatString(580, 320, 0x000000, "Ranking");
+	//DrawFormatString(580, 320, 0x000000, "Ranking");
+
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+	DrawExtendStringToHandle(580 -20, 320, 0.4, 0.4, "RANKING", 0x000000, FontManager::GetFontHandle());
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
+
 	SetFontSize(40);
 	for (int i = 0; i < RANKING_DATA_MAX - 2; i++)
 	{
-		DrawFormatString(515, 380 + i * 60, 0x000000, "No.%d:%08d",i + 1,ranking->GetScore(i));
+		//DrawFormatString(515, 380 + i * 60, 0x000000, "No.%d:%08d",i + 1,ranking->GetScore(i));
+	
+		if (i == 0)
+		{
+			//バイリニア法で描画する
+			SetDrawMode(DX_DRAWMODE_BILINEAR);
+			DrawExtendFormatStringToHandle(515 -35, 380 + i * 60, 0.4, 0.4, 0x000000, FontManager::GetFontHandle(), "No.%d  : %08d", i + 1, ranking->GetScore(i));
+			// ネアレストネイバー法で描画する(標準)
+			SetDrawMode(DX_DRAWMODE_NEAREST);
+		}
+		else 
+		{
+			//バイリニア法で描画する
+			SetDrawMode(DX_DRAWMODE_BILINEAR);
+			DrawExtendFormatStringToHandle(515 -35, 380 + i * 60, 0.4, 0.4, 0x000000, FontManager::GetFontHandle(), "No.%d : %08d", i + 1, ranking->GetScore(i));
+			// ネアレストネイバー法で描画する(標準)
+			SetDrawMode(DX_DRAWMODE_NEAREST);
+		}
+		
 	}
 }

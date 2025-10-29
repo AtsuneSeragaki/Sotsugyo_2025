@@ -3,6 +3,7 @@
 #include "../../Utility/ResourceManager.h"
 #include "../../Objects/Order/Order.h"
 #include "../../Objects/Ranking/RankingData.h"
+#include "../../Utility/FontManager.h"
 #include "DxLib.h"
 
 int GameMainScene::score = 0;
@@ -493,10 +494,10 @@ void GameMainScene::PauseDraw() const
 
 	// 画面名
 	SetFontSize(80);
-	DrawString(555, 120, "PAUSE", 0x000000);
+	DrawString(555, 120, "PAUSE", 0xffffff);
 
 	int button_color = 0xffffff;        // ボタンのカラーコード
-	int button_string_color = 0x000000; // ボタンの文字のカラーコード
+	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
 	int resume_xspacing = 105;          // RESUMEボタンの文字の表示する高さ(ボタン左上X座標からの距離)
 	int title_xspacing = 50;            // BACK TO TITLEボタンの文字の表示する高さ(ボタン左上X座標からの距離)
 	int button_string_yspacing = 35;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
@@ -692,21 +693,31 @@ void GameMainScene::DrawPauseButton() const
 {
 	DrawButton(1, button);
 
-	int pause_xspacing = 25;
-	int pause_yspacing = 9;
+	int pause_xspacing = 20;
+	int pause_yspacing = 7;
 
 	// 文字描画
 	if (button[0].collision || pause)
 	{
 		SetDrawBright(128, 128, 128);
 		SetFontSize(20);
-		DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0x000000);
+		//DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0xffffff);
+		//バイリニア法で描画する
+		SetDrawMode(DX_DRAWMODE_BILINEAR);
+		DrawExtendStringToHandle(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, 0.2, 0.2, "PAUSE", 0xffffff, FontManager::GetFontHandle());
+		// ネアレストネイバー法で描画する(標準)
+		SetDrawMode(DX_DRAWMODE_NEAREST);
 		SetDrawBright(255, 255, 255);
 	}
 	else
 	{
 		SetFontSize(20);
-		DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0x000000);
+		//DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0xffffff);
+		//バイリニア法で描画する
+		SetDrawMode(DX_DRAWMODE_BILINEAR);
+		DrawExtendStringToHandle(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, 0.2, 0.2, "PAUSE", 0xffffff, FontManager::GetFontHandle());
+		// ネアレストネイバー法で描画する(標準)
+		SetDrawMode(DX_DRAWMODE_NEAREST);
 	}
 }
 
