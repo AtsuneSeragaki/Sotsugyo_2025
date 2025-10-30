@@ -1,6 +1,7 @@
 #include "SceneBase.h"
 #include "../Utility/InputManager.h"
 #include "../Utility/ResourceManager.h"
+#include "../Utility/FontManager.h"
 #include "DxLib.h"
 
 SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),button_se_handle(0)
@@ -84,6 +85,8 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 				DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
 			}
 
+			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
+
 			// •`‰æ‹P“x‚ðŒ³‚É–ß‚·
 			SetDrawBright(255, 255, 255);
 		}
@@ -97,6 +100,8 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 			{
 				DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
 			}
+
+			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
 		}
 	}
 }

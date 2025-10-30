@@ -32,13 +32,13 @@ void GameMainScene::Initialize()
 	ranking_data = new RankingData();
 
 	// ポーズボタン初期化
-	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain };
+	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain,{20,7,0x1A2E40,0.2,0.2},"PAUSE" };
 
 	// 「続ける」ボタン初期化
-	button[1] = { PAUSE_B1B2_LX,PAUSE_B1B2_RX,PAUSE_B1_LY,PAUSE_B1_RY,false,eSceneType::eGameMain };
+	button[1] = { PAUSE_B1_LX,PAUSE_B1_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eGameMain,{80,28,0x1A2E40,0.38,0.38},"RESUME" };
 
 	// 「タイトルに戻る」ボタン初期化
-	button[2] = { PAUSE_B1B2_LX,PAUSE_B1B2_RX,PAUSE_B2_LY,PAUSE_B2_RY,false,eSceneType::eTitle };
+	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{18,28,0x1A2E40,0.38,0.38},"BACK TO TITLE" };
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	marge_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
@@ -176,12 +176,13 @@ void GameMainScene::Draw() const
 
 		// 進化の輪描画
 		SetFontSize(20);
-		DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
+		//DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
+		FontManager::Draw(960, 300, 0.2, 0.2, 0x1A2E40, "DONUT EVOLUTION CHART");
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
 		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
 		// ポーズボタン描画
-		DrawPauseButton();
+		DrawButton(1, button);
 
 		// 描画輝度を元に戻す
 		SetDrawBright(255, 255, 255);
@@ -211,12 +212,14 @@ void GameMainScene::Draw() const
 
 		// 進化の輪描画
 		SetFontSize(20);
-		DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
+		//DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
+		FontManager::Draw(940, 300, 0.23, 0.23, 0x1A2E40, "DONUT EVOLUTION CHART");
+
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
 		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
 
 		// ポーズボタン描画
-		DrawPauseButton();
+		DrawButton(1, button);
 
 		if (is_gameover)
 		{
@@ -488,20 +491,19 @@ eSceneType GameMainScene::PauseUpdate()
 void GameMainScene::PauseDraw() const
 {
 	// 背景
-	DrawBox(200, 70, 1080, 650, 0xD8C3A5, TRUE);
-	//DrawBox(200, 70, 1080, 650, 0xfff8f0, TRUE);
-	DrawBox(200, 70, 1080, 650, 0x000000, FALSE);
+	DrawBox(200 + 60, 70 + 80, 1080 - 60, 650 - 120, 0xD8C3A5, TRUE);
+
+	// 背景枠の太さ
+	int box_line_width = 3;
+
+	// 背景枠描画(枠を太くするために複数描画)
+	for (int j = 0; j < box_line_width; j++)
+	{
+		DrawBox(260 - j, 150 - j, 1020 + j, 530 + j, 0x1A2E40, FALSE);
+	}
 
 	// 画面名
-	SetFontSize(80);
-	DrawString(555, 120, "PAUSE", 0xffffff);
-
-	int button_color = 0xffffff;        // ボタンのカラーコード
-	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
-	int resume_xspacing = 105;          // RESUMEボタンの文字の表示する高さ(ボタン左上X座標からの距離)
-	int title_xspacing = 50;            // BACK TO TITLEボタンの文字の表示する高さ(ボタン左上X座標からの距離)
-	int button_string_yspacing = 35;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
-
+	FontManager::Draw(520, 200, 0.85, 0.85, 0x1A2E40, "PAUSE");
 
 	// ポーズ画面ボタンだけの新しい変数を作成
 	ButtonState pause_button[2];
@@ -510,42 +512,6 @@ void GameMainScene::PauseDraw() const
 
 	// ボタン描画
 	DrawButton(2, pause_button);
-
-	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 1; i < GAMEMAIN_BUTTON_NUM; i++)
-	{
-		if (button[i].collision)
-		{
-			if (i == 1)
-			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				DrawString(button[i].lx + resume_xspacing, button[i].ly + button_string_yspacing, "RESUME", button_string_color);
-				SetDrawBright(255, 255, 255);
-			}
-			else
-			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				DrawString(button[i].lx + title_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-				SetDrawBright(255, 255, 255);
-			}
-
-		}
-		else
-		{
-			if (i == 1)
-			{
-				SetFontSize(30);
-				DrawString(button[i].lx + resume_xspacing, button[i].ly + button_string_yspacing, "RESUME", button_string_color);
-			}
-			else
-			{
-				SetFontSize(30);
-				DrawString(button[i].lx + title_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-			}
-		}
-	}
 }
 
 // スコア加算(引数：スコア加算するドーナツ情報)
@@ -686,39 +652,6 @@ void GameMainScene::DrawScore() const
 	DrawString(175, 80, "SCORE", 0x1A2E40);
 	SetFontSize(40);
 	DrawFormatString(118, 125, 0x1A2E40, "%08d", score);
-}
-
-// ポーズボタン描画
-void GameMainScene::DrawPauseButton() const
-{
-	DrawButton(1, button);
-
-	int pause_xspacing = 20;
-	int pause_yspacing = 7;
-
-	// 文字描画
-	if (button[0].collision || pause)
-	{
-		SetDrawBright(128, 128, 128);
-		SetFontSize(20);
-		//DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0xffffff);
-		//バイリニア法で描画する
-		SetDrawMode(DX_DRAWMODE_BILINEAR);
-		DrawExtendStringToHandle(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, 0.2, 0.2, "PAUSE", 0xffffff, FontManager::GetFontHandle());
-		// ネアレストネイバー法で描画する(標準)
-		SetDrawMode(DX_DRAWMODE_NEAREST);
-		SetDrawBright(255, 255, 255);
-	}
-	else
-	{
-		SetFontSize(20);
-		//DrawString(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, "PAUSE", 0xffffff);
-		//バイリニア法で描画する
-		SetDrawMode(DX_DRAWMODE_BILINEAR);
-		DrawExtendStringToHandle(button[0].lx + pause_xspacing, button[0].ly + pause_yspacing, 0.2, 0.2, "PAUSE", 0xffffff, FontManager::GetFontHandle());
-		// ネアレストネイバー法で描画する(標準)
-		SetDrawMode(DX_DRAWMODE_NEAREST);
-	}
 }
 
 // ドーナツが枠からはみ出していないか確認する処理

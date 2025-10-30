@@ -13,10 +13,10 @@ ResultScene::ResultScene(int score)
 	can_click = false;
 
 	// リスタートボタン初期化
-	button[0] = { RESULT_RESTART_BUTTON_LX,RESULT_RESTART_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eGameMain };
+	button[0] = { RESULT_RESTART_BUTTON_LX,RESULT_RESTART_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eGameMain,{55,17,0xffffff,0.35,0.35},"PLAY AGAIN" };
 
 	// タイトルボタン初期化
-	button[1] = { RESULT_TITLE_BUTTON_LX,RESULT_TITLE_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eTitle };
+	button[1] = { RESULT_TITLE_BUTTON_LX,RESULT_TITLE_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eTitle,{32,17,0xffffff,0.35,0.35},"BACK TO TITLE" };
 }
 
 // デストラクタ
@@ -101,55 +101,9 @@ void ResultScene::Draw() const
 
 	// ランキング
 	DrawRanking();
-
-	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
-	int button_string_yspacing = 17;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
 	
-	int restart_button_xspacing = 55;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int title_button_xspacing = 32;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-
 	// メニューボタン
 	DrawButton(RESULT_BUTTON_NUM, button);
-
-	// ボタン文字
-	for (int i = 0; i < RESULT_BUTTON_NUM; i++)
-	{
-		if (button[i].collision)
-		{// カーソルと当たっていたら
-
-			// 文字を暗く
-			SetDrawBright(128, 128, 128);
-			
-			if (i == 0)
-			{
-				// リスタート
-				FontManager::Draw(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "PLAY AGAIN");
-			}
-			else
-			{
-				// タイトルに戻る
-				FontManager::Draw(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "BACK TO TITLE");
-			
-			}
-
-			// 輝度を初期値に戻す
-			SetDrawBright(255, 255, 255);
-		}
-		else
-		{// それ以外
-
-			if (i == 0)
-			{
-				// リスタート
-				FontManager::Draw(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "PLAY AGAIN");
-			}
-			else
-			{
-				// タイトルに戻る
-				FontManager::Draw(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "BACK TO TITLE");
-			}
-		}
-	}
 }
 
 // 終了時処理
