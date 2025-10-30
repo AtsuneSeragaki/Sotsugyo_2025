@@ -19,3 +19,14 @@ void FontManager::Cleanup()
 	RemoveFontResourceExA("Resource/Font/Guanine.otf", FR_PRIVATE, NULL);
 }
 
+void FontManager::Draw(int x, int y, double scaleX, double scaleY, unsigned int color, const char* text)
+{
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+	
+	DrawExtendFormatStringToHandle(x, y, scaleX, scaleY, color, FontManager::GetFontHandle(), "%s", text);
+	
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
+}
+

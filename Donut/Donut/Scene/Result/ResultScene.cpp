@@ -2,6 +2,7 @@
 #include "../../Objects/Ranking/RankingData.h"
 #include "../../Utility/InputManager.h"
 #include "../../Utility/FontManager.h"
+#include <cstdio>
 #include "DxLib.h"
 
 // コンストラクタ
@@ -81,77 +82,74 @@ void ResultScene::Draw() const
 	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
 
 	// タイトル
-	SetFontSize(90);
-	//DrawString(510, 35, "RESULT", 0x000000);
+	FontManager::Draw(475, 30, 1.0, 1.0, 0xffffff, "RESULT");
 
-	//バイリニア法で描画する
-	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	DrawExtendStringToHandle(475, 30, 1, 1, "RESULT", 0xffffff, FontManager::GetFontHandle());
-	// ネアレストネイバー法で描画する(標準)
-	SetDrawMode(DX_DRAWMODE_NEAREST);
+	// リザルト表示背景
+	DrawBox(340, 150, 940, 560, 0xf4b183, TRUE);
 
-	DrawBox(340, 150, 940, 560, 0xffffff, TRUE);
+	// リザルト表示背景枠の太さ
+	int box_line_width = 3;
+
+	// リザルト表示背景枠描画(枠を太くするために複数描画)
+	for (int j = 0; j < box_line_width; j++)
+	{
+		DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0x843c0c, FALSE);
+	}
 
 	// スコア
 	DrawScore();
 
-	// ランキング表示
+	// ランキング
 	DrawRanking();
 
-	int button_color = 0xD6A15D;        // ボタンのカラーコード
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
 	int button_string_yspacing = 17;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
-
+	
 	int restart_button_xspacing = 55;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 	int title_button_xspacing = 32;     // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
 
 	// メニューボタン
 	DrawButton(RESULT_BUTTON_NUM, button);
 
-	//バイリニア法で描画する
-	SetDrawMode(DX_DRAWMODE_BILINEAR);
-
-	// ボタン文字描画(画像が出来たら消す)
+	// ボタン文字
 	for (int i = 0; i < RESULT_BUTTON_NUM; i++)
 	{
 		if (button[i].collision)
-		{
+		{// カーソルと当たっていたら
+
+			// 文字を暗く
+			SetDrawBright(128, 128, 128);
+			
 			if (i == 0)
 			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				//DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
-				DrawExtendStringToHandle(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "PLAY AGAIN", 0xffffff, FontManager::GetFontHandle());
-				SetDrawBright(255, 255, 255);
+				// リスタート
+				FontManager::Draw(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "PLAY AGAIN");
 			}
 			else
 			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				//DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-				DrawExtendStringToHandle(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "BACK TO TITLE", 0xffffff, FontManager::GetFontHandle());
-				SetDrawBright(255, 255, 255);
-			}
+				// タイトルに戻る
+				FontManager::Draw(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "BACK TO TITLE");
 			
+			}
+
+			// 輝度を初期値に戻す
+			SetDrawBright(255, 255, 255);
 		}
 		else
-		{
+		{// それ以外
+
 			if (i == 0)
 			{
-				SetFontSize(30);
-				//DrawString(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, "PLAY AGAIN", button_string_color);
-				DrawExtendStringToHandle(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "PLAY AGAIN", 0xffffff, FontManager::GetFontHandle());
+				// リスタート
+				FontManager::Draw(button[i].lx + restart_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "PLAY AGAIN");
 			}
 			else
 			{
-				SetFontSize(30);
-				//DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-				DrawExtendStringToHandle(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "BACK TO TITLE", 0xffffff, FontManager::GetFontHandle());
+				// タイトルに戻る
+				FontManager::Draw(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, 0xffffff, "BACK TO TITLE");
 			}
 		}
 	}
-	// ネアレストネイバー法で描画する(標準)
-	SetDrawMode(DX_DRAWMODE_NEAREST);
 }
 
 // 終了時処理
@@ -168,20 +166,13 @@ eSceneType ResultScene::GetNowSceneType() const
 // スコア描画処理
 void ResultScene::DrawScore() const
 {
-	SetFontSize(40);
-	//DrawFormatString(540, 170, 0x000000, "Your score");
-	//バイリニア法で描画する
-	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	DrawExtendStringToHandle(540 - 20, 170, 0.4, 0.4, "YOUR SCORE", 0x000000, FontManager::GetFontHandle());
-	// ネアレストネイバー法で描画する(標準)
-	SetDrawMode(DX_DRAWMODE_NEAREST);
-	//SetFontSize(70);
-	//DrawFormatString(502, 230, 0x000000, "%08d", score);
-	//バイリニア法で描画する
-	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	DrawExtendFormatStringToHandle(502 -55, 230, 0.7, 0.7, 0x000000, FontManager::GetFontHandle(), "%08d", score);
-	// ネアレストネイバー法で描画する(標準)
-	SetDrawMode(DX_DRAWMODE_NEAREST);
+	FontManager::Draw(520, 170, 0.4, 0.4, 0xffffff, "YOUR SCORE");
+
+	// スコアを文字列に変換
+	char score_buf[16];
+	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
+
+	FontManager::Draw(447, 230, 0.7, 0.7, 0xffffff, score_buf);
 }
 
 // ランキング描画処理
@@ -190,36 +181,29 @@ void ResultScene::DrawRanking() const
 	RankingData* ranking = new RankingData();
 	ranking->Initialize();
 
-	SetFontSize(40);
-	//DrawFormatString(580, 320, 0x000000, "Ranking");
+	// 文字サイズ
+	double ranking_fontsize = 0.4;
 
-	//バイリニア法で描画する
-	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	DrawExtendStringToHandle(580 -20, 320, 0.4, 0.4, "RANKING", 0x000000, FontManager::GetFontHandle());
-	// ネアレストネイバー法で描画する(標準)
-	SetDrawMode(DX_DRAWMODE_NEAREST);
+	FontManager::Draw(560, 320, ranking_fontsize, ranking_fontsize, 0xffffff, "RANKING");
 
-	SetFontSize(40);
+	char ranking_buf[50];
+
 	for (int i = 0; i < RANKING_DATA_MAX - 2; i++)
 	{
-		//DrawFormatString(515, 380 + i * 60, 0x000000, "No.%d:%08d",i + 1,ranking->GetScore(i));
-	
 		if (i == 0)
-		{
-			//バイリニア法で描画する
-			SetDrawMode(DX_DRAWMODE_BILINEAR);
-			DrawExtendFormatStringToHandle(515 -35, 380 + i * 60, 0.4, 0.4, 0x000000, FontManager::GetFontHandle(), "No.%d  : %08d", i + 1, ranking->GetScore(i));
-			// ネアレストネイバー法で描画する(標準)
-			SetDrawMode(DX_DRAWMODE_NEAREST);
+		{// 描画位置を合わせるためにNo.1だけ空白を加えて描画する
+
+			// ランキングを文字列に変換
+			sprintf_s(ranking_buf, sizeof(ranking_buf), "No.%d   : %08d", i + 1, ranking->GetScore(i));
+
+			FontManager::Draw(480, 380 + i * 60, ranking_fontsize, ranking_fontsize, 0xffffff, ranking_buf);
 		}
 		else 
 		{
-			//バイリニア法で描画する
-			SetDrawMode(DX_DRAWMODE_BILINEAR);
-			DrawExtendFormatStringToHandle(515 -35, 380 + i * 60, 0.4, 0.4, 0x000000, FontManager::GetFontHandle(), "No.%d : %08d", i + 1, ranking->GetScore(i));
-			// ネアレストネイバー法で描画する(標準)
-			SetDrawMode(DX_DRAWMODE_NEAREST);
+			// ランキングを文字列に変換
+			sprintf_s(ranking_buf, sizeof(ranking_buf), "No.%d  : %08d", i + 1, ranking->GetScore(i));
+
+			FontManager::Draw(480, 380 + i * 60, ranking_fontsize, ranking_fontsize, 0xffffff, ranking_buf);
 		}
-		
 	}
 }
