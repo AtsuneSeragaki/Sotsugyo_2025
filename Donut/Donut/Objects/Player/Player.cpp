@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/FontManager.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -45,21 +46,28 @@ void Player::Update()
 void Player::Draw() const
 {
 	// ネクスト枠の描画(右上)
-	DrawCircle(1070, 150, 105, 0xD8C3A5, TRUE);
-	DrawCircle(1070, 150, 105, 0x1A2E40, FALSE);
+	DrawCircle(1070, 135, 105, 0xD8C3A5, TRUE);
 
-	SetFontSize(20);
-	DrawString(1050, 90, "NEXT", 0x1A2E40);
+	// 枠の太さ
+	int line_width = 3;
+
+	// ドーナツを落とす枠描画(枠を太くするために複数描画)
+	for (int i = 0; i < line_width; i++)
+	{
+		DrawCircleAA(1070, 135, 105 + i, 64,0xA67C52, FALSE);
+	}
+
+	FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
 
 	// 落とすドーナツ仮描画
 	DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
 	// 落とすドーナツ番号の描画
-	DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", donut_number);
+	DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
 
 	// 次に落とすドーナツの描画(右上)
-	DrawCircleAA(1070.0f, 175.0f, next_r, 32, 0xD6A15D, TRUE);
+	DrawCircleAA(1072.0f, 160.0f, next_r, 32, 0xD6A15D, TRUE);
 	// 次に落とすドーナツ番号の描画(右上)
-	DrawFormatString((int)1070.0f, (int)175.0f - 3, 0x1A2E40, "%d", next_donut_number);
+	DrawFormatString((int)1072.0f, (int)160.0f - 3, 0x5C4630, "%d", next_donut_number);
 }
 
 // 終了時処理

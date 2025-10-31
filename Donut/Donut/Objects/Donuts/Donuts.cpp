@@ -103,9 +103,9 @@ void Donuts::Draw() const
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
    
     // ドーナツ番号表示
-    DrawFormatString((int)location.x, (int)location.y - 3, 0x000000, "%d", info.number);
+    DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", info.number);
     // ドーナツ着地フラグ表示
-    DrawFormatString((int)location.x, (int)location.y - 40, 0xffffff, "%d", landed);
+    DrawFormatString((int)location.x, (int)location.y - 40, 0x5C4630, "%d", landed);
 }
 
 // 終了時処理

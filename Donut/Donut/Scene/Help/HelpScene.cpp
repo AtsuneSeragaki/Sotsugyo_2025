@@ -1,5 +1,6 @@
 #include "HelpScene.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/FontManager.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -8,11 +9,18 @@ HelpScene::HelpScene()
 	frame_count = 0;
 	can_click = false;
 
+	int button_color = 0xD6A15D;        // ボタンのカラーコード
+	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
+	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+
+	int start_button_xspacing = 115;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	int title_button_xspacing = 50;    // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+
 	// リスタートボタン初期化
-	button[0] = { HELP_START_BUTTON_LX,HELP_START_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eGameMain };
+	button[0] = { HELP_START_BUTTON_LX,HELP_START_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eGameMain,{100,17,0x5C4630,0.35,0.35},"START" };
 
 	// タイトルボタン初期化
-	button[1] = { HELP_TITLE_BUTTON_LX,HELP_TITLE_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eTitle };
+	button[1] = { HELP_TITLE_BUTTON_LX,HELP_TITLE_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
 }
 
 // デストラクタ
@@ -79,54 +87,10 @@ void HelpScene::Draw() const
 	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
 
 	// タイトル
-	SetFontSize(80);
-	DrawString(450, 35, "HOW TO PLAY", 0xffffff);
-
-	int button_color = 0xD6A15D;        // ボタンのカラーコード
-	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
-	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
-
-	int start_button_xspacing = 115;   // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
-	int title_button_xspacing = 50;    // ボタンの文字の表示する位置(ボタン左上X座標からの距離)
+	FontManager::Draw(350, 30, 1, 1, 0xffffff, "HOW TO PLAY");
 
 	// メニューボタン
 	DrawButton(HELP_BUTTON_NUM, button);
-
-	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 0; i < HELP_BUTTON_NUM; i++)
-	{
-		if (button[i].collision)
-		{
-			if (i == 0)
-			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
-				SetDrawBright(255, 255, 255);
-			}
-			else
-			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-				SetDrawBright(255, 255, 255);
-			}
-
-		}
-		else
-		{
-			if (i == 0)
-			{
-				SetFontSize(30);
-				DrawString(button[i].lx + start_button_xspacing, button[i].ly + button_string_yspacing, "START", button_string_color);
-			}
-			else
-			{
-				SetFontSize(30);
-				DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-			}
-		}
-	}
 }
 
 // 終了時処理

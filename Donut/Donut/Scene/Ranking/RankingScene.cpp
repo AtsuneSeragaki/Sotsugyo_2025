@@ -8,7 +8,7 @@
 RankingScene::RankingScene()
 {
 	// タイトルボタン初期化
-	button[0] = { RANKING_TITLE_BUTTON_LX,RANKING_TITLE_BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eTitle };
+	button[0] = { RANKING_TITLE_BUTTON_LX,RANKING_TITLE_BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
 }
 
 // デストラクタ
@@ -108,46 +108,8 @@ void RankingScene::Draw() const
 		}
 	}
 
-	int button_color = 0xD6A15D;         // ボタンのカラーコード
-	int button_string_color = 0xffffff;  // ボタンの文字のカラーコード
-	int button_string_yspacing = 17;     // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
-
-	int title_button_xspacing = 32;
-
 	// メニューボタン
 	DrawButton(RANKING_BUTTON_NUM, button);
-
-	//バイリニア法で描画する
-	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	// ボタン文字描画(画像が出来たら消す)
-	for (int i = 0; i < RANKING_BUTTON_NUM; i++)
-	{
-		if (button[i].collision)
-		{
-			if(i == 0)
-			{
-				SetDrawBright(128, 128, 128);
-				SetFontSize(30);
-				//DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-				DrawExtendStringToHandle(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "BACK TO TITLE", 0xffffff, FontManager::GetFontHandle());
-
-				SetDrawBright(255, 255, 255);
-			}
-
-		}
-		else
-		{
-			if (i == 0)
-			{
-				SetFontSize(30);
-				//DrawString(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, "BACK TO TITLE", button_string_color);
-				DrawExtendStringToHandle(button[i].lx + title_button_xspacing, button[i].ly + button_string_yspacing, 0.35, 0.35, "BACK TO TITLE", 0xffffff, FontManager::GetFontHandle());
-
-			}
-		}
-	}
-	// ネアレストネイバー法で描画する(標準)
-	SetDrawMode(DX_DRAWMODE_NEAREST);
 }
 
 // 終了時処理

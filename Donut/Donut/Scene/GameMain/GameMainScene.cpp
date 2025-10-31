@@ -4,6 +4,7 @@
 #include "../../Objects/Order/Order.h"
 #include "../../Objects/Ranking/RankingData.h"
 #include "../../Utility/FontManager.h"
+#include <cstdio>
 #include "DxLib.h"
 
 int GameMainScene::score = 0;
@@ -32,13 +33,13 @@ void GameMainScene::Initialize()
 	ranking_data = new RankingData();
 
 	// ポーズボタン初期化
-	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain,{20,7,0x1A2E40,0.2,0.2},"PAUSE" };
+	button[0] = { PAUSE_LX,PAUSE_RX,PAUSE_LY,PAUSE_RY,false,eSceneType::eGameMain,{20,7,0x5C4630,0.2,0.2},"PAUSE" };
 
 	// 「続ける」ボタン初期化
-	button[1] = { PAUSE_B1_LX,PAUSE_B1_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eGameMain,{80,28,0x1A2E40,0.38,0.38},"RESUME" };
+	button[1] = { PAUSE_B1_LX,PAUSE_B1_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eGameMain,{80,28,0x5C4630,0.38,0.38},"RESUME" };
 
 	// 「タイトルに戻る」ボタン初期化
-	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{18,28,0x1A2E40,0.38,0.38},"BACK TO TITLE" };
+	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{18,28,0x5C4630,0.38,0.38},"BACK TO TITLE" };
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	marge_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
@@ -148,6 +149,9 @@ eSceneType GameMainScene::Update()
 // 描画処理
 void GameMainScene::Draw() const
 {   
+	// 枠の太さ
+	int line_width = 3;
+
 	if (pause)
 	{// ポーズ画面描画
 
@@ -156,8 +160,7 @@ void GameMainScene::Draw() const
 		SetDrawBright(128, 128, 128);
 
 		// ゲームメイン背景描画
-		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
 
 		// ドーナツを落とす枠描画
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
@@ -168,18 +171,24 @@ void GameMainScene::Draw() const
 			obj->Draw();
 		}
 
-		// ドーナツを落とす枠描画
-		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0x1A2E40, FALSE);
+		// ドーナツを落とす枠描画(枠を太くするために複数描画)
+		for (int i = 0; i < line_width; i++)
+		{
+			DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
+		}
 
 		// スコア描画
 		DrawScore();
 
 		// 進化の輪描画
-		SetFontSize(20);
-		//DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
-		FontManager::Draw(960, 300, 0.2, 0.2, 0x1A2E40, "DONUT EVOLUTION CHART");
+		FontManager::Draw(960, 300, 0.2, 0.2, 0x5C4630, "DONUT EVOLUTION CHART");
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
-		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
+
+		// 進化の輪枠描画(枠を太くするために複数描画)
+		for (int j = 0; j < line_width; j++)
+		{
+			DrawCircleAA(1080, 510, 170 + j, 64,0xA67C52, FALSE);
+		}
 
 		// ポーズボタン描画
 		DrawButton(1, button);
@@ -192,8 +201,7 @@ void GameMainScene::Draw() const
 	else
 	{
 		// ゲームメイン背景描画
-		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xD8C3A5, TRUE);
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
 
 		// ドーナツを落とす枠描画
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
@@ -204,27 +212,31 @@ void GameMainScene::Draw() const
 			obj->Draw();
 		}
 
-		// ドーナツを落とす枠描画
-		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0x1A2E40, FALSE);
+		// ドーナツを落とす枠描画(枠を太くするために複数描画)
+		for (int i = 0; i < line_width; i++)
+		{
+			DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
+		}
 
 		// スコア描画
 		DrawScore();
 
 		// 進化の輪描画
-		SetFontSize(20);
-		//DrawString(960, 300, "DONUT EVOLUTION CHART", 0x1A2E40);
-		FontManager::Draw(940, 300, 0.23, 0.23, 0x1A2E40, "DONUT EVOLUTION CHART");
-
+		FontManager::Draw(925, 290, 0.25, 0.25, 0x5C4630, "DONUT EVOLUTION CHART");
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
-		DrawCircle(1080, 510, 170, 0x1A2E40, FALSE);
+
+		// 進化の輪枠描画(枠を太くするために複数描画)
+		for (int j = 0; j < line_width; j++)
+		{
+			DrawCircleAA(1080, 510, 170 + j, 64, 0xA67C52, FALSE);
+		}
 
 		// ポーズボタン描画
 		DrawButton(1, button);
 
 		if (is_gameover)
 		{
-			SetFontSize(60);
-			DrawString(495, 350, "GAME OVER!", 0x000000);
+			FontManager::Draw(420, 350, 0.75, 0.75, 0x1A2E40, "GAME OVER!");
 		}
 	}
 }
@@ -491,19 +503,10 @@ eSceneType GameMainScene::PauseUpdate()
 void GameMainScene::PauseDraw() const
 {
 	// 背景
-	DrawBox(200 + 60, 70 + 80, 1080 - 60, 650 - 120, 0xD8C3A5, TRUE);
-
-	// 背景枠の太さ
-	int box_line_width = 3;
-
-	// 背景枠描画(枠を太くするために複数描画)
-	for (int j = 0; j < box_line_width; j++)
-	{
-		DrawBox(260 - j, 150 - j, 1020 + j, 530 + j, 0x1A2E40, FALSE);
-	}
+	DrawBox(200 + 60, 70 + 80, 1080 - 60, 650 - 120, 0xE0D9CE, TRUE);
 
 	// 画面名
-	FontManager::Draw(520, 200, 0.85, 0.85, 0x1A2E40, "PAUSE");
+	FontManager::Draw(520, 200, 0.85, 0.85, 0x5C4630, "PAUSE");
 
 	// ポーズ画面ボタンだけの新しい変数を作成
 	ButtonState pause_button[2];
@@ -646,12 +649,25 @@ void GameMainScene::MakeDonutList()
 // スコア描画処理
 void GameMainScene::DrawScore() const
 {
-	DrawCircle(200, 135, 100, 0xD8C3A5, TRUE);
-	DrawCircle(200, 135, 100, 0x1A2E40, FALSE);
-	SetFontSize(20);
-	DrawString(175, 80, "SCORE", 0x1A2E40);
-	SetFontSize(40);
-	DrawFormatString(118, 125, 0x1A2E40, "%08d", score);
+	// スコア描画背景
+	DrawCircle(200, 135, 105, 0xD8C3A5, TRUE);
+
+	// 枠の太さ
+	int line_width = 3;
+	// 枠描画(枠を太くするために複数描画)
+	for (int j = 0; j < line_width; j++)
+	{
+		//DrawCircleAA(200, 135, 105 + j,64, 0x1A2E40, FALSE);
+		DrawCircleAA(200, 135, 105 + j, 64, 0xA67C52, FALSE);
+	}
+	
+	FontManager::Draw(155, 65, 0.3, 0.3, 0x5C4630, "SCORE");
+
+	// スコアを文字列に変換
+	char score_buf[16];
+	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
+
+	FontManager::Draw(115, 128, 0.3, 0.3, 0x5C4630, score_buf);
 }
 
 // ドーナツが枠からはみ出していないか確認する処理

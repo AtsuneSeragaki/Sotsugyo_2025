@@ -1,4 +1,5 @@
 #include "EndScene.h"
+#include "../../Utility/FontManager.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -39,9 +40,9 @@ void EndScene::Draw() const
 
 	// タイトル
 	SetFontSize(80);
-	DrawString(220, 300, "THANK YOU FOR PLAYING", 0xffffff);
+	//DrawString(220, 300, "THANK YOU FOR PLAYING", 0xffffff);
+	FontManager::Draw(100, 270, 0.9, 0.9, 0x5C4630, "THANK YOU FOR PLAYING");
 
-	//DrawFormatString(20, 30, 0x000000, "%d", end_timer);
 }
 
 // 終了時処理

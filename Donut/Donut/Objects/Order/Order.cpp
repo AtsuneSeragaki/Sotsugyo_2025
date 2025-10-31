@@ -1,7 +1,9 @@
 ﻿#include "Order.h"
 #include "../../Utility/ResourceManager.h"
-#include "DxLib.h"
+#include "../../Utility/FontManager.h"
 #include <random>
+#include <cstdio>
+#include "DxLib.h"
 
 // コンストラクタ
 Order::Order()
@@ -74,34 +76,44 @@ void Order::Update()
 // 描画処理
 void Order::Draw() const
 {
-	// オーダーの枠を表示
-	DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
-	SetFontSize(20);
-	DrawString(ORDER_LX + 130, ORDER_LY + 15, "ORDER", 0x000000);
+    // オーダーの枠を表示
+    DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
 
-    // オーダーのドーナツを表示
-	for (int i = 0; i < ORDER_MAX; i++)
-	{
-        // ドーナツ表示
-		DrawCircle(ORDER_LX + 110, ORDER_LY + 85 + 95 * i, 40, 0xD6A15D, TRUE);
-		Donuts* donut = new Donuts(order_list[i]);
-		SetFontSize(20);
-		DrawFormatString(ORDER_LX + 105, ORDER_LY + 85 + 95 * i + 10, 0x000000, "%d", donut->GetDonutNumber(order_list[i]));
-		
-        // ドーナツの個数を表示
-        SetFontSize(40);
-		DrawFormatString(ORDER_LX + 170, ORDER_LY + 70 + 95 * i, 0x000000, "x %d", order_num[i]);
-	}
-
-    if (complete_order && clear_timer <= 80)
+    // 枠の太さ
+    int line_width = 3;
+    // 枠描画(枠を太くするために複数描画)
+    for (int j = 0; j < line_width; j++)
     {
-        SetFontSize(80);
-        DrawString(ORDER_LX + 33, ORDER_LY + 170, "Clear!", 0xff5555);
+        DrawBox(ORDER_LX - j, ORDER_LY - j, ORDER_RX + j, ORDER_RY + j, 0xA67C52, FALSE);
     }
 
-    /*SetFontSize(20);
-    DrawFormatString(0, 100, 0x000000, "%dlevel", difficulty + 1);*/
+    FontManager::Draw(ORDER_LX + 105, ORDER_LY + 13, 0.3, 0.3, 0x5C4630, "ORDER");
 
+    if (complete_order && clear_timer <= 80)
+    {// オーダーをクリアした時
+
+        FontManager::Draw(ORDER_LX + 15, ORDER_LY + 165, 1.0, 1.0, 0xff5555, "Clear!");
+    }
+    else
+    {// それ以外
+
+        // オーダーのドーナツを表示
+        for (int i = 0; i < ORDER_MAX; i++)
+        {
+            // ドーナツ表示
+            DrawCircleAA(ORDER_LX + 110, ORDER_LY + 95 + 90 * i, 40,64, 0xD6A15D, TRUE);
+            Donuts* donut = new Donuts(order_list[i]);
+            SetFontSize(20);
+            DrawFormatString(ORDER_LX + 107, ORDER_LY + 80 + 90 * i + 10, 0x5C4630, "%d", donut->GetDonutNumber(order_list[i]));
+
+            // スコアを文字列に変換
+            char buf[16];
+            sprintf_s(buf, sizeof(buf), "x %d", order_num[i]);
+
+            // ドーナツの個数を表示
+            FontManager::Draw(ORDER_LX + 170, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
+        }
+    }
 }
 
 // 終了時処理

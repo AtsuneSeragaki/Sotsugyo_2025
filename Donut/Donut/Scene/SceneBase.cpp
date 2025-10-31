@@ -63,8 +63,11 @@ int SceneBase::CheckPlayerButtonCollision(int left, int right, int top, int bott
 // ボタン描画処理(引数：ボタンの数)
 void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 {
-	int button_color = 0xf4b183;        // ボタンのカラーコード
-	int button_line_color = 0x843c0c;   // ボタン枠のカラーコード
+	//int button_color = 0xf4b183;        // ボタンのカラーコード
+	int button_color = 0xD8C3A5;
+	//int button_line_color = 0x843c0c;   // ボタン枠のカラーコード
+	int button_line_color = 0xA67C52;   // ボタン枠のカラーコード
+
 
 	for (int i = 0; i < button_num; i++)
 	{
