@@ -3,6 +3,7 @@
 #include "../SceneBase.h"
 #include "../../Objects/GameObjectManager.h"
 #include "../../Objects/Player/Player.h"
+#include "../../Objects/Donuts/Donuts.h"
 #include <vector>
 
 #define GAMEMAIN_BUTTON_NUM 3  // ƒ{ƒ^ƒ“‚Ì”

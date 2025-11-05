@@ -196,6 +196,7 @@
   <ItemGroup>
     <Image Include="Resource\Images\back.png" />
     <Image Include="Resource\Images\circle.png" />
+    <Image Include="Resource\Images\donut\donut1.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resource\Sounds\title_bgm.mp3" />

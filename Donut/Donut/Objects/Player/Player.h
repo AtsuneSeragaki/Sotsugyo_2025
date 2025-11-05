@@ -1,5 +1,5 @@
 #pragma once
-#include "../Donuts/Donuts.h"
+#include "../GameObject.h"
 
 class Player : public GameObject
 {
@@ -7,10 +7,13 @@ private:
 	bool is_click;                  // マウス左クリックされたか？
 	DonutType donut_type;           // 落とすドーナツの種類
 	DonutType next_donut_type;      // 次に落とすドーナツの種類
+	char donut_image_path[MAX_PATH_LEN];
+	char next_donut_image_path[MAX_PATH_LEN];
 	float next_r;                   // 次に落とすドーナツの半径
 	int donut_number;               // ドーナツの番号
 	int next_donut_number;          // ネクストドーナツの番号
 	bool donut_collision;           // ドーナツと当たっているか？
+	int donut_img[2];
 
 public:
 	// コンストラクタ

@@ -1,37 +1,6 @@
 #pragma once
 #include "../GameObject.h"
 #include <vector>
-#define MAX_PATH_LEN 256
-
-// ドーナツの種類
-enum class DonutType
-{
-	DONUT_MINI_BASIC,           // ミスドの小さいドーナツみたいなやつ（ノーマル）
-	DONUT_MINI_VARIANT,         // ミスドの小さいドーナツみたいなやつ（色違い）
-	DONUT_FRENCH_CRULLER,       // フレンチクルーラー
-	DONUT_FRENCH_CRULLER_VAR,   // フレンチクルーラー（色違い）
-	DONUT_OLD_FASHIONED,        // オールドファッション
-	DONUT_OLD_FASHIONED_VAR,    // オールドファッション（色違い）
-	DONUT_GOLDEN_CHOCOLATE,     // ゴールデンチョコレート
-	DONUT_COCONUT_CHOCOLATE,    // ココナツチョコレート
-	DONUT_HALF_CHOCOLATE,       // 半分チョコドーナツ
-	DONUT_HALF_STRAWBERRY,      // 半分ストロベリードーナツ
-	DONUT_PON_DE_RING,          // ポン・デ・リング
-	DONUT_COUNT                 // ドーナツの総数
-};
-
-// ドーナツ情報構造体
-typedef struct {
-	DonutType type;  // ドーナツの種類
-	float size;      // サイズ(半径)
-	int score;       // このドーナツが生成された時に加算されるスコア
-	char image_path[MAX_PATH_LEN]; // ドーナツ画像パス
-	int number;      // ドーナツ番号
-} DonutInfo;
-
-// ドーナツの種類総数
-constexpr int MAX_DONUT_NUM = static_cast<int>(DonutType::DONUT_COUNT);
-extern const DonutInfo g_DonutInfoTable[MAX_DONUT_NUM];
 
 class Donuts : public GameObject
 {
@@ -50,6 +19,7 @@ private:
 	std::vector<Donuts*>* donutList;
 	bool player_collision; // プレイヤーと当たっているか？フラグ
 	bool landedOnSomething;
+	int donut_img[MAX_DONUT_NUM];
 
 public:
 	// コンストラクタ

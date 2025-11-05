@@ -148,6 +148,9 @@
     <Image Include="Resource\Images\back.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="Resource\Images\donut\donut1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resource\Sounds\title_bgm.mp3" />

@@ -1,21 +1,7 @@
 ﻿#include "Donuts.h"
+#include "../../Utility/ResourceManager.h"
 #include "DxLib.h"
 #include <math.h>
-
-// 全ドーナツの情報設定(変更不可)
-DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
-        { DonutType::DONUT_MINI_BASIC,        10.0f, 0, "images/donut_mini_basic.png" ,1},
-        { DonutType::DONUT_MINI_VARIANT,      20.0f, 20, "images/donut_mini_variant.png",2 },
-        { DonutType::DONUT_FRENCH_CRULLER,    30.0f, 50, "images/french_cruller.png" ,3},
-        { DonutType::DONUT_FRENCH_CRULLER_VAR,40.0f, 70, "images/french_cruller_var.png",4 },
-        { DonutType::DONUT_OLD_FASHIONED,     50.0f, 100, "images/old_fashioned.png" ,5},
-        { DonutType::DONUT_OLD_FASHIONED_VAR, 60.0f, 150, "images/old_fashioned_var.png",6 },
-        { DonutType::DONUT_GOLDEN_CHOCOLATE,  80.0f, 200, "images/golden_chocolate.png" ,7},
-        { DonutType::DONUT_COCONUT_CHOCOLATE, 100.0f, 250, "images/coconut_chocolate.png" ,8},
-        { DonutType::DONUT_HALF_CHOCOLATE,    120.0f, 300, "images/half_chocolate.png" ,9},
-        { DonutType::DONUT_HALF_STRAWBERRY,   140.0f, 350, "images/half_strawberry.png" ,10},
-        { DonutType::DONUT_PON_DE_RING,       160.0f, 400, "images/pon_de_ring.png",11 }
-};
 
 // テスト用ドーナツ情報(変更可)
 //DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
@@ -50,6 +36,13 @@ Donuts::Donuts(DonutType type)
     player_collision = false;
 
     landedOnSomething = false;
+
+    ResourceManager* rm = ResourceManager::GetInstance();
+    std::vector<int> tmp;
+    tmp = rm->GetImages(g_DonutInfoTable[0].image_path);
+    donut_img[0] = tmp[0];
+
+    rotation = 0.0;
 }
 
 // デストラクタ
@@ -66,6 +59,14 @@ void Donuts::Initialize()
 void Donuts::Update()
 {
     isMerged = false;
+
+    // 転がり中に回転を更新
+    rotation += vx / r;  // vxに応じて角度を加算（rが大きいとゆっくり回転）
+    
+    if (rotation > DX_TWO_PI)
+    {
+        rotation -= DX_TWO_PI;
+    }
 
     // 着地中なら摩擦で減速
     if (landed)
@@ -90,22 +91,29 @@ void Donuts::Draw() const
         // ドーナツを暗くする
         // 描画輝度のセット
         SetDrawBright(128, 128, 128);
-        DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+        //DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+        DrawExtendGraphF(location.x - r, location.y - r, location.x + r, location.y + r, donut_img[0], TRUE);
+        //DrawRotaGraphF(cx, cy, scaleX, scaleY, angle, donut_img[0], TRUE);
+        //DrawRotaGraph(location.x, location.y, 1.0, 1.0, 0.0, donut_img[0], TRUE);
+
         // 描画輝度を元に戻す
         SetDrawBright(255, 255, 255);
     }
     else
     {
-       DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+       //DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+       DrawExtendGraphF(location.x - r, location.y - r, location.x + r, location.y + r, donut_img[0], TRUE);
+       // DrawRotaGraphF(cx, cy, scaleX, scaleY, angle, donut_img[0], TRUE);
+       // DrawRotaGraph(10, 10, 10.0, 10.0, rotation, donut_img[0], TRUE);
     }
    
     SetFontSize(20);
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
    
     // ドーナツ番号表示
-    DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", info.number);
+   // DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", info.number);
     // ドーナツ着地フラグ表示
-    DrawFormatString((int)location.x, (int)location.y - 40, 0x5C4630, "%d", landed);
+    //DrawFormatString((int)location.x, (int)location.y - 40, 0x5C4630, "%d", landed);
 }
 
 // 終了時処理

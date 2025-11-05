@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 #include "DxLib.h"
 
@@ -17,6 +18,11 @@ Player::Player() : is_click(true)
 	next_donut_number = 3;
 
 	donut_collision = false;
+
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages(g_DonutInfoTable[0].image_path);
+	donut_img[0] = tmp[0];
 }
 
 // デストラクタ
@@ -60,14 +66,19 @@ void Player::Draw() const
 	FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
 
 	// 落とすドーナツ仮描画
-	DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+	//DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
+	DrawExtendGraphF(location.x - r, location.y - r, location.x + r, location.y + r, donut_img[0], TRUE);
+
 	// 落とすドーナツ番号の描画
-	DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
+	//DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
+
 
 	// 次に落とすドーナツの描画(右上)
-	DrawCircleAA(1072.0f, 160.0f, next_r, 32, 0xD6A15D, TRUE);
+	//DrawCircleAA(1072.0f, 160.0f, next_r, 32, 0xD6A15D, TRUE);
+	DrawExtendGraphF(1072.0f - r, 160.0f - r, 1072.0f + r, 160.0f + r, donut_img[0], TRUE);
+
 	// 次に落とすドーナツ番号の描画(右上)
-	DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
+	//DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
 }
 
 // 終了時処理
