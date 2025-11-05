@@ -79,13 +79,13 @@ eSceneType ResultScene::Update()
 void ResultScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
 
 	// タイトル
-	FontManager::Draw(475, 30, 1.0, 1.0, 0xffffff, "RESULT");
+	FontManager::Draw(475, 30, 1.0, 1.0, 0x5C4630, "RESULT");
 
 	// リザルト表示背景
-	DrawBox(340, 150, 940, 560, 0xf4b183, TRUE);
+	DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
 
 	// リザルト表示背景枠の太さ
 	int box_line_width = 3;
@@ -93,7 +93,7 @@ void ResultScene::Draw() const
 	// リザルト表示背景枠描画(枠を太くするために複数描画)
 	for (int j = 0; j < box_line_width; j++)
 	{
-		DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0x843c0c, FALSE);
+		DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
 	}
 
 	// スコア
@@ -120,13 +120,13 @@ eSceneType ResultScene::GetNowSceneType() const
 // スコア描画処理
 void ResultScene::DrawScore() const
 {
-	FontManager::Draw(520, 170, 0.4, 0.4, 0xffffff, "YOUR SCORE");
+	FontManager::Draw(520, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
 
 	// スコアを文字列に変換
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::Draw(447, 230, 0.7, 0.7, 0xffffff, score_buf);
+	FontManager::Draw(447, 230, 0.7, 0.7, 0x5C4630, score_buf);
 }
 
 // ランキング描画処理
@@ -138,7 +138,7 @@ void ResultScene::DrawRanking() const
 	// 文字サイズ
 	double ranking_fontsize = 0.4;
 
-	FontManager::Draw(560, 320, ranking_fontsize, ranking_fontsize, 0xffffff, "RANKING");
+	FontManager::Draw(565, 320, ranking_fontsize, ranking_fontsize, 0x5C4630, "RANKING");
 
 	char ranking_buf[50];
 
@@ -150,14 +150,14 @@ void ResultScene::DrawRanking() const
 			// ランキングを文字列に変換
 			sprintf_s(ranking_buf, sizeof(ranking_buf), "No.%d   : %08d", i + 1, ranking->GetScore(i));
 
-			FontManager::Draw(480, 380 + i * 60, ranking_fontsize, ranking_fontsize, 0xffffff, ranking_buf);
+			FontManager::Draw(480, 380 + i * 60, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 		}
 		else 
 		{
 			// ランキングを文字列に変換
 			sprintf_s(ranking_buf, sizeof(ranking_buf), "No.%d  : %08d", i + 1, ranking->GetScore(i));
 
-			FontManager::Draw(480, 380 + i * 60, ranking_fontsize, ranking_fontsize, 0xffffff, ranking_buf);
+			FontManager::Draw(480, 380 + i * 60, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 		}
 	}
 }

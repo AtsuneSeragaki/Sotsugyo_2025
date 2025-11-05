@@ -39,7 +39,7 @@ void GameMainScene::Initialize()
 	button[1] = { PAUSE_B1_LX,PAUSE_B1_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eGameMain,{80,28,0x5C4630,0.38,0.38},"RESUME" };
 
 	// 「タイトルに戻る」ボタン初期化
-	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{18,28,0x5C4630,0.38,0.38},"BACK TO TITLE" };
+	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{19,28,0x5C4630,0.38,0.38},"BACK TO TITLE" };
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	marge_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
@@ -187,7 +187,7 @@ void GameMainScene::Draw() const
 		// 進化の輪枠描画(枠を太くするために複数描画)
 		for (int j = 0; j < line_width; j++)
 		{
-			DrawCircleAA(1080, 510, 170 + j, 64,0xA67C52, FALSE);
+			DrawCircleAA(1080.0f, 510.0f, 170.0f + j, 64,0xA67C52, FALSE);
 		}
 
 		// ポーズボタン描画
@@ -228,7 +228,7 @@ void GameMainScene::Draw() const
 		// 進化の輪枠描画(枠を太くするために複数描画)
 		for (int j = 0; j < line_width; j++)
 		{
-			DrawCircleAA(1080, 510, 170 + j, 64, 0xA67C52, FALSE);
+			DrawCircleAA(1080.0f, 510.0f, 170.0f + j, 64, 0xA67C52, FALSE);
 		}
 
 		// ポーズボタン描画
@@ -658,7 +658,7 @@ void GameMainScene::DrawScore() const
 	for (int j = 0; j < line_width; j++)
 	{
 		//DrawCircleAA(200, 135, 105 + j,64, 0x1A2E40, FALSE);
-		DrawCircleAA(200, 135, 105 + j, 64, 0xA67C52, FALSE);
+		DrawCircleAA(200.0f, 135.0f, 105.0f + j, 64, 0xA67C52, FALSE);
 	}
 	
 	FontManager::Draw(155, 65, 0.3, 0.3, 0x5C4630, "SCORE");

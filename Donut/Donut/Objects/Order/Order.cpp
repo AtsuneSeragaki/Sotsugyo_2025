@@ -101,7 +101,7 @@ void Order::Draw() const
         for (int i = 0; i < ORDER_MAX; i++)
         {
             // ドーナツ表示
-            DrawCircleAA(ORDER_LX + 110, ORDER_LY + 95 + 90 * i, 40,64, 0xD6A15D, TRUE);
+            DrawCircleAA((float)ORDER_LX + 110.0f, (float)ORDER_LY + 95.0f + 90.0f * i, 40,64, 0xD6A15D, TRUE);
             Donuts* donut = new Donuts(order_list[i]);
             SetFontSize(20);
             DrawFormatString(ORDER_LX + 107, ORDER_LY + 80 + 90 * i + 10, 0x5C4630, "%d", donut->GetDonutNumber(order_list[i]));

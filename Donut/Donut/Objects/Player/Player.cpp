@@ -54,7 +54,7 @@ void Player::Draw() const
 	// ドーナツを落とす枠描画(枠を太くするために複数描画)
 	for (int i = 0; i < line_width; i++)
 	{
-		DrawCircleAA(1070, 135, 105 + i, 64,0xA67C52, FALSE);
+		DrawCircleAA(1070.0f, 135.0f, 105.0f + i, 64,0xA67C52, FALSE);
 	}
 
 	FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
@@ -67,7 +67,7 @@ void Player::Draw() const
 	// 次に落とすドーナツの描画(右上)
 	DrawCircleAA(1072.0f, 160.0f, next_r, 32, 0xD6A15D, TRUE);
 	// 次に落とすドーナツ番号の描画(右上)
-	DrawFormatString((int)1072.0f, (int)160.0f - 3, 0x5C4630, "%d", next_donut_number);
+	DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
 }
 
 // 終了時処理

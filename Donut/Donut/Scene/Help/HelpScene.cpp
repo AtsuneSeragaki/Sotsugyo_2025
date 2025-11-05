@@ -84,10 +84,10 @@ eSceneType HelpScene::Update()
 void HelpScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xFFC0CB, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
 
 	// タイトル
-	FontManager::Draw(350, 30, 1, 1, 0xffffff, "HOW TO PLAY");
+	FontManager::Draw(350, 30, 1, 1, 0x5C4630, "HOW TO PLAY");
 
 	// メニューボタン
 	DrawButton(HELP_BUTTON_NUM, button);

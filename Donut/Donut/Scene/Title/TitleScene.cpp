@@ -71,10 +71,11 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// 背景
-	DrawGraph(0, 0, background_image, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+	// DrawGraph(0, 0, background_image, TRUE);
 
 	// タイトル
-	FontManager::Draw(355, 100, 1, 1, 0xffffff, "DONUT POP");
+	FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");
 
 	// メニューボタン
 	DrawButton(TITLE_BUTTON_NUM, button);
