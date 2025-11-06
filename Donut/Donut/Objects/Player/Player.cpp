@@ -9,20 +9,24 @@ Player::Player() : is_click(true)
 {
 	// 最初は1のドーナツを設定
 	donut_type = DonutType::DONUT_MINI_BASIC;
-	r = 10.0f;
+	const DonutInfo& info = g_DonutInfoTable[static_cast<int>(donut_type)];
+	r = info.size;
 	donut_number = 1;
 
 	// 次のドーナツは3のドーナツを設定
 	next_donut_type = DonutType::DONUT_FRENCH_CRULLER;
-	next_r = 30.0f;
+	const DonutInfo& info2 = g_DonutInfoTable[static_cast<int>(next_donut_type)];
+	next_r = info2.size;
 	next_donut_number = 3;
 
 	donut_collision = false;
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages(g_DonutInfoTable[0].image_path);
+	tmp = rm->GetImages(info.image_path);
 	donut_img[0] = tmp[0];
+	tmp = rm->GetImages(info2.image_path);
+	donut_img[1] = tmp[0];
 }
 
 // デストラクタ
@@ -65,20 +69,22 @@ void Player::Draw() const
 
 	FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
 
+	float base_radius = 46.5; // 元画像(93x93)の半径
+	double scale = (double)r / (double)base_radius; // 落とすドーナツ画像の拡大率
+
 	// 落とすドーナツ仮描画
-	//DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
-	DrawExtendGraphF(location.x - r, location.y - r, location.x + r, location.y + r, donut_img[0], TRUE);
+	DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, 0.0, donut_img[0], TRUE);
 
 	// 落とすドーナツ番号の描画
-	//DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
+	DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
 
+	scale = (double)next_r / base_radius; // 次に落とすドーナツ画像の拡大率
 
 	// 次に落とすドーナツの描画(右上)
-	//DrawCircleAA(1072.0f, 160.0f, next_r, 32, 0xD6A15D, TRUE);
-	DrawExtendGraphF(1072.0f - r, 160.0f - r, 1072.0f + r, 160.0f + r, donut_img[0], TRUE);
+	DrawRotaGraph2F(1072.0f, 160.0f, base_radius, base_radius, scale, 0.0, donut_img[1], TRUE);
 
 	// 次に落とすドーナツ番号の描画(右上)
-	//DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
+	DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
 }
 
 // 終了時処理

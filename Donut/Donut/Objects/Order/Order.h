@@ -1,5 +1,6 @@
 #pragma once
-#include "../Donuts/Donuts.h"
+// #include "../GameObject.h" // リリース時はこれ
+#include "../Donuts/Donuts.h" // デバッグ時はこれ
 
 #define ORDER_LX  50               // オーダーの枠X座標(左上)
 #define ORDER_LY  260              // オーダーの枠Y座標(左上)
@@ -18,6 +19,7 @@ private:
 	int clear_timer;                 //	クリアの文字を出す時間
 	int clear_se;                    // クリアした時の効果音データ
 	int next_order_se;               // 次のオーダーに変わる時の効果音データ
+	int donut_img[ORDER_MAX];        // ドーナツ画像
 
 public:
 	// コンストラクタ
@@ -51,6 +53,4 @@ public:
 
 	// オーダーにあるドーナツの個数を返す処理(引数：ドーナツの種類　戻り値：ドーナツの個数)
 	int GetDonutOrderNum(DonutType type);
-
-private:
 };

@@ -58,7 +58,6 @@ void GameMainScene::Initialize()
 // 更新処理
 eSceneType GameMainScene::Update()
 {
-
 	InputManager* input = InputManager::GetInstance();
 
 	// Update() 冒頭などに追加
@@ -103,6 +102,12 @@ eSceneType GameMainScene::Update()
 		// ドーナツの落下処理(戻り値：シーン名)
 		FallDonut();
 
+		for (Donuts* donut : donut_list)
+		{
+			// 他ドーナツ情報を渡す
+			donut->CheckDonutLanded(donut_list);
+		}
+
 		// 他のUpdate処理
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
@@ -114,12 +119,6 @@ eSceneType GameMainScene::Update()
 
 		// ドーナツとプレイヤーの当たり判定処理
 		HitDonutPlayerCollision();
-
-		for (Donuts* donut : donut_list)
-		{
-			// 他ドーナツ情報を渡す
-			donut->CheckDonutLanded(donut_list);
-		}
 
 		for (Donuts* donut : donut_list)
 		{
@@ -342,6 +341,12 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 
 			return;
 		}
+
+		// ←ここで速度をリセット or 抑制して跳ね防止
+		//a->SetVelocity({ 0.0f, 0.0f });
+		//b->SetVelocity({ 0.0f, 0.0f });
+
+		//return; // ※以降の反発処理をスキップ！
 	}
 
 	// ドーナツの質量を半径に比例させる
@@ -379,8 +384,10 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	Vector2D v_b_new = vB + normal * (new_b_dot_n - b_dot_n);
 
 	// 新しい速度をセット（反発係数0.85を適用）
-	a->SetVelocity(v_a_new * 0.85f);
-	b->SetVelocity(v_b_new * 0.85f);
+	/*a->SetVelocity(v_a_new * 0.85f);
+	b->SetVelocity(v_b_new * 0.85f);*/
+	a->SetVelocity(v_a_new * 0.75f);
+	b->SetVelocity(v_b_new * 0.75f); 
 
 	// 枠からはみ出していないか確認
 	CheckDonutOutOfFrame(a);
@@ -654,10 +661,10 @@ void GameMainScene::DrawScore() const
 
 	// 枠の太さ
 	int line_width = 3;
+
 	// 枠描画(枠を太くするために複数描画)
 	for (int j = 0; j < line_width; j++)
 	{
-		//DrawCircleAA(200, 135, 105 + j,64, 0x1A2E40, FALSE);
 		DrawCircleAA(200.0f, 135.0f, 105.0f + j, 64, 0xA67C52, FALSE);
 	}
 	

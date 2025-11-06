@@ -18,6 +18,16 @@ Order::Order()
     clear_se = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
 
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
+
+    std::vector<int> tmp;
+   
+    // 画像読み込み
+    for (int i = 0; i < ORDER_MAX; i++)
+    {
+       const DonutInfo& info = g_DonutInfoTable[(int)order_list[i]];
+       tmp = rm->GetImages(info.image_path);
+       donut_img[i] = tmp[0];
+    }
 }
 
 // デストラクタ
@@ -97,11 +107,16 @@ void Order::Draw() const
     else
     {// それ以外
 
+        float base_radius = 46.5; // 元画像(93x93)の半径
+        double scale = 40.0 / (double)base_radius; // 画像の拡大率
+
         // オーダーのドーナツを表示
         for (int i = 0; i < ORDER_MAX; i++)
         {
             // ドーナツ表示
-            DrawCircleAA((float)ORDER_LX + 110.0f, (float)ORDER_LY + 95.0f + 90.0f * i, 40,64, 0xD6A15D, TRUE);
+            DrawRotaGraph2F((float)ORDER_LX + 110.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
+            
+            // ドーナツの種類表示
             Donuts* donut = new Donuts(order_list[i]);
             SetFontSize(20);
             DrawFormatString(ORDER_LX + 107, ORDER_LY + 80 + 90 * i + 10, 0x5C4630, "%d", donut->GetDonutNumber(order_list[i]));

@@ -5,21 +5,15 @@
 class Donuts : public GameObject
 {
 private:
-	bool landed;      // 着地したか
+	bool landed;      // 地面に着地したか？フラグ
 	DonutType type;   // ドーナツの種類
 	float vx;         // 横方向速度
 	float vy;         // 重力
 	bool isMerged;    // すでに合体したかどうか
 	bool isDead;      // 削除予定（外部で処理）
-	bool isRolling = false;
-	float rollingDirection = 0.0f;
-	float rolledDistance = 0.0f;
-	const float maxRollingDistance = 100.0f;  // 転がる最大距離
-	const float rollingSpeed = 1.0f;          // 1フレームあたりの転がる速度
-	std::vector<Donuts*>* donutList;
 	bool player_collision; // プレイヤーと当たっているか？フラグ
-	bool landedOnSomething;
-	int donut_img[MAX_DONUT_NUM];
+	bool landedOnSomething; // 何かの上に着地しているか？フラグ
+	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
 
 public:
 	// コンストラクタ
@@ -81,10 +75,10 @@ public:
 	// 着地フラグを返す処理(戻り値：着地フラグ)
 	bool GetLanded() { return landed; }
 
-	// ドーナツ落下処理
+	// ドーナツ落下処理(引数:全てのドーナツオブジェクト)
 	void FallDonut(const std::vector<Donuts*>& others);
 
-	// どこかに支えられているか判定する処理
+	// どこかに支えられているか判定する処理(引数:全てのドーナツオブジェクト)
 	bool IsSupported(const std::vector<Donuts*>& others);
 
 	// ドーナツリストをコピーする処理
@@ -96,13 +90,13 @@ public:
 	// プレイヤーと当たっているか？フラグを取得
 	bool GetPlayerCollisionFlg() { return player_collision; }
 
-	// ドーナツが着地したか確認する処理
+	// ドーナツが着地したか確認する処理(引数:全てのドーナツオブジェクト)
 	void CheckDonutLanded(const std::vector<Donuts*>& others);
 
 private:
-	// ドーナツの枠はみ出し防止処理
+	// ドーナツの枠はみ出し防止処理(引数：ドーナツを落とす枠の座標)
 	void ClampToFrame(float left, float right, float top, float bottom);
 
-	// 衝突処理 (弾性衝突)
+	// 衝突処理(引数:全てのドーナツオブジェクト)
 	void HandleCollision(Donuts* other);
 };

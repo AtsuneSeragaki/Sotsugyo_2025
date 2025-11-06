@@ -4,8 +4,19 @@
 #include "../Utility/FontManager.h"
 #include "DxLib.h"
 
-SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),button_se_handle(0)
+SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),button_se_handle(0),button_string_color(0x5C4630),button_string_yspacing(0)
 {
+	ButtonState button = {
+		0,    // lx
+		100,  // rx
+		0,    // ly
+		50,   // ry
+		false,                 // collision
+		eSceneType::eTitle,     // targetScene
+		NULL,   // style
+		NULL   // label
+	};
+
 	ResourceManager* rm = ResourceManager::GetInstance();
 	button_se_handle = rm->GetSounds("Resource/Sounds/button_se.mp3");
 }
@@ -60,14 +71,11 @@ int SceneBase::CheckPlayerButtonCollision(int left, int right, int top, int bott
 	return 0;
 }
 
-// ボタン描画処理(引数：ボタンの数)
+// ボタン描画処理(引数：ボタンの数,ボタンの詳細情報)
 void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 {
-	//int button_color = 0xf4b183;        // ボタンのカラーコード
-	int button_color = 0xD8C3A5;
-	//int button_line_color = 0x843c0c;   // ボタン枠のカラーコード
-	int button_line_color = 0xA67C52;   // ボタン枠のカラーコード
-
+	int button_color = 0xD8C3A5; // ボタン背景のカラーコード
+	int button_line_color = 0xA67C52; // ボタン枠のカラーコード
 
 	for (int i = 0; i < button_num; i++)
 	{

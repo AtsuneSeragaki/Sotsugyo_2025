@@ -18,21 +18,23 @@ enum class eSceneType
 	eNone,
 };
 
-struct ButtonStyle
+// ボタンの文字情報
+struct StringStyle
 {
-	int xspacing;
-	int yspacing;
-	int string_color;
-	double xscale;
-	double yscale;
+	int xspacing;     // 文字の表示位置X座標(ボタン左上座標からの距離)
+	int yspacing;     // 文字の表示位置Y座標(ボタン左上座標からの距離)
+	int string_color; // 文字の色
+	double xscale;    // 文字の大きさ
+	double yscale;    // 文字の大きさ
 };
 
+// ボタンの情報
 struct ButtonState 
 {
-	int lx, rx, ly, ry;
-	bool collision = false;
+	int lx, rx, ly, ry;     // 描画位置
+	bool collision;         // マウスカーソルとの当たり判定フラグ
 	eSceneType targetScene; // クリックで遷移するシーン
-	ButtonStyle style;
+	StringStyle style;      // ボタンの文字情報
 	const char* label;      // ボタンに表示する文字列
 };
 
@@ -67,7 +69,7 @@ public:
 	// プレイヤーカーソルとボタンの当たり判定処理(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
 	int CheckPlayerButtonCollision(int left, int right, int top, int bottom);
 
-	// ボタン描画処理(引数：ボタンの数)
+	// ボタン描画処理(引数：ボタンの数,ボタンの詳細情報)
 	void DrawButton(int button_num,const ButtonState* button) const;
 
 	// ボタンの効果音を鳴らす処理

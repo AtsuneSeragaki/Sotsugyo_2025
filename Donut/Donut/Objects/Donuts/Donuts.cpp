@@ -3,21 +3,6 @@
 #include "DxLib.h"
 #include <math.h>
 
-// テスト用ドーナツ情報(変更可)
-//DonutInfo const g_DonutInfoTable[MAX_DONUT_NUM] = {
-//        { DonutType::DONUT_MINI_BASIC,        10.0f, 100, "images/donut_mini_basic.png" ,1},
-//        { DonutType::DONUT_MINI_VARIANT,      20.0f, 120, "images/donut_mini_variant.png",2 },
-//        { DonutType::DONUT_FRENCH_CRULLER,    30.0f, 150, "images/french_cruller.png" ,3},
-//        { DonutType::DONUT_FRENCH_CRULLER_VAR,40.0f, 160, "images/french_cruller_var.png",4 },
-//        { DonutType::DONUT_OLD_FASHIONED,     50.0f, 130, "images/old_fashioned.png" ,5},
-//        { DonutType::DONUT_OLD_FASHIONED_VAR, 60.0f, 140, "images/old_fashioned_var.png",6 },
-//        { DonutType::DONUT_GOLDEN_CHOCOLATE,  80.0f, 200, "images/golden_chocolate.png" ,7},
-//        { DonutType::DONUT_COCONUT_CHOCOLATE, 100.0f, 200, "images/coconut_chocolate.png" ,8},
-//        { DonutType::DONUT_HALF_CHOCOLATE,    120.0f, 170, "images/half_chocolate.png" ,9},
-//        { DonutType::DONUT_HALF_STRAWBERRY,   140.0f, 170, "images/half_strawberry.png" ,10},
-//        { DonutType::DONUT_PON_DE_RING,       160.0f, 180, "images/pon_de_ring.png",11 }
-//};
-
 // コンストラクタ
 Donuts::Donuts(DonutType type)
 {
@@ -32,7 +17,6 @@ Donuts::Donuts(DonutType type)
     isMerged = false;
     isDead = false;
 
-    donutList = nullptr;
     player_collision = false;
 
     landedOnSomething = false;
@@ -60,17 +44,19 @@ void Donuts::Update()
 {
     isMerged = false;
 
-    // 転がり中に回転を更新
-    rotation += vx / r;  // vxに応じて角度を加算（rが大きいとゆっくり回転）
-    
-    if (rotation > DX_TWO_PI)
+    if (!landed)
     {
-        rotation -= DX_TWO_PI;
-    }
+        // 転がり中に回転を更新
+        rotation += vx / r;  // vxに応じて角度を加算（rが大きいとゆっくり回転）
 
-    // 着地中なら摩擦で減速
-    if (landed)
-    {
+        if (rotation > DX_TWO_PI)
+        {
+            rotation -= DX_TWO_PI;
+        }
+    }
+    else
+    { // 着地中なら摩擦で減速
+        
         vx *= 0.85f; // 摩擦減衰
         if (fabs(vx) < 0.1f)
         {
@@ -85,35 +71,31 @@ void Donuts::Update()
 // 描画処理
 void Donuts::Draw() const 
 {
+    float base_radius = 46.5; // 元画像(93x93)の半径
+    double scale = (double)r / (double)base_radius; // 画像の拡大率
+
     // ドーナツ仮表示
     if (player_collision)
     {
         // ドーナツを暗くする
         // 描画輝度のセット
         SetDrawBright(128, 128, 128);
-        //DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
-        DrawExtendGraphF(location.x - r, location.y - r, location.x + r, location.y + r, donut_img[0], TRUE);
-        //DrawRotaGraphF(cx, cy, scaleX, scaleY, angle, donut_img[0], TRUE);
-        //DrawRotaGraph(location.x, location.y, 1.0, 1.0, 0.0, donut_img[0], TRUE);
-
+        DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale,rotation, donut_img[0], TRUE);
         // 描画輝度を元に戻す
         SetDrawBright(255, 255, 255);
     }
     else
     {
-       //DrawCircleAA(location.x, location.y, r, 32, 0xD6A15D, TRUE);
-       DrawExtendGraphF(location.x - r, location.y - r, location.x + r, location.y + r, donut_img[0], TRUE);
-       // DrawRotaGraphF(cx, cy, scaleX, scaleY, angle, donut_img[0], TRUE);
-       // DrawRotaGraph(10, 10, 10.0, 10.0, rotation, donut_img[0], TRUE);
+       DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, rotation, donut_img[0], TRUE);
     }
    
     SetFontSize(20);
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
    
     // ドーナツ番号表示
-   // DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", info.number);
+    DrawFormatStringF(location.x, location.y - 3.0f, 0x5C4630, "%d", info.number);
     // ドーナツ着地フラグ表示
-    //DrawFormatString((int)location.x, (int)location.y - 40, 0x5C4630, "%d", landed);
+    //DrawFormatStringF(location.x, location.y - 40.0f, 0x5C4630, "%d", landed);
 }
 
 // 終了時処理
@@ -142,7 +124,7 @@ int Donuts::GetDonutScore(DonutType dtype)
     return info.score;
 }
 
-// ドーナツ落下処理
+// ドーナツ落下処理(引数:全てのドーナツオブジェクト)
 void Donuts::FallDonut(const std::vector<Donuts*>& others)
 {
     // 重力適用
@@ -161,8 +143,11 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
         // 衝突判定
         if (distSq < combinedRadius * combinedRadius)
         {
-            // 物理的な反発処理
-            HandleCollision(other);
+            if (this->GetDonutType() != other->GetDonutType())
+            {
+                // 物理的な反発処理
+                HandleCollision(other);
+            }
         }
     }
 
@@ -213,7 +198,7 @@ void Donuts::FallDonut(const std::vector<Donuts*>& others)
     }
 }
 
-// 衝突処理 (弾性衝突)
+// 衝突処理 (引数:全てのドーナツオブジェクト)
 void Donuts::HandleCollision(Donuts* other)
 {
     float combinedRadius = r + other->r;
@@ -258,12 +243,17 @@ void Donuts::HandleCollision(Donuts* other)
     other->vy = new_v2n * ny + v2t * tangenty;
 
     // 弾性反発係数と摩擦を適用
-    vx *= 0.85f; // 反発後の減速
-    vy *= 0.85f;
-    other->vx *= 0.85f;
-    other->vy *= 0.85f;
+    //vx *= 0.85f; // 反発後の減速
+    //vy *= 0.85f;
+    //other->vx *= 0.85f;
+    //other->vy *= 0.85f;
+    vx *= 0.75f; // 反発後の減速
+    vy *= 0.75f;
+    other->vx *= 0.75f;
+    other->vy *= 0.75f;
 }
 
+// ドーナツが着地したか確認する処理(引数:全てのドーナツオブジェクト)
 void Donuts::CheckDonutLanded(const std::vector<Donuts*>& others)
 {
     if (landedOnSomething || IsSupported(others))
@@ -272,16 +262,16 @@ void Donuts::CheckDonutLanded(const std::vector<Donuts*>& others)
     }
 }
 
-// ドーナツの枠はみ出し防止処理
+// ドーナツの枠はみ出し防止処理(引数：ドーナツを落とす枠の座標)
 void Donuts::ClampToFrame(float left, float right, float top, float bottom)
 {
     if (location.x - r < left) 
-    {
+    {// 左
         location.x = left + r;
         vx *= -0.5f;
     }
     if (location.x + r > right) 
-    {
+    {// 右
         location.x = right - r;
         vx *= -0.5f;
     }
@@ -291,13 +281,13 @@ void Donuts::ClampToFrame(float left, float right, float top, float bottom)
         // 上の壁にはぶつからないようにする（ゲームのルール上）
     }
     if (location.y + r > bottom) 
-    {
+    {// 下
         location.y = bottom - r;
         vy *= -0.5f;
     }
 }
 
-// どこかしらに支えられているか判定する処理
+// どこかしらに支えられているか判定する処理(引数:全てのドーナツオブジェクト)
 bool Donuts::IsSupported(const std::vector<Donuts*>& others)
 {
     // 地面に接地している
