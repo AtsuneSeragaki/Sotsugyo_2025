@@ -156,7 +156,7 @@ void GameMainScene::Draw() const
 
 		// ポーズ画面以外は暗くする
 		// 描画輝度セット
-		SetDrawBright(128, 128, 128);
+		SetDrawBright(120, 120, 120);
 
 		// ゲームメイン背景描画
 		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
@@ -343,10 +343,10 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 		}
 
 		// ←ここで速度をリセット or 抑制して跳ね防止
-		//a->SetVelocity({ 0.0f, 0.0f });
-		//b->SetVelocity({ 0.0f, 0.0f });
+		a->SetVelocity({ 0.0f, 0.0f });
+		b->SetVelocity({ 0.0f, 0.0f });
 
-		//return; // ※以降の反発処理をスキップ！
+		return; // ※以降の反発処理をスキップ！
 	}
 
 	// ドーナツの質量を半径に比例させる
