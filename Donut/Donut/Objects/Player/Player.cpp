@@ -78,7 +78,7 @@ void Player::Draw() const
 	DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, 0.0, donut_img[0], TRUE);
 
 	// 落とすドーナツ番号の描画
-	DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
+	//DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
 
 	scale = (double)next_r / base_radius; // 次に落とすドーナツ画像の拡大率
 
@@ -86,7 +86,7 @@ void Player::Draw() const
 	DrawRotaGraph2F(1072.0f, 160.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
 
 	// 次に落とすドーナツ番号の描画(右上)
-	DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
+	//DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
 }
 
 // 終了時処理

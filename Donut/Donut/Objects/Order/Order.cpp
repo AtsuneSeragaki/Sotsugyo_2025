@@ -118,9 +118,9 @@ void Order::Draw() const
             DrawRotaGraph2F((float)ORDER_LX + 110.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
             
             // ドーナツの種類表示
-            Donuts* donut = new Donuts(order_list[i]);
+            /*Donuts* donut = new Donuts(order_list[i]);
             SetFontSize(20);
-            DrawFormatString(ORDER_LX + 107, ORDER_LY + 80 + 90 * i + 10, 0x5C4630, "%d", donut->GetDonutNumber(order_list[i]));
+            DrawFormatString(ORDER_LX + 107, ORDER_LY + 80 + 90 * i + 10, 0x5C4630, "%d", donut->GetDonutNumber(order_list[i]));*/
 
             // スコアを文字列に変換
             char buf[16];

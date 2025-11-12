@@ -90,11 +90,11 @@ void Donuts::Draw() const
        DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, rotation, donut_img, TRUE);
     }
    
-    SetFontSize(20);
-    const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
+    /*SetFontSize(20);
+    const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];*/
    
     // ドーナツ番号表示
-    DrawFormatStringF(location.x, location.y - 3.0f, 0x5C4630, "%d", info.number);
+    //DrawFormatStringF(location.x, location.y - 3.0f, 0x5C4630, "%d", info.number);
     // ドーナツ着地フラグ表示
     //DrawFormatStringF(location.x, location.y - 40.0f, 0x5C4630, "%d", landed);
 }
@@ -256,10 +256,10 @@ void Donuts::HandleCollision(Donuts* other)
     //vy *= 0.85f;
     //other->vx *= 0.85f;
     //other->vy *= 0.85f;
-    vx *= 0.75f; // 反発後の減速
-    vy *= 0.75f;
-    other->vx *= 0.75f;
-    other->vy *= 0.75f;
+    vx *= 0.85f; // 反発後の減速
+    vy *= 0.85f;
+    other->vx *= 0.85f;
+    other->vy *= 0.85f;
 }
 
 // ドーナツが着地したか確認する処理(引数:全てのドーナツオブジェクト)

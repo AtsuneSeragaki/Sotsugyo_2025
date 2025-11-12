@@ -343,11 +343,11 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			return;
 		}
 
-		// ←ここで速度をリセット or 抑制して跳ね防止
-		a->SetVelocity({ 0.0f, 0.0f });
-		b->SetVelocity({ 0.0f, 0.0f });
+		//// ←ここで速度をリセット or 抑制して跳ね防止
+		//a->SetVelocity({ 0.0f, 0.0f });
+		//b->SetVelocity({ 0.0f, 0.0f });
 
-		return; // ※以降の反発処理をスキップ！
+		//return; // ※以降の反発処理をスキップ！
 	}
 
 	// ドーナツの質量を半径に比例させる
@@ -385,10 +385,10 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	Vector2D v_b_new = vB + normal * (new_b_dot_n - b_dot_n);
 
 	// 新しい速度をセット（反発係数0.85を適用）
-	/*a->SetVelocity(v_a_new * 0.85f);
-	b->SetVelocity(v_b_new * 0.85f);*/
-	a->SetVelocity(v_a_new * 0.75f);
-	b->SetVelocity(v_b_new * 0.75f); 
+	a->SetVelocity(v_a_new * 0.85f);
+	b->SetVelocity(v_b_new * 0.85f);
+	/*a->SetVelocity(v_a_new * 0.8f);
+	b->SetVelocity(v_b_new * 0.8f); */
 
 	// 枠からはみ出していないか確認
 	CheckDonutOutOfFrame(a);
