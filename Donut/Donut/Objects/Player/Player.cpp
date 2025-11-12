@@ -69,8 +69,10 @@ void Player::Draw() const
 
 	FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
 
-	float base_radius = 46.5; // 元画像(93x93)の半径
+	//float base_radius = 46.5; // 元画像(93x93)の半径
+	float base_radius = 296.5; // 元画像(288x288)の半径
 	double scale = (double)r / (double)base_radius; // 落とすドーナツ画像の拡大率
+	double next_scale = (double)next_r / (double)base_radius; // 次に落とすドーナツ画像の拡大率
 
 	// 落とすドーナツ仮描画
 	DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, 0.0, donut_img[0], TRUE);
@@ -81,7 +83,7 @@ void Player::Draw() const
 	scale = (double)next_r / base_radius; // 次に落とすドーナツ画像の拡大率
 
 	// 次に落とすドーナツの描画(右上)
-	DrawRotaGraph2F(1072.0f, 160.0f, base_radius, base_radius, scale, 0.0, donut_img[1], TRUE);
+	DrawRotaGraph2F(1072.0f, 160.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
 
 	// 次に落とすドーナツ番号の描画(右上)
 	DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
@@ -100,6 +102,22 @@ void Player::ChooseRandomDonut()
 
 	// 次に落とすドーナツを決めなおす
 	next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_OLD_FASHIONED) + 1));
+
+	const DonutInfo& info = g_DonutInfoTable[static_cast<int>(donut_type)];
+	const DonutInfo& info2 = g_DonutInfoTable[static_cast<int>(next_donut_type)];
+
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages(info.image_path);
+	donut_img[0] = tmp[0];
+	tmp = rm->GetImages(info2.image_path);
+	donut_img[1] = tmp[0];
+
+	r = info.size;
+	next_r = info2.size;
+
+	donut_number = info.number;
+	next_donut_number = info2.number;
 }
 
 // ドーナツを落とす枠の範囲しか横移動出来ないようにする処理

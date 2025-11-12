@@ -44,6 +44,8 @@ void SceneManager::Initialize()
 		throw("•`‰ææ‚Ìw’è‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½\n");
 	}
 
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+
 	FontManager::Initialize();
 
 	ChangeScene(eSceneType::eTitle);

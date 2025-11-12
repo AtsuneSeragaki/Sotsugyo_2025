@@ -107,7 +107,8 @@ void Order::Draw() const
     else
     {// それ以外
 
-        float base_radius = 46.5; // 元画像(93x93)の半径
+        //float base_radius = 46.5; // 元画像(93x93)の半径
+        float base_radius = 296.5; // 元画像(288x288)の半径
         double scale = 40.0 / (double)base_radius; // 画像の拡大率
 
         // オーダーのドーナツを表示

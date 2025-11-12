@@ -23,8 +23,8 @@ Donuts::Donuts(DonutType type)
 
     ResourceManager* rm = ResourceManager::GetInstance();
     std::vector<int> tmp;
-    tmp = rm->GetImages(g_DonutInfoTable[0].image_path);
-    donut_img[0] = tmp[0];
+    tmp = rm->GetImages(info.image_path);
+    donut_img = tmp[0];
 
     rotation = 0.0;
 }
@@ -71,7 +71,8 @@ void Donuts::Update()
 // 描画処理
 void Donuts::Draw() const 
 {
-    float base_radius = 46.5; // 元画像(93x93)の半径
+    //float base_radius = 46.5; // 元画像(93x93)の半径
+    float base_radius = 296.5; // 元画像(288x288)の半径
     double scale = (double)r / (double)base_radius; // 画像の拡大率
 
     // ドーナツ仮表示
@@ -80,13 +81,13 @@ void Donuts::Draw() const
         // ドーナツを暗くする
         // 描画輝度のセット
         SetDrawBright(128, 128, 128);
-        DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale,rotation, donut_img[0], TRUE);
+        DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale,rotation, donut_img, TRUE);
         // 描画輝度を元に戻す
         SetDrawBright(255, 255, 255);
     }
     else
     {
-       DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, rotation, donut_img[0], TRUE);
+       DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, rotation, donut_img, TRUE);
     }
    
     SetFontSize(20);
@@ -122,6 +123,14 @@ int Donuts::GetDonutScore(DonutType dtype)
 {
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(dtype)];
     return info.score;
+}
+
+void Donuts::SetImage(const char* path)
+{
+    ResourceManager* rm = ResourceManager::GetInstance();
+    std::vector<int> tmp;
+    tmp = rm->GetImages(path);
+    donut_img = tmp[0];
 }
 
 // ドーナツ落下処理(引数:全てのドーナツオブジェクト)

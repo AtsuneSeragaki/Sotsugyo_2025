@@ -319,6 +319,7 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			// a‚ği‰»‚³‚¹‚é
 			a->SetDonutType(static_cast<DonutType>(nextTypeIndex));
 			a->SetRadius(g_DonutInfoTable[nextTypeIndex].size);
+			a->SetImage(g_DonutInfoTable[nextTypeIndex].image_path);
 			a->SetMerged(true);
 
 			// b‚ğíœ‘ÎÛ‚É

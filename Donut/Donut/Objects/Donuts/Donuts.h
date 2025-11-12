@@ -13,7 +13,7 @@ private:
 	bool isDead;      // 削除予定（外部で処理）
 	bool player_collision; // プレイヤーと当たっているか？フラグ
 	bool landedOnSomething; // 何かの上に着地しているか？フラグ
-	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
+	int donut_img; // ドーナツ画像
 
 public:
 	// コンストラクタ
@@ -71,6 +71,8 @@ public:
 
 	// 合体したか？フラグを書き換える処理(引数：設定したい値)
 	void SetMerged(bool m) { isMerged = m; }
+
+	void SetImage(const char* path);
 
 	// 着地フラグを返す処理(戻り値：着地フラグ)
 	bool GetLanded() { return landed; }
