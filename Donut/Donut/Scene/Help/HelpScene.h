@@ -18,10 +18,14 @@
 #define HELP_TITLE_BUTTON_LX HELP_START_BUTTON_RX + HELP_BUTTON_SPACING // タイトルボタン左上X座標(スタートボタン右下X座標＋ボタン同士の間隔)
 #define HELP_TITLE_BUTTON_RX HELP_TITLE_BUTTON_LX + HELP_BUTTON_WIDTH  // タイトルボタン右下X座標(左上X座標＋ボタンの高さ)
 
+#define MAX_PAGE_NUM 2
+
 class HelpScene : public SceneBase
 {
 private:
 	ButtonState button[HELP_BUTTON_NUM]; // ボタン情報
+	int background_img[MAX_PAGE_NUM];
+	int page_num; // 現在のページ番号
 
 public:
 	// コンストラクタ

@@ -48,7 +48,7 @@ void SceneManager::Initialize()
 
 	FontManager::Initialize();
 
-	ChangeScene(eSceneType::eTitle);
+	ChangeScene(eSceneType::eHelp);
 }
 
 void SceneManager::Update()
