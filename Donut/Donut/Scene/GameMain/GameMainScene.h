@@ -52,7 +52,9 @@ private:
 	int donut_creat_count;                // 次のドーナツを生成できる時間のカウント
 	ButtonState button[GAMEMAIN_BUTTON_NUM];  // ボタン情報(0:ポーズボタン 1:「続ける」ボタン 2:「タイトルに戻る」ボタン)
 	bool can_check_gameover;              // ゲームオーバー判定してもいいかフラグ（false:だめ true:してもいい）
-
+	int donut_image[MAX_DONUT_NUM];
+	bool is_donutgraphloaded;
+	int circle_image;
 
 public:
 	// コンストラクタ

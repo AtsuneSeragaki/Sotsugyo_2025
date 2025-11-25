@@ -10,7 +10,7 @@
 int GameMainScene::score = 0;
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0)
 {
 }
 
@@ -50,6 +50,16 @@ void GameMainScene::Initialize()
 
 	delete_se = rm->GetSounds("Resource/Sounds/GameMain/delete_se.mp3");
 	ChangeVolumeSoundMem(200, delete_se);
+
+	std::vector<int> tmp;
+	for (int i = 0; i < MAX_DONUT_NUM; i++)
+	{
+		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
+		donut_image[i] = tmp[0];
+	}
+
+	tmp = rm->GetImages("Resource/Images/circle.png");
+	circle_image = tmp[0];
 
 	donut_creat_flg = true;
 	donut_creat_count = 0;
@@ -151,6 +161,13 @@ void GameMainScene::Draw() const
 	// 枠の太さ
 	int line_width = 3;
 
+	const int numDonuts = 11;
+	const float centerX = 1080.0f;
+	const float centerY = 510.0f;
+	const float radius = 170.0f;
+
+	float angleOffset = -3.14159265f / 2.5f; // 上方向スタートに調整
+
 	if (pause)
 	{// ポーズ画面描画
 
@@ -182,6 +199,37 @@ void GameMainScene::Draw() const
 		// 進化の輪描画
 		FontManager::Draw(960, 300, 0.2, 0.2, 0x5C4630, "DONUT EVOLUTION CHART");
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
+
+		for (int i = 0; i < numDonuts; i++) {
+			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
+
+			int w, h;
+			GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
+
+			float centerX = 1080.0f;
+			float centerY = 510.0f;
+			float radius = 125.0f;
+
+			float base_radius = 296.5f; // 元画像(288x288)の半径
+			double scale = 28.0 / (double)base_radius; // 表示サイズ調整
+
+			// 円周上の位置
+			float x = centerX + radius * cosf(angle);
+			float y = centerY + radius * sinf(angle);
+
+			// DrawRotaGraph2F の中心を画像中心に設定
+			DrawRotaGraph2F(
+				x, y,              // 描画位置
+				base_radius,        // 画像内で回転の基準X（中心）
+				base_radius,        // 回転の基準Y（中心）
+				scale,              // 拡大率
+				0.0,              // 回転角度（円周に沿って向けたい場合）
+				donut_image[i],
+				TRUE
+			);
+		}
+
+		DrawGraph(997, 425, circle_image, TRUE);
 
 		// 進化の輪枠描画(枠を太くするために複数描画)
 		for (int j = 0; j < line_width; j++)
@@ -223,6 +271,37 @@ void GameMainScene::Draw() const
 		// 進化の輪描画
 		FontManager::Draw(925, 290, 0.25, 0.25, 0x5C4630, "DONUT EVOLUTION CHART");
 		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
+
+		for (int i = 0; i < numDonuts; i++) {
+			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
+
+			int w, h;
+			GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
+
+			float centerX = 1080.0f;
+			float centerY = 510.0f;
+			float radius = 125.0f;
+
+			float base_radius = 296.5f; // 元画像(288x288)の半径
+			double scale = 28.0 / (double)base_radius; // 表示サイズ調整
+
+			// 円周上の位置
+			float x = centerX + radius * cosf(angle);
+			float y = centerY + radius * sinf(angle);
+
+			// DrawRotaGraph2F の中心を画像中心に設定
+			DrawRotaGraph2F(
+				x, y,              // 描画位置
+				base_radius,        // 画像内で回転の基準X（中心）
+				base_radius,        // 回転の基準Y（中心）
+				scale,              // 拡大率
+				0.0,              // 回転角度（円周に沿って向けたい場合）
+				donut_image[i],
+				TRUE
+			);
+		}
+
+		DrawGraph(997, 425, circle_image, TRUE);
 
 		// 進化の輪枠描画(枠を太くするために複数描画)
 		for (int j = 0; j < line_width; j++)
