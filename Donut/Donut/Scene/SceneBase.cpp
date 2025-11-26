@@ -4,7 +4,7 @@
 #include "../Utility/FontManager.h"
 #include "DxLib.h"
 
-SceneBase::SceneBase() : background_image(0),frame_count(0),can_click(false),button_se_handle(0),button_string_color(0x5C4630),button_string_yspacing(0)
+SceneBase::SceneBase() : frame_count(0),button_se_handle(0),button_string_color(0x5C4630),button_string_yspacing(0)
 {
 	ButtonState button = {
 		0,    // lx

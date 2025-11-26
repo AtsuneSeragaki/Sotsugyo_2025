@@ -557,8 +557,8 @@ eSceneType GameMainScene::PauseUpdate()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
-	{		
+	if (input->IsMouseTriggered())
+	{
 		for (int i = 1; i < GAMEMAIN_BUTTON_NUM; i++)
 		{
 			if (button[i].collision)
@@ -578,7 +578,6 @@ eSceneType GameMainScene::PauseUpdate()
 					// それぞれの画面に遷移
 					return button[i].targetScene;
 				}
-
 			}
 		}
 	}
@@ -650,7 +649,7 @@ void GameMainScene::OnPlayerClick()
 	Donuts* donut = nullptr;
 
 	// プレイヤーが左クリックしたとき
-	if (input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (input->IsMouseTriggered())
 	{
 		// ポーズボタンの上で左クリックしたら、ポーズ状態にする
 		if (button[0].collision)

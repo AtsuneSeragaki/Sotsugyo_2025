@@ -26,10 +26,12 @@ private:
 	Vector2D mouse_location;       // マウス座標
 	int wheel;                     // マウスのホイール回転量
 
-	bool now_button[16];        // 現在のフレーム入力値
+	bool now_button[16]; // 現在のフレーム入力値
 	bool old_button[16]; // 過去のフレーム入力値
 	float trigger[2];    // 左右トリガーの入力値
 	Vector2D stick[2];   // 左右スティックの入力値
+
+	bool mouse_prev = false; // 前のフレームでマウスボタンが押されていたかどうかを記録する
 
 private:
 	// コンストラクタをprivateにする
@@ -63,6 +65,8 @@ public:
 	Vector2D GetMouseLocation();
 	// マウスのホイール回転量取得処理
 	int GetMouseWheelRotaVolume();
+	// 左クリックした瞬間だけ判定する処理
+	bool IsMouseTriggered();
 
 	// ボタンの入力取得処理
 	bool GetButton(int button);     // 押し続けている間

@@ -3,13 +3,11 @@
 #include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 #include "DxLib.h"
+#include <vector>
 
 // コンストラクタ
 HelpScene::HelpScene()
 {
-	frame_count = 0;
-	can_click = false;
-
 	int button_color = 0xD6A15D;        // ボタンのカラーコード
 	int button_string_color = 0xffffff; // ボタンの文字のカラーコード
 	int button_string_yspacing = 20;    // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
@@ -29,8 +27,11 @@ HelpScene::HelpScene()
 	background_img[0] = tmp[0];
 	tmp = rm->GetImages("Resource/Images/help2.png");
 	background_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/triangle.png");
+	triangle_img = tmp[0];
 
-	page_num = 1;
+	page_num = 0;
+	mouse_prev = false;
 }
 
 // デストラクタ
@@ -47,17 +48,9 @@ void HelpScene::Initialize()
 // 更新処理
 eSceneType HelpScene::Update()
 {
-	// フレームカウントが10以上になったらクリックできるようにする
-	if (frame_count >= 10)
-	{
-		can_click = true;
-	}
-	else
-	{
-		frame_count++;
-	}
-
 	InputManager* input = InputManager::GetInstance();
+
+	std::vector<Vec2> triangle;
 
 	// ボタンとプレイヤーカーソルの当たり判定
 	for (int i = 0; i < HELP_BUTTON_NUM; i++)
@@ -72,13 +65,24 @@ eSceneType HelpScene::Update()
 		}
 	}
 
-	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (input->IsMouseTriggered())
 	{
+		PlayButtonSound();
+
+		if (TrianglePlayerCollision())
+		{
+			if (page_num == 0)
+			{
+				page_num = 1;
+			}
+			else
+			{
+				page_num = 0;
+			}
+		}
+
 		for (int i = 0; i < HELP_BUTTON_NUM; i++)
 		{
-			PlayButtonSound();
-
 			if (button[i].collision == true)
 			{
 				// それぞれの画面に遷移
@@ -93,76 +97,36 @@ eSceneType HelpScene::Update()
 // 描画処理
 void HelpScene::Draw() const
 {
-	// 背景
-	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
-
-	// 枠の太さ
-	int line_width = 3;
-
-	// 三角形の大きさ
-	float w = 60.0f;   // 横幅
-	float h = 70.0f;   // 高さ
-
-	// 中心位置Y座標
-	float cy = 350.0f;
+	// 三角形ボタン
+	float y = 300.0f; // Y座標
+	double triangle_font_scale = 0.28; // フォントサイズ
+	int triangle_font_y = y - 38; // フォントY座標 
 
 	if (page_num == 0)
 	{
+		// 背景
 		DrawGraph(0, 0, background_img[0], FALSE);
+
+		// どのページにいるかの表示
 		DrawCircleAA(630, 570, 7, 64, 0xA67C52, TRUE);
 		DrawCircleAA(680, 570, 7, 64, 0x5C4630, TRUE);
 
-		// 中心位置X座標
-		float cx = 1160.0f;
-
-		// 右向き三角形（→）
-		DrawTriangleAA(
-			cx - w / 2, cy - h / 2,   // 左上
-			cx - w / 2, cy + h / 2,   // 左下
-			cx + w / 2, cy,         // 右の頂点
-			0xD8C3A5,
-			TRUE
-		);
-
-		// 右向き三角形（→）枠描画
-		for (int i = 0; i < line_width; i++)
-		{
-			DrawTriangleAA(
-				cx - w / 2 - i, cy - h / 2 - i,   // 左上
-				cx - w / 2 - i, cy + h / 2 + i,   // 左下
-				cx + w / 2 + i, cy,         // 右の頂点
-				0xA67C52,
-				FALSE
-			);
-		}
+		// 三角形ボタン
+		FontManager::Draw(1130 + 3, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "NEXT");
+		DrawGraph(1130, y, triangle_img, TRUE);
 	}
 	else
 	{
+		// 背景
 		DrawGraph(0, 0, background_img[1], FALSE);
+
+		// どのページにいるかの表示
 		DrawCircleAA(630, 570, 7, 64, 0x5C4630, TRUE);
 		DrawCircleAA(680, 570, 7, 64, 0xA67C52, TRUE);
 
-		// 中心位置X座標
-		float cx = 150.0f;
-
-		DrawTriangleAA(
-			cx - w / 2, cy,           // 左頂点
-			cx + w / 2, cy - h / 2,   // 右上
-			cx + w / 2, cy + h / 2,   // 右下
-			0xD8C3A5,
-			TRUE
-		);
-
-		for (int i = 0; i < line_width; i++)
-		{
-			DrawTriangleAA(
-				cx - w / 2, cy,           // 左頂点
-				cx + w / 2, cy - h / 2 - i,   // 右上
-				cx + w / 2, cy + h / 2 + i,   // 右下
-				0xA67C52,
-				FALSE
-			);
-		}
+		// 三角形ボタン
+		FontManager::Draw(100 + 5, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "BACK");
+		DrawTurnGraph(100, y, triangle_img, TRUE);
 	}
 
 	// タイトル
@@ -181,4 +145,111 @@ void HelpScene::Finalize()
 eSceneType HelpScene::GetNowSceneType() const
 {
 	return eSceneType::eHelp;
+}
+
+// 内積を求める処理
+float HelpScene::Dot(const Vec2& a, const Vec2& b)
+{
+	return a.x * b.x + a.y * b.y;
+}
+
+// 正規化処理
+Vec2 HelpScene::Normalize(const Vec2& v)
+{
+	float len = sqrtf(v.x * v.x + v.y * v.y);
+	return { v.x / len, v.y / len };
+}
+
+// 辺から法線を作る(左法線)処理
+Vec2 HelpScene::GetNormal(const Vec2& a, const Vec2& b)
+{
+	Vec2 edge = { b.x - a.x, b.y - a.y };
+	return Normalize({ -edge.y, edge.x });
+}
+
+// 多角形を軸に投影する処理
+void HelpScene::Project(const std::vector<Vec2>& poly, const Vec2& axis, float& minOut, float& maxOut)
+{
+	minOut = maxOut = Dot(poly[0], axis);
+	for (size_t i = 1; i < poly.size(); i++) {
+		float proj = Dot(poly[i], axis);
+		if (proj < minOut) minOut = proj;
+		if (proj > maxOut) maxOut = proj;
+	}
+}
+
+// SAT判定処理
+bool HelpScene::CheckSAT(const std::vector<Vec2>& polyA, const std::vector<Vec2>& polyB)
+{
+	std::vector<Vec2> axes;
+
+	// Aの法線
+	for (size_t i = 0; i < polyA.size(); i++) {
+		Vec2 p1 = polyA[i];
+		Vec2 p2 = polyA[(i + 1) % polyA.size()];
+		axes.push_back(GetNormal(p1, p2));
+	}
+	// Bの法線
+	for (size_t i = 0; i < polyB.size(); i++) {
+		Vec2 p1 = polyB[i];
+		Vec2 p2 = polyB[(i + 1) % polyB.size()];
+		axes.push_back(GetNormal(p1, p2));
+	}
+
+	// すべての軸で重なりチェック
+	for (auto& axis : axes) {
+		float minA, maxA, minB, maxB;
+		Project(polyA, axis, minA, maxA);
+		Project(polyB, axis, minB, maxB);
+
+		// 投影が重ならない → 分離軸あり → 当たっていない
+		if (maxA < minB || maxB < minA)
+			return false;
+	}
+
+	// 全軸で区間が重なった → 当たり
+	return true;
+}
+
+// プレイヤーと三角の当たり判定処理
+bool HelpScene::TrianglePlayerCollision()
+{
+	InputManager* input = InputManager::GetInstance();
+
+	std::vector<Vec2> triangle;
+
+	float player_width = 5.0f;  // プレイヤーの幅
+	float player_hight = 10.0f; // プレイヤーの高さ
+
+	// プレイヤー情報
+	float player_left = input->GetMouseLocation().x;
+	float player_right = input->GetMouseLocation().x + player_width;
+	float player_top = input->GetMouseLocation().y;
+	float player_bottom = input->GetMouseLocation().y + player_hight;
+
+	std::vector<Vec2> player = {
+		{player_left, player_top},
+		{player_right, player_top},
+		{player_left, player_bottom},
+		{player_right, player_bottom}
+	};
+
+	if (page_num == 0)
+	{
+		triangle = {
+			{1135, 300},
+			{1135, 380},
+			{1205, 340}
+		};
+	}
+	else
+	{
+		triangle = {
+			{175, 300},
+			{175, 380},
+			{105, 340}
+		};
+	}
+
+	return CheckSAT(triangle, player);
 }

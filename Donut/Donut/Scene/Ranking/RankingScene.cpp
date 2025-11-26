@@ -24,16 +24,6 @@ void RankingScene::Initialize()
 // 更新処理
 eSceneType RankingScene::Update()
 {
-	// フレームカウントが10以上になったらクリックできるようにする
-	if (frame_count >= 10)
-	{
-		can_click = true;
-	}
-	else
-	{
-		frame_count++;
-	}
-
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
@@ -50,7 +40,7 @@ eSceneType RankingScene::Update()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (input->IsMouseTriggered())
 	{
 		PlayButtonSound();
 

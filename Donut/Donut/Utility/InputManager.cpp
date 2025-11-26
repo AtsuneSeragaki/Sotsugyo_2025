@@ -165,6 +165,14 @@ int InputManager::GetMouseWheelRotaVolume()
 	return wheel;
 }
 
+bool InputManager::IsMouseTriggered()
+{
+	bool mouseNow = (GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress);
+	bool triggered = (mouseNow && !mouse_prev);
+	mouse_prev = mouseNow;
+	return triggered;
+}
+
 bool InputManager::GetButton(int button)
 {
 	return CheckButtonRange(button) && (now_button[button] && old_button[button]);

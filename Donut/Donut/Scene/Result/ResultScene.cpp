@@ -9,8 +9,6 @@
 ResultScene::ResultScene(int score)
 {
 	this->score = score;
-	frame_count = 0;
-	can_click = false;
 
 	// リスタートボタン初期化
 	button[0] = { RESULT_RESTART_BUTTON_LX,RESULT_RESTART_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eGameMain,{55,17,0x5C4630,0.35,0.35},"PLAY AGAIN" };
@@ -32,16 +30,6 @@ void ResultScene::Initialize()
 // 更新処理
 eSceneType ResultScene::Update()
 {
-	// フレームカウントが10以上になったらクリックできるようにする
-	if (frame_count >= 10)
-	{
-		can_click = true;
-	}
-	else
-	{
-		frame_count++;
-	}
-
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
@@ -58,7 +46,7 @@ eSceneType ResultScene::Update()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (input->IsMouseTriggered())
 	{
 		PlayButtonSound();
 

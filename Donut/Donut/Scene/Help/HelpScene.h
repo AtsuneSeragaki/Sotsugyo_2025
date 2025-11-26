@@ -20,12 +20,18 @@
 
 #define MAX_PAGE_NUM 2
 
+struct Vec2 {
+	float x, y;
+};
+
 class HelpScene : public SceneBase
 {
 private:
 	ButtonState button[HELP_BUTTON_NUM]; // ボタン情報
-	int background_img[MAX_PAGE_NUM];
-	int page_num; // 現在のページ番号
+	int background_img[MAX_PAGE_NUM];    // 背景画像
+	int triangle_img;                    // 三角形ボタン画像
+	int page_num;                        // 現在のページ番号
+	bool mouse_prev;                     
 
 public:
 	// コンストラクタ
@@ -46,4 +52,18 @@ public:
 public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
+
+private:
+	// 内積を求める処理
+	float Dot(const Vec2& a, const Vec2& b);
+	// 正規化処理
+	Vec2 Normalize(const Vec2& v);
+	// 辺から法線を作る(左法線)処理
+	Vec2 GetNormal(const Vec2& a, const Vec2& b);
+	// 多角形を軸に投影する処理
+	void Project(const std::vector<Vec2>& poly, const Vec2& axis, float& minOut, float& maxOut);
+	// SAT判定処理
+	bool CheckSAT(const std::vector<Vec2>& polyA, const std::vector<Vec2>& polyB);
+	// プレイヤーと三角の当たり判定処理
+	bool TrianglePlayerCollision();
 };

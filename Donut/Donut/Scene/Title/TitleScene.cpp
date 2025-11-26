@@ -1,39 +1,20 @@
 #include "DxLib.h"
 #include "TitleScene.h"
 #include "../../Utility/InputManager.h"
-#include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 
 // 初期化処理
 void TitleScene::Initialize()
 {
-	can_click = false;
-	frame_count = 0;
-
 	button[0] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX, TITLE_START_BUTTON_LY, TITLE_START_BUTTON_RY, false, eSceneType::eGameMain,{100,15,0x5C4630,0.4,0.4},"START" };
 	button[1] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_HELP_BUTTON_LY,TITLE_HELP_BUTTON_RY,false,eSceneType::eHelp,{20,15,0x5C4630,0.4,0.4},"HOW TO PLAY" };
 	button[2] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_RANKING_BUTTON_LY,TITLE_RANKING_BUTTON_RY,false,eSceneType::eRanking,{70,15,0x5C4630,0.4,0.4},"RANKING" };
 	button[3] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_END_BUTTON_LY,TITLE_END_BUTTON_RY,false,eSceneType::eEnd,{115,15,0x5C4630,0.4,0.4},"EXIT" };
-
-	ResourceManager* rm = ResourceManager::GetInstance();
-	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/back.png");
-	background_image = tmp[0];
 }
 
 // 更新処理
 eSceneType TitleScene::Update()
 {
-	// フレームカウントが10以上になったらクリックできるようにする
-	if (frame_count >= 10)
-	{
-		can_click = true;
-	}
-	else
-	{
-		frame_count++;
-	}
-	
 	InputManager* input = InputManager::GetInstance();
 
 	// ボタンとプレイヤーカーソルの当たり判定
@@ -50,7 +31,7 @@ eSceneType TitleScene::Update()
 	}
 
 	// ボタンの上でクリックしたら、それぞれの画面に遷移する
-	if (can_click && input->GetMouseInputState(MOUSE_INPUT_LEFT) == eInputState::ePress)
+	if (input->IsMouseTriggered())
 	{
 		PlayButtonSound();
 
