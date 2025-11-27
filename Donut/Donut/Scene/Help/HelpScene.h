@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../SceneBase.h"
+#include "../../Objects/GameObject.h"
 
 // ボタン共通情報
 #define HELP_BUTTON_WIDTH   300  // ボタンの幅
@@ -30,8 +31,9 @@ private:
 	ButtonState button[HELP_BUTTON_NUM]; // ボタン情報
 	int background_img[MAX_PAGE_NUM];    // 背景画像
 	int triangle_img;                    // 三角形ボタン画像
+	int donut_img[MAX_DONUT_NUM];        // ドーナツ画像
 	int page_num;                        // 現在のページ番号
-	bool mouse_prev;                     
+	bool triangle_collision;             // 三角形ボタンとプレイヤーが当たっているか？(true:当たっている false:当たっていない)
 
 public:
 	// コンストラクタ

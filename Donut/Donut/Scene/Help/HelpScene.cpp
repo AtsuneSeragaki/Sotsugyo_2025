@@ -29,9 +29,14 @@ HelpScene::HelpScene()
 	background_img[1] = tmp[0];
 	tmp = rm->GetImages("Resource/Images/triangle.png");
 	triangle_img = tmp[0];
+	for (int i = 0; i < MAX_DONUT_NUM; i++)
+	{
+		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
+		donut_img[i] = tmp[0];
+	}
 
 	page_num = 0;
-	mouse_prev = false;
+	triangle_collision = false;
 }
 
 // デストラクタ
@@ -65,11 +70,13 @@ eSceneType HelpScene::Update()
 		}
 	}
 
+	TrianglePlayerCollision();
+
 	if (input->IsMouseTriggered())
 	{
 		PlayButtonSound();
 
-		if (TrianglePlayerCollision())
+		if (triangle_collision)
 		{
 			if (page_num == 0)
 			{
@@ -107,13 +114,50 @@ void HelpScene::Draw() const
 		// 背景
 		DrawGraph(0, 0, background_img[0], FALSE);
 
+		float donut_y = 430.0f; // 描画Y座標（縦位置）
+		float spacing = 15.0f;     // ドーナツ同士の空白幅（px）
+		float current_x = 120.0f;   // 最初のドーナツ左端のX座標
+		float base_radius = 296.5f; // 元画像(593x593)の半径
+
+		for (int i = 0; i < MAX_DONUT_NUM; i++) 
+		{
+			double scale = ((double)g_DonutInfoTable[i].size - 7.0) / (double)base_radius; // 画像の拡大率
+
+			float draw_w = base_radius * 2 * scale;  // 拡大後の幅
+			float draw_h = base_radius * 2 * scale;  // 拡大後の高さ
+
+			// DrawRotaGraph2F の左上座標 = current_x + 画像中心からのオフセット
+			float draw_x = current_x;
+			float draw_y = donut_y - draw_h / 2;     // Yは中心に揃える
+
+			DrawRotaGraph2F(draw_x, draw_y, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
+
+			// 次のドーナツの左端X = 現在ドーナツの右端 + 空白
+			current_x += draw_w + spacing;
+		}
+
 		// どのページにいるかの表示
 		DrawCircleAA(630, 570, 7, 64, 0xA67C52, TRUE);
 		DrawCircleAA(680, 570, 7, 64, 0x5C4630, TRUE);
 
-		// 三角形ボタン
-		FontManager::Draw(1130 + 3, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "NEXT");
-		DrawGraph(1130, y, triangle_img, TRUE);
+		FontManager::Draw(1150 + 3, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "NEXT");
+
+		if (triangle_collision)
+		{
+			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+			SetDrawBright(115, 128, 128);
+
+			// 三角形ボタン
+			DrawGraph(1150, y, triangle_img, TRUE);
+
+			// 描画輝度を元に戻す
+			SetDrawBright(255, 255, 255);
+		}
+		else
+		{
+			// 三角形ボタン
+			DrawGraph(1150, y, triangle_img, TRUE);
+		}
 	}
 	else
 	{
@@ -124,9 +168,24 @@ void HelpScene::Draw() const
 		DrawCircleAA(630, 570, 7, 64, 0x5C4630, TRUE);
 		DrawCircleAA(680, 570, 7, 64, 0xA67C52, TRUE);
 
-		// 三角形ボタン
-		FontManager::Draw(100 + 5, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "BACK");
-		DrawTurnGraph(100, y, triangle_img, TRUE);
+		FontManager::Draw(80 + 5, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "BACK");
+
+		if (triangle_collision)
+		{
+			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+			SetDrawBright(128, 128, 128);
+
+			// 三角形ボタン
+			DrawTurnGraph(80, y, triangle_img, TRUE);
+
+			// 描画輝度を元に戻す
+			SetDrawBright(255, 255, 255);
+		}
+		else
+		{
+			// 三角形ボタン
+			DrawTurnGraph(80, y, triangle_img, TRUE);
+		}
 	}
 
 	// タイトル
@@ -204,10 +263,14 @@ bool HelpScene::CheckSAT(const std::vector<Vec2>& polyA, const std::vector<Vec2>
 
 		// 投影が重ならない → 分離軸あり → 当たっていない
 		if (maxA < minB || maxB < minA)
+		{
+			triangle_collision = false;
 			return false;
+		}	
 	}
 
 	// 全軸で区間が重なった → 当たり
+	triangle_collision = true;
 	return true;
 }
 
