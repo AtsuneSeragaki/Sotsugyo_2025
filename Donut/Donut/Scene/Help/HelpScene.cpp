@@ -55,8 +55,6 @@ eSceneType HelpScene::Update()
 {
 	InputManager* input = InputManager::GetInstance();
 
-	std::vector<Vec2> triangle;
-
 	// ボタンとプレイヤーカーソルの当たり判定
 	for (int i = 0; i < HELP_BUTTON_NUM; i++)
 	{
@@ -72,12 +70,16 @@ eSceneType HelpScene::Update()
 
 	TrianglePlayerCollision();
 
+	// プレイヤーが左クリックした時の処理
 	if (input->IsMouseTriggered())
 	{
 		PlayButtonSound();
 
+		// 三角形ボタンに当たっていたら
 		if (triangle_collision)
 		{
+			triangle_collision = false;
+
 			if (page_num == 0)
 			{
 				page_num = 1;
@@ -88,6 +90,7 @@ eSceneType HelpScene::Update()
 			}
 		}
 
+		// スタートorタイトルボタンに当たっていたら
 		for (int i = 0; i < HELP_BUTTON_NUM; i++)
 		{
 			if (button[i].collision == true)
@@ -105,7 +108,7 @@ eSceneType HelpScene::Update()
 void HelpScene::Draw() const
 {
 	// 三角形ボタン
-	float y = 300.0f; // Y座標
+	int y = 300; // Y座標
 	double triangle_font_scale = 0.28; // フォントサイズ
 	int triangle_font_y = y - 38; // フォントY座標 
 
@@ -123,8 +126,8 @@ void HelpScene::Draw() const
 		{
 			double scale = ((double)g_DonutInfoTable[i].size - 7.0) / (double)base_radius; // 画像の拡大率
 
-			float draw_w = base_radius * 2 * scale;  // 拡大後の幅
-			float draw_h = base_radius * 2 * scale;  // 拡大後の高さ
+			float draw_w = base_radius * 2 * (float)scale;  // 拡大後の幅
+			float draw_h = base_radius * 2 * (float)scale;  // 拡大後の高さ
 
 			// DrawRotaGraph2F の左上座標 = current_x + 画像中心からのオフセット
 			float draw_x = current_x;
@@ -198,6 +201,17 @@ void HelpScene::Draw() const
 // 終了時処理
 void HelpScene::Finalize()
 {
+	for (int i = 0; i < MAX_PAGE_NUM; i++)
+	{
+		DeleteGraph(background_img[i]);
+	}
+
+	for (int j = 0; j < MAX_DONUT_NUM; j++)
+	{
+		DeleteGraph(donut_img[j]);
+	}
+
+	DeleteGraph(triangle_img);
 }
 
 // 現在のシーン情報を返す

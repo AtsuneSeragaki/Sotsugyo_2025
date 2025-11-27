@@ -29,7 +29,7 @@
 class TitleScene : public SceneBase
 {
 private:
-	ButtonState button[TITLE_BUTTON_NUM];  // ボタン情報
+	ButtonState button[TITLE_BUTTON_NUM] = {};  // ボタン情報
 
 public:
 	// 初期化処理

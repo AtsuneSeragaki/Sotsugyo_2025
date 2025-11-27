@@ -42,7 +42,6 @@ void SceneBase::Draw() const
 
 void SceneBase::Finalize()
 {
-	
 }
 
 // プレイヤーカーソルとボタンの当たり判定(引数：当たり判定を取りたいボタンの情報　戻り値：0→当たってない 1→当たっている)
