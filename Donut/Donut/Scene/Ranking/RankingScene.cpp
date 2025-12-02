@@ -61,7 +61,7 @@ eSceneType RankingScene::Update()
 void RankingScene::Draw() const
 {
 	// ”wŒi
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 	// ƒ^ƒCƒgƒ‹
 	FontManager::Draw(430, 30, 1.0, 1.0, 0x5C4630, "RANKING");

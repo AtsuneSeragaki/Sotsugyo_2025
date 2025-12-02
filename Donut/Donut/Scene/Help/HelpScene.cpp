@@ -111,6 +111,8 @@ void HelpScene::Draw() const
 	int y = 300; // Y座標
 	double triangle_font_scale = 0.28; // フォントサイズ
 	int triangle_font_y = y - 38; // フォントY座標 
+	int shadow_pos = 5;
+	int offset_y = 2;
 
 	if (page_num == 0)
 	{
@@ -151,13 +153,23 @@ void HelpScene::Draw() const
 			SetDrawBright(115, 128, 128);
 
 			// 三角形ボタン
-			DrawGraph(1150, y, triangle_img, TRUE);
+			DrawGraph(1150, y + offset_y, triangle_img, TRUE);
 
 			// 描画輝度を元に戻す
 			SetDrawBright(255, 255, 255);
 		}
 		else
 		{
+
+			// ボタン影描画
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+			SetDrawBright(0, 0, 0);
+			DrawGraph(1150 + shadow_pos, y + shadow_pos, triangle_img, TRUE);
+			// 描画輝度を元に戻す
+			SetDrawBright(255, 255, 255);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 			// 三角形ボタン
 			DrawGraph(1150, y, triangle_img, TRUE);
 		}
@@ -179,13 +191,22 @@ void HelpScene::Draw() const
 			SetDrawBright(128, 128, 128);
 
 			// 三角形ボタン
-			DrawTurnGraph(80, y, triangle_img, TRUE);
+			DrawTurnGraph(80, y + offset_y, triangle_img, TRUE);
 
 			// 描画輝度を元に戻す
 			SetDrawBright(255, 255, 255);
 		}
 		else
 		{
+			// ボタン影描画
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+			SetDrawBright(0, 0, 0);
+			DrawTurnGraph(80 + shadow_pos, y + shadow_pos, triangle_img, TRUE);
+			// 描画輝度を元に戻す
+			SetDrawBright(255, 255, 255);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 			// 三角形ボタン
 			DrawTurnGraph(80, y, triangle_img, TRUE);
 		}
@@ -196,22 +217,14 @@ void HelpScene::Draw() const
 
 	// メニューボタン
 	DrawButton(HELP_BUTTON_NUM, button);
+
+	SetDrawBright(255, 255, 255);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 // 終了時処理
 void HelpScene::Finalize()
 {
-	for (int i = 0; i < MAX_PAGE_NUM; i++)
-	{
-		DeleteGraph(background_img[i]);
-	}
-
-	for (int j = 0; j < MAX_DONUT_NUM; j++)
-	{
-		DeleteGraph(donut_img[j]);
-	}
-
-	DeleteGraph(triangle_img);
 }
 
 // 現在のシーン情報を返す

@@ -36,7 +36,7 @@ eSceneType EndScene::Update()
 void EndScene::Draw() const
 {
 	// ”wŒi
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 	// ƒ^ƒCƒgƒ‹
 	SetFontSize(80);

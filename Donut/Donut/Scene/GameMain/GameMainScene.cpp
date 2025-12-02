@@ -176,7 +176,7 @@ void GameMainScene::Draw() const
 		SetDrawBright(120, 120, 120);
 
 		// ゲームメイン背景描画
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 		// ドーナツを落とす枠描画
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
@@ -248,7 +248,7 @@ void GameMainScene::Draw() const
 	else
 	{
 		// ゲームメイン背景描画
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 		// ドーナツを落とす枠描画
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);

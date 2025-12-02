@@ -7,6 +7,8 @@
 #define WINDOW_WIDTH  1280 // ‰æ–Ê‚Ì•
 #define WINDOW_HEIGHT 720  // ‰æ–Ê‚Ì‚‚³
 
+#define BACKGROUND_COLOR 0xDCD5CB
+
 enum class eSceneType
 {
 	eTitle,

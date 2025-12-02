@@ -76,32 +76,42 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 	int button_color = 0xD8C3A5; // ボタン背景のカラーコード
 	int button_line_color = 0xA67C52; // ボタン枠のカラーコード
 
+	int shadow_pos = 9;
+
+	// ボタン枠の太さ
+	int button_line_width = 3;
+
 	for (int i = 0; i < button_num; i++)
 	{
-		// ボタン枠の太さ
-		int button_line_width = 3;
 
 		if (button[i].collision)
 		{
 			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
 			SetDrawBright(128, 128, 128);
 
+			int offset_y = 4;
+
 			// ボタン背景描画
-			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
+			DrawBox(button[i].lx, button[i].ly + offset_y, button[i].rx, button[i].ry + offset_y, button_color, TRUE);
 
 			// ボタン枠描画(枠を太くするために複数描画)
 			for (int j = 0; j < button_line_width; j++)
 			{
-				DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
+				DrawBox(button[i].lx - j, button[i].ly - j + offset_y, button[i].rx + j, button[i].ry + j + offset_y, button_line_color, FALSE);
 			}
 
-			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
+			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing + offset_y, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
 
 			// 描画輝度を元に戻す
 			SetDrawBright(255, 255, 255);
 		}
 		else
 		{
+			// ボタン影描画
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+			DrawBox(button[i].lx + shadow_pos, button[i].ly + shadow_pos, button[i].rx + shadow_pos, button[i].ry + shadow_pos, 0x000000, TRUE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 			// ボタン背景描画
 			DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
 

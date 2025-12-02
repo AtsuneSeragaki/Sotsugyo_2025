@@ -30,6 +30,7 @@ class TitleScene : public SceneBase
 {
 private:
 	ButtonState button[TITLE_BUTTON_NUM] = {};  // ƒ{ƒ^ƒ“î•ñ
+	int background_img; // ”wŒi‰æ‘œ
 
 public:
 	// ‰Šú‰»ˆ—

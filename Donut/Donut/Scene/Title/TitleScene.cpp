@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "TitleScene.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 
 // 初期化処理
@@ -10,6 +11,11 @@ void TitleScene::Initialize()
 	button[1] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_HELP_BUTTON_LY,TITLE_HELP_BUTTON_RY,false,eSceneType::eHelp,{20,15,0x5C4630,0.4,0.4},"HOW TO PLAY" };
 	button[2] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_RANKING_BUTTON_LY,TITLE_RANKING_BUTTON_RY,false,eSceneType::eRanking,{70,15,0x5C4630,0.4,0.4},"RANKING" };
 	button[3] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_END_BUTTON_LY,TITLE_END_BUTTON_RY,false,eSceneType::eEnd,{115,15,0x5C4630,0.4,0.4},"EXIT" };
+
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages("Resource/Images/title.png");
+	background_img = tmp[0];
 }
 
 // 更新処理
@@ -52,8 +58,8 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
-	// DrawGraph(0, 0, background_image, TRUE);
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+	DrawGraph(0, 0, background_img, TRUE);
 
 	// タイトル
 	FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");

@@ -67,7 +67,7 @@ eSceneType ResultScene::Update()
 void ResultScene::Draw() const
 {
 	// ”wŒi
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 	// ƒ^ƒCƒgƒ‹
 	FontManager::Draw(475, 30, 1.0, 1.0, 0x5C4630, "RESULT");
