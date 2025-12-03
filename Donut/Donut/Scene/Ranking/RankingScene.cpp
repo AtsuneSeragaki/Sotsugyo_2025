@@ -2,6 +2,7 @@
 #include "../../Objects/Ranking/RankingData.h"
 #include "DxLib.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 
 // コンストラクタ
@@ -9,6 +10,11 @@ RankingScene::RankingScene()
 {
 	// タイトルボタン初期化
 	button[0] = { RANKING_TITLE_BUTTON_LX,RANKING_TITLE_BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
+	
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages("Resource/Images/ranking.png");
+	background_img = tmp[0];
 }
 
 // デストラクタ
@@ -61,22 +67,23 @@ eSceneType RankingScene::Update()
 void RankingScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+	DrawGraph(0, 0, background_img, FALSE);
 
 	// タイトル
-	FontManager::Draw(430, 30, 1.0, 1.0, 0x5C4630, "RANKING");
+	//FontManager::Draw(430, 30, 1.0, 1.0, 0x5C4630, "RANKING");
 
 	// ランキング表示背景
-	DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
+	//DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
 
-	// ランキング表示背景枠の太さ
-	int box_line_width = 3;
+	//// ランキング表示背景枠の太さ
+	//int box_line_width = 3;
 
-	// ランキング表示背景枠描画(枠を太くするために複数描画)
-	for (int j = 0; j < box_line_width; j++)
-	{
-		DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
-	}
+	//// ランキング表示背景枠描画(枠を太くするために複数描画)
+	//for (int j = 0; j < box_line_width; j++)
+	//{
+	//	DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
+	//}
 
 	RankingData* ranking = new RankingData();
 	ranking->Initialize();

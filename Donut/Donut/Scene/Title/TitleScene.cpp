@@ -14,7 +14,7 @@ void TitleScene::Initialize()
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/title.png");
+	tmp = rm->GetImages("Resource/Images/title2.png");
 	background_img = tmp[0];
 }
 
@@ -62,7 +62,7 @@ void TitleScene::Draw() const
 	DrawGraph(0, 0, background_img, TRUE);
 
 	// タイトル
-	FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");
+	//FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");
 
 	// メニューボタン
 	DrawButton(TITLE_BUTTON_NUM, button);

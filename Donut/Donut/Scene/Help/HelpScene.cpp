@@ -142,10 +142,10 @@ void HelpScene::Draw() const
 		}
 
 		// どのページにいるかの表示
-		DrawCircleAA(630, 570, 7, 64, 0xA67C52, TRUE);
-		DrawCircleAA(680, 570, 7, 64, 0x5C4630, TRUE);
+		/*DrawCircleAA(630, 570, 7, 64, 0xA67C52, TRUE);
+		DrawCircleAA(680, 570, 7, 64, 0x5C4630, TRUE);*/
 
-		FontManager::Draw(1150 + 3, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "NEXT");
+		//FontManager::Draw(1150 + 3, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "NEXT");
 
 		if (triangle_collision)
 		{
@@ -180,10 +180,10 @@ void HelpScene::Draw() const
 		DrawGraph(0, 0, background_img[1], FALSE);
 
 		// どのページにいるかの表示
-		DrawCircleAA(630, 570, 7, 64, 0x5C4630, TRUE);
+		/*DrawCircleAA(630, 570, 7, 64, 0x5C4630, TRUE);
 		DrawCircleAA(680, 570, 7, 64, 0xA67C52, TRUE);
 
-		FontManager::Draw(80 + 5, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "BACK");
+		FontManager::Draw(80 + 5, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "BACK");*/
 
 		if (triangle_collision)
 		{
@@ -213,7 +213,7 @@ void HelpScene::Draw() const
 	}
 
 	// タイトル
-	FontManager::Draw(330, 30, 1, 1, 0x5C4630, "HOW TO PLAY");
+	//FontManager::Draw(330, 30, 1, 1, 0x5C4630, "HOW TO PLAY");
 
 	// メニューボタン
 	DrawButton(HELP_BUTTON_NUM, button);

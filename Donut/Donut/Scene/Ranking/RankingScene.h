@@ -17,6 +17,7 @@ class RankingScene : public SceneBase
 {
 private:
 	ButtonState button[RANKING_BUTTON_NUM]; // ボタン情報
+	int background_img;
 	
 public:
 	// コンストラクタ

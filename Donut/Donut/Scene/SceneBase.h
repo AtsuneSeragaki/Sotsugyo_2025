@@ -7,6 +7,9 @@
 #define WINDOW_WIDTH  1280 // 画面の幅
 #define WINDOW_HEIGHT 720  // 画面の高さ
 
+#define BUTTON_WIDTH 300
+#define BUTTON_HEIGHT 70
+
 #define BACKGROUND_COLOR 0xDCD5CB
 
 enum class eSceneType
@@ -47,6 +50,7 @@ protected:
 	int frame_count;             // フレームカウント
 	int button_string_color;     // ボタンの文字のカラーコード
 	int button_string_yspacing;  // ボタンの文字の表示する高さ(ボタン左上Y座標からの距離)
+	int button_img;
 
 public:
 	SceneBase();
