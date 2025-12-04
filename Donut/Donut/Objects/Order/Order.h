@@ -53,4 +53,7 @@ public:
 
 	// オーダーにあるドーナツの個数を返す処理(引数：ドーナツの種類　戻り値：ドーナツの個数)
 	int GetDonutOrderNum(DonutType type);
+
+	// オーダーリストにあるドーナツ画像を設定
+	void SetDonutImage();
 };

@@ -19,15 +19,7 @@ Order::Order()
 
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 
-    std::vector<int> tmp;
-   
-    // 画像読み込み
-    for (int i = 0; i < ORDER_MAX; i++)
-    {
-       const DonutInfo& info = g_DonutInfoTable[(int)order_list[i]];
-       tmp = rm->GetImages(info.image_path);
-       donut_img[i] = tmp[0];
-    }
+    SetDonutImage();
 }
 
 // デストラクタ
@@ -170,8 +162,8 @@ void Order::SetRandomOrder(int difficulty)
 
     if (difficulty <= 0) { min_index = 0; max_index = 3; min_count = 1; max_count = 1; }
     else if (difficulty == 1) { min_index = 1; max_index = 4; min_count = 1; max_count = 1; }
-    else if (difficulty == 2) { min_index = 1; max_index = 4; min_count = 1; max_count = 1; }
-    else if (difficulty == 3) { min_index = 2; max_index = 5; min_count = 1; max_count = 2; }
+    else if (difficulty == 2) { min_index = 1; max_index = 4; min_count = 1; max_count = 2; }
+    else if (difficulty == 3) { min_index = 2; max_index = 5; min_count = 1; max_count = 1; }
     else if (difficulty == 4) { min_index = 2; max_index = 5; min_count = 1; max_count = 2; }
     else                      { min_index = 2; max_index = 5; min_count = 2; max_count = 3; }
 
@@ -240,6 +232,8 @@ void Order::SetRandomOrder(int difficulty)
         order_list[i] = items[i].type;
         order_num[i] = items[i].count;
     }
+
+    SetDonutImage();
 }
 
 // ドーナツの数を減らす処理(引数：減らしたいドーナツの種類)
@@ -290,4 +284,19 @@ int Order::GetDonutOrderNum(DonutType type)
     }
 
     return 0;
+}
+
+void Order::SetDonutImage()
+{
+    ResourceManager* rm = ResourceManager::GetInstance();
+
+    std::vector<int> tmp;
+
+    // 画像読み込み
+    for (int i = 0; i < ORDER_MAX; i++)
+    {
+        const DonutInfo& info = g_DonutInfoTable[(int)order_list[i]];
+        tmp = rm->GetImages(info.image_path);
+        donut_img[i] = tmp[0];
+    }
 }
