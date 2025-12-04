@@ -10,7 +10,7 @@
 int GameMainScene::score = 0;
 
 // ÉRÉìÉXÉgÉâÉNÉ^
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0)
 {
 }
 
@@ -60,6 +60,9 @@ void GameMainScene::Initialize()
 
 	tmp = rm->GetImages("Resource/Images/circle.png");
 	circle_image = tmp[0];
+
+	tmp = rm->GetImages("Resource/Images/gamemain.png");
+	background_img = tmp[0];
 
 	donut_creat_flg = true;
 	donut_creat_count = 0;
@@ -176,7 +179,8 @@ void GameMainScene::Draw() const
 		SetDrawBright(120, 120, 120);
 
 		// ÉQÅ[ÉÄÉÅÉCÉìîwåiï`âÊ
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+		DrawGraph(0, 0, background_img, FALSE);
 
 		// ÉhÅ[ÉiÉcÇóéÇ∆Ç∑ògï`âÊ
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
@@ -197,8 +201,8 @@ void GameMainScene::Draw() const
 		DrawScore();
 
 		// êiâªÇÃó÷ï`âÊ
-		FontManager::Draw(960, 300, 0.2, 0.2, 0x5C4630, "DONUT EVOLUTION CHART");
-		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
+		/*FontManager::Draw(960, 300, 0.2, 0.2, 0x5C4630, "DONUT EVOLUTION CHART");
+		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);*/
 
 		for (int i = 0; i < numDonuts; i++) {
 			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
@@ -232,10 +236,10 @@ void GameMainScene::Draw() const
 		DrawGraph(997, 425, circle_image, TRUE);
 
 		// êiâªÇÃó÷ògï`âÊ(ògÇëæÇ≠Ç∑ÇÈÇΩÇﬂÇ…ï°êîï`âÊ)
-		for (int j = 0; j < line_width; j++)
+		/*for (int j = 0; j < line_width; j++)
 		{
 			DrawCircleAA(1080.0f, 510.0f, 170.0f + j, 64,0xA67C52, FALSE);
-		}
+		}*/
 
 		// É|Å[ÉYÉ{É^Éìï`âÊ
 		DrawButton(1, button);
@@ -248,7 +252,8 @@ void GameMainScene::Draw() const
 	else
 	{
 		// ÉQÅ[ÉÄÉÅÉCÉìîwåiï`âÊ
-		DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+		DrawGraph(0, 0, background_img, FALSE);
 
 		// ÉhÅ[ÉiÉcÇóéÇ∆Ç∑ògï`âÊ
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
@@ -269,8 +274,8 @@ void GameMainScene::Draw() const
 		DrawScore();
 
 		// êiâªÇÃó÷ï`âÊ
-		FontManager::Draw(925, 290, 0.25, 0.25, 0x5C4630, "DONUT EVOLUTION CHART");
-		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);
+		/*FontManager::Draw(925, 290, 0.25, 0.25, 0x5C4630, "DONUT EVOLUTION CHART");
+		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);*/
 
 		for (int i = 0; i < numDonuts; i++) {
 			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
@@ -278,8 +283,8 @@ void GameMainScene::Draw() const
 			int w, h;
 			GetGraphSize(donut_image[i], &w, &h);  // âÊëúÉTÉCÉYéÊìæ
 
-			float centerX = 1080.0f;
-			float centerY = 510.0f;
+			float centerX = 1085.0f;
+			float centerY = 513.0f;
 			float radius = 125.0f;
 
 			float base_radius = 296.5f; // å≥âÊëú(288x288)ÇÃîºåa
@@ -301,13 +306,13 @@ void GameMainScene::Draw() const
 			);
 		}
 
-		DrawGraph(997, 425, circle_image, TRUE);
+		DrawGraph(1002, 428, circle_image, TRUE);
 
 		// êiâªÇÃó÷ògï`âÊ(ògÇëæÇ≠Ç∑ÇÈÇΩÇﬂÇ…ï°êîï`âÊ)
-		for (int j = 0; j < line_width; j++)
+		/*for (int j = 0; j < line_width; j++)
 		{
 			DrawCircleAA(1080.0f, 510.0f, 170.0f + j, 64, 0xA67C52, FALSE);
-		}
+		}*/
 
 		// É|Å[ÉYÉ{É^Éìï`âÊ
 		DrawButton(1, button);
@@ -736,18 +741,18 @@ void GameMainScene::MakeDonutList()
 void GameMainScene::DrawScore() const
 {
 	// ÉXÉRÉAï`âÊîwåi
-	DrawCircle(200, 135, 105, 0xD8C3A5, TRUE);
+	//DrawCircle(200, 135, 105, 0xD8C3A5, TRUE);
 
-	// ògÇÃëæÇ≥
-	int line_width = 3;
+	//// ògÇÃëæÇ≥
+	//int line_width = 3;
 
-	// ògï`âÊ(ògÇëæÇ≠Ç∑ÇÈÇΩÇﬂÇ…ï°êîï`âÊ)
-	for (int j = 0; j < line_width; j++)
-	{
-		DrawCircleAA(200.0f, 135.0f, 105.0f + j, 64, 0xA67C52, FALSE);
-	}
-	
-	FontManager::Draw(155, 65, 0.3, 0.3, 0x5C4630, "SCORE");
+	//// ògï`âÊ(ògÇëæÇ≠Ç∑ÇÈÇΩÇﬂÇ…ï°êîï`âÊ)
+	//for (int j = 0; j < line_width; j++)
+	//{
+	//	DrawCircleAA(200.0f, 135.0f, 105.0f + j, 64, 0xA67C52, FALSE);
+	//}
+	//
+	//FontManager::Draw(155, 65, 0.3, 0.3, 0x5C4630, "SCORE");
 
 	// ÉXÉRÉAÇï∂éöóÒÇ…ïœä∑
 	char score_buf[16];

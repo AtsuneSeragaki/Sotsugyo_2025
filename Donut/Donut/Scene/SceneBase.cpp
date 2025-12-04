@@ -104,7 +104,7 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 			//	DrawBox(button[i].lx - j, button[i].ly - j + offset_y, button[i].rx + j, button[i].ry + j + offset_y, button_line_color, FALSE);
 			//}
 
-			DrawGraph(button[i].lx, button[i].ly + offset_y, button_img, TRUE);
+			DrawExtendGraph(button[i].lx, button[i].ly + offset_y, button[i].rx, button[i].ry + offset_y, button_img, TRUE);
 
 			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing + offset_y, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
 
@@ -113,10 +113,23 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 		}
 		else
 		{
-			// ƒ{ƒ^ƒ“‰e•`‰æ
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
-			DrawBox(button[i].lx + shadow_pos, button[i].ly + shadow_pos, button[i].rx + shadow_pos, button[i].ry + shadow_pos, 0x000000, TRUE);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			if (button[i].label == "PAUSE")
+			{
+				int shadow_pos_pause = 5;
+
+				// ƒ{ƒ^ƒ“‰e•`‰æ
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+				DrawBox(button[i].lx + shadow_pos_pause, button[i].ly + shadow_pos_pause, button[i].rx + shadow_pos_pause, button[i].ry + shadow_pos_pause, 0x000000, TRUE);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			}
+			else
+			{
+				// ƒ{ƒ^ƒ“‰e•`‰æ
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+				DrawBox(button[i].lx + shadow_pos, button[i].ly + shadow_pos, button[i].rx + shadow_pos, button[i].ry + shadow_pos, 0x000000, TRUE);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			}
+			
 
 			// ƒ{ƒ^ƒ“”wŒi•`‰æ
 			//DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
@@ -127,7 +140,7 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 			//	DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
 			//}
 
-			DrawGraph(button[i].lx, button[i].ly, button_img, TRUE);
+			DrawExtendGraph(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_img, TRUE);
 
 			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
 		}

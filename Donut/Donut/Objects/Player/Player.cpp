@@ -56,18 +56,18 @@ void Player::Update()
 void Player::Draw() const
 {
 	// ネクスト枠の描画(右上)
-	DrawCircle(1070, 135, 105, 0xD8C3A5, TRUE);
+	//DrawCircle(1070, 135, 105, 0xD8C3A5, TRUE);
 
-	// 枠の太さ
-	int line_width = 3;
+	//// 枠の太さ
+	//int line_width = 3;
 
-	// ドーナツを落とす枠描画(枠を太くするために複数描画)
-	for (int i = 0; i < line_width; i++)
-	{
-		DrawCircleAA(1070.0f, 135.0f, 105.0f + i, 64,0xA67C52, FALSE);
-	}
+	//// ドーナツを落とす枠描画(枠を太くするために複数描画)
+	//for (int i = 0; i < line_width; i++)
+	//{
+	//	DrawCircleAA(1070.0f, 135.0f, 105.0f + i, 64,0xA67C52, FALSE);
+	//}
 
-	FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
+	//FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
 
 	//float base_radius = 46.5; // 元画像(93x93)の半径
 	float base_radius = 296.5; // 元画像(288x288)の半径
@@ -83,7 +83,7 @@ void Player::Draw() const
 	scale = (double)next_r / base_radius; // 次に落とすドーナツ画像の拡大率
 
 	// 次に落とすドーナツの描画(右上)
-	DrawRotaGraph2F(1072.0f, 160.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
+	DrawRotaGraph2F(1074.0f, 155.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
 
 	// 次に落とすドーナツ番号の描画(右上)
 	//DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);

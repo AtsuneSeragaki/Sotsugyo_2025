@@ -55,6 +55,7 @@ private:
 	int donut_image[MAX_DONUT_NUM];
 	bool is_donutgraphloaded;
 	int circle_image;
+	int background_img;
 
 public:
 	// コンストラクタ

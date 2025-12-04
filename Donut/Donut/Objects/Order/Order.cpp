@@ -79,17 +79,17 @@ void Order::Update()
 void Order::Draw() const
 {
     // オーダーの枠を表示
-    DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
+    //DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
 
-    // 枠の太さ
-    int line_width = 3;
-    // 枠描画(枠を太くするために複数描画)
-    for (int j = 0; j < line_width; j++)
-    {
-        DrawBox(ORDER_LX - j, ORDER_LY - j, ORDER_RX + j, ORDER_RY + j, 0xA67C52, FALSE);
-    }
+    //// 枠の太さ
+    //int line_width = 3;
+    //// 枠描画(枠を太くするために複数描画)
+    //for (int j = 0; j < line_width; j++)
+    //{
+    //    DrawBox(ORDER_LX - j, ORDER_LY - j, ORDER_RX + j, ORDER_RY + j, 0xA67C52, FALSE);
+    //}
 
-    FontManager::Draw(ORDER_LX + 105, ORDER_LY + 13, 0.3, 0.3, 0x5C4630, "ORDER");
+    //FontManager::Draw(ORDER_LX + 105, ORDER_LY + 13, 0.3, 0.3, 0x5C4630, "ORDER");
 
     if (complete_order && clear_timer <= 80)
     {// オーダーをクリアした時
@@ -107,7 +107,7 @@ void Order::Draw() const
         for (int i = 0; i < ORDER_MAX; i++)
         {
             // ドーナツ表示
-            DrawRotaGraph2F((float)ORDER_LX + 110.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
+            DrawRotaGraph2F((float)ORDER_LX + 115.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
             
             // ドーナツの種類表示
             /*Donuts* donut = new Donuts(order_list[i]);
@@ -119,7 +119,7 @@ void Order::Draw() const
             sprintf_s(buf, sizeof(buf), "x %d", order_num[i]);
 
             // ドーナツの個数を表示
-            FontManager::Draw(ORDER_LX + 170, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
+            FontManager::Draw(ORDER_LX + 175, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
         }
     }
 }
