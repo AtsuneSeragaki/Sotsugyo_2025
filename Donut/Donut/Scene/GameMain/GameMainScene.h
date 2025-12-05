@@ -56,6 +56,7 @@ private:
 	bool is_donutgraphloaded;
 	int circle_image;
 	int background_img;
+	int pause_img;
 
 public:
 	// コンストラクタ

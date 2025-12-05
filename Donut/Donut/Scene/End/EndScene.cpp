@@ -1,10 +1,15 @@
 #include "EndScene.h"
 #include "../../Utility/FontManager.h"
+#include "../../Utility/ResourceManager.h"
 #include "DxLib.h"
 
 // コンストラクタ
 EndScene::EndScene():end_timer(0)
 {
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages("Resource/Images/end.png");
+	background_img = tmp[0];
 }
 
 // デストラクタ
@@ -36,12 +41,13 @@ eSceneType EndScene::Update()
 void EndScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+	DrawGraph(0, 0, background_img, FALSE);
 
 	// タイトル
-	SetFontSize(80);
-	//DrawString(220, 300, "THANK YOU FOR PLAYING", 0xffffff);
-	FontManager::Draw(100, 270, 0.9, 0.9, 0x5C4630, "THANK YOU FOR PLAYING");
+	//SetFontSize(80);
+	////DrawString(220, 300, "THANK YOU FOR PLAYING", 0xffffff);
+	//FontManager::Draw(100, 270, 0.9, 0.9, 0x5C4630, "THANK YOU FOR PLAYING");
 
 }
 

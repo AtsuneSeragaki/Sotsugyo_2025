@@ -23,6 +23,7 @@ class ResultScene : public SceneBase
 private:
 	int score;  // スコア
 	ButtonState button[RESULT_BUTTON_NUM]; // ボタン情報
+	int background_img;
 	
 public:
 	// コンストラクタ

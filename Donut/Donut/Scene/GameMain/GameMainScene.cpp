@@ -10,7 +10,7 @@
 int GameMainScene::score = 0;
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0),pause_img(0)
 {
 }
 
@@ -63,6 +63,9 @@ void GameMainScene::Initialize()
 
 	tmp = rm->GetImages("Resource/Images/gamemain.png");
 	background_img = tmp[0];
+
+	tmp = rm->GetImages("Resource/Images/pause.png");
+	pause_img = tmp[0];
 
 	donut_creat_flg = true;
 	donut_creat_count = 0;
@@ -594,10 +597,11 @@ eSceneType GameMainScene::PauseUpdate()
 void GameMainScene::PauseDraw() const
 {
 	// 背景
-	DrawBox(200 + 60, 70 + 80, 1080 - 60, 650 - 120, 0xE0D9CE, TRUE);
+	//DrawBox(200 + 60, 70 + 80, 1080 - 60, 650 - 120, 0xE0D9CE, TRUE);
+	DrawGraph(260, 150, pause_img, FALSE);
 
 	// 画面名
-	FontManager::Draw(520, 200, 0.85, 0.85, 0x5C4630, "PAUSE");
+	//FontManager::Draw(520, 200, 0.85, 0.85, 0x5C4630, "PAUSE");
 
 	// ポーズ画面ボタンだけの新しい変数を作成
 	ButtonState pause_button[2];

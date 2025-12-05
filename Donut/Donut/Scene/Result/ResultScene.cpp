@@ -1,6 +1,7 @@
 #include "ResultScene.h"
 #include "../../Objects/Ranking/RankingData.h"
 #include "../../Utility/InputManager.h"
+#include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 #include <cstdio>
 #include "DxLib.h"
@@ -15,6 +16,11 @@ ResultScene::ResultScene(int score)
 
 	// タイトルボタン初期化
 	button[1] = { RESULT_TITLE_BUTTON_LX,RESULT_TITLE_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
+
+	ResourceManager* rm = ResourceManager::GetInstance();
+	std::vector<int> tmp;
+	tmp = rm->GetImages("Resource/Images/result.png");
+	background_img = tmp[0];
 }
 
 // デストラクタ
@@ -67,22 +73,23 @@ eSceneType ResultScene::Update()
 void ResultScene::Draw() const
 {
 	// 背景
-	DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+	DrawGraph(0, 0, background_img, FALSE);
 
 	// タイトル
-	FontManager::Draw(475, 30, 1.0, 1.0, 0x5C4630, "RESULT");
+	//FontManager::Draw(475, 30, 1.0, 1.0, 0x5C4630, "RESULT");
 
 	// リザルト表示背景
-	DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
+	//DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
 
-	// リザルト表示背景枠の太さ
-	int box_line_width = 3;
+	//// リザルト表示背景枠の太さ
+	//int box_line_width = 3;
 
-	// リザルト表示背景枠描画(枠を太くするために複数描画)
-	for (int j = 0; j < box_line_width; j++)
-	{
-		DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
-	}
+	//// リザルト表示背景枠描画(枠を太くするために複数描画)
+	//for (int j = 0; j < box_line_width; j++)
+	//{
+	//	DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
+	//}
 
 	// スコア
 	DrawScore();

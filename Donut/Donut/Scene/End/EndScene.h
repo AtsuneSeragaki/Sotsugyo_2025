@@ -6,6 +6,7 @@ class EndScene : public SceneBase
 {
 private:
 	int end_timer; // 終わるまでの時間
+	int background_img;
 
 public:
 	// コンストラクタ
