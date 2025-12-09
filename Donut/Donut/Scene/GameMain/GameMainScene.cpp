@@ -28,7 +28,7 @@ void GameMainScene::Initialize()
 	pause = false;
 	is_gameover = false;
 	gameover_timer = 0;
-	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 60.0f));
+	player = gameobjects->CreateGameObject<Player>(Vector2D(600.0f, 80.0f));
 	order  = gameobjects->CreateGameObject<Order>(Vector2D(0.0f, 0.0f));
 	ranking_data = new RankingData();
 
@@ -212,9 +212,9 @@ void GameMainScene::Draw() const
 
 			int w, h;
 			GetGraphSize(donut_image[i], &w, &h);  // ‰æ‘œƒTƒCƒYæ“¾
-
-			float centerX = 1080.0f;
-			float centerY = 510.0f;
+			
+			float centerX = 1085.0f;
+			float centerY = 513.0f;
 			float radius = 125.0f;
 
 			float base_radius = 296.5f; // Œ³‰æ‘œ(288x288)‚Ì”¼Œa
@@ -236,7 +236,7 @@ void GameMainScene::Draw() const
 			);
 		}
 
-		DrawGraph(997, 425, circle_image, TRUE);
+		//DrawGraph(997, 425, circle_image, TRUE);
 
 		// i‰»‚Ì—Ö˜g•`‰æ(˜g‚ğ‘¾‚­‚·‚é‚½‚ß‚É•¡”•`‰æ)
 		/*for (int j = 0; j < line_width; j++)
@@ -309,7 +309,7 @@ void GameMainScene::Draw() const
 			);
 		}
 
-		DrawGraph(1002, 428, circle_image, TRUE);
+		//DrawGraph(1002, 428, circle_image, TRUE);
 
 		// i‰»‚Ì—Ö˜g•`‰æ(˜g‚ğ‘¾‚­‚·‚é‚½‚ß‚É•¡”•`‰æ)
 		/*for (int j = 0; j < line_width; j++)
