@@ -7,8 +7,12 @@ void FontManager::Initialize()
 {
 	// ウィンドウズPCに一時的にフォントデータを読み込む(システム終了まで)
 	AddFontResourceExA("Resource/Font/Guanine.otf", FR_PRIVATE, NULL);
+	//AddFontResourceExA("Resource/Font/MonaspaceArgon-WideExtraBold.otf", FR_PRIVATE, NULL);
+
 
 	font_handle = CreateFontToHandle("Guanine", 100, 4, DX_FONTTYPE_ANTIALIASING_4X4);
+	//font_handle = CreateFontToHandle("Monaspace Argon Wide ExtraBold", 100, 4, DX_FONTTYPE_ANTIALIASING_4X4);
+
 }
 
 void FontManager::Cleanup()
