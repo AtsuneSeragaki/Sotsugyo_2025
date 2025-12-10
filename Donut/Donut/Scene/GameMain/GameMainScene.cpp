@@ -322,7 +322,7 @@ void GameMainScene::Draw() const
 
 		if (is_gameover)
 		{
-			FontManager::Draw(420, 350, 0.75, 0.75, 0x1A2E40, "GAME OVER!");
+			FontManager::DrawStr(420, 350, 0.75, 0.75, 0x1A2E40, "GAME OVER!");
 		}
 	}
 }
@@ -762,7 +762,7 @@ void GameMainScene::DrawScore() const
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::Draw(115, 128, 0.3, 0.3, 0x5C4630, score_buf);
+	FontManager::DrawNum(115, 128, 0.3, 0.3, 0x5C4630, score_buf);
 }
 
 // ドーナツが枠からはみ出していないか確認する処理

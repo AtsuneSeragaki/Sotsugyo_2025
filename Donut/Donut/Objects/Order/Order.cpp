@@ -94,7 +94,7 @@ void Order::Draw() const
     if (complete_order && clear_timer <= 80)
     {// オーダーをクリアした時
 
-        FontManager::Draw(ORDER_LX + 15, ORDER_LY + 165, 1.0, 1.0, 0xff5555, "Clear!");
+        FontManager::DrawStr(ORDER_LX + 15, ORDER_LY + 165, 1.0, 1.0, 0xff5555, "Clear!");
     }
     else
     {// それ以外
@@ -119,7 +119,7 @@ void Order::Draw() const
             sprintf_s(buf, sizeof(buf), "x %d", order_num[i]);
 
             // ドーナツの個数を表示
-            FontManager::Draw(ORDER_LX + 175, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
+            FontManager::DrawNum(ORDER_LX + 175, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
         }
     }
 }

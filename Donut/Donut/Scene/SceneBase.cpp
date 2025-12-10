@@ -106,7 +106,7 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 
 			DrawExtendGraph(button[i].lx, button[i].ly + offset_y, button[i].rx, button[i].ry + offset_y, button_img, TRUE);
 
-			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing + offset_y, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
+			FontManager::DrawStr(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing + offset_y, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
 
 			// •`‰æ‹P“x‚ðŒ³‚É–ß‚·
 			SetDrawBright(255, 255, 255);
@@ -142,7 +142,7 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 
 			DrawExtendGraph(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_img, TRUE);
 
-			FontManager::Draw(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
+			FontManager::DrawStr(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
 		}
 	}
 }

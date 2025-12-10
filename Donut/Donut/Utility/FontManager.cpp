@@ -1,36 +1,49 @@
 #include "FontManager.h"
 #include "DxLib.h"
 
-int FontManager::font_handle = -1;
+int FontManager::font_handle[] = {};
 
 void FontManager::Initialize()
 {
 	// ウィンドウズPCに一時的にフォントデータを読み込む(システム終了まで)
 	AddFontResourceExA("Resource/Font/Guanine.otf", FR_PRIVATE, NULL);
-	//AddFontResourceExA("Resource/Font/MonaspaceArgon-WideExtraBold.otf", FR_PRIVATE, NULL);
+	AddFontResourceExA("Resource/Font/AtkinsonHyperlegibleMono-ExtraBold.ttf", FR_PRIVATE, NULL);
 
 
-	font_handle = CreateFontToHandle("Guanine", 100, 4, DX_FONTTYPE_ANTIALIASING_4X4);
-	//font_handle = CreateFontToHandle("Monaspace Argon Wide ExtraBold", 100, 4, DX_FONTTYPE_ANTIALIASING_4X4);
+	font_handle[0] = CreateFontToHandle("Guanine", 100, 4, DX_FONTTYPE_ANTIALIASING_4X4);
+	font_handle[1] = CreateFontToHandle("Atkinson Hyperlegible Mono ExtraBold", 100, 4, DX_FONTTYPE_ANTIALIASING);
 
 }
 
 void FontManager::Cleanup()
 {
-	DeleteFontToHandle(font_handle);
-
+	for (int i = 0; i < FONT_NUM; i++)
+	{
+		DeleteFontToHandle(font_handle[i]);
+	}
+	
 	// ウィンドウズに一時的に保持していたフォントデータを削除
 	RemoveFontResourceExA("Resource/Font/Guanine.otf", FR_PRIVATE, NULL);
 }
 
-void FontManager::Draw(int x, int y, double scaleX, double scaleY, unsigned int color, const char* text)
+void FontManager::DrawStr(int x, int y, double scaleX, double scaleY, unsigned int color, const char* text)
 {
 	//バイリニア法で描画する
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
-	
-	DrawExtendFormatStringToHandle(x, y, scaleX, scaleY, color, FontManager::GetFontHandle(), "%s", text);
-	
+
+	DrawExtendFormatStringToHandle(x, y, scaleX, scaleY, color, FontManager::GetFontHandle(0), "%s", text);
+
 	// ネアレストネイバー法で描画する(標準)
 	SetDrawMode(DX_DRAWMODE_NEAREST);
 }
 
+void FontManager::DrawNum(int x, int y, double scaleX, double scaleY, unsigned int color, const char* text)
+{
+	//バイリニア法で描画する
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
+
+	DrawExtendFormatStringToHandle(x, y, scaleX, scaleY, color, FontManager::GetFontHandle(1), "%s", text);
+
+	// ネアレストネイバー法で描画する(標準)
+	SetDrawMode(DX_DRAWMODE_NEAREST);
+}

@@ -1,6 +1,6 @@
 #pragma once
 
-#define RANKING_DATA_MAX 5
+#define RANKING_DATA_MAX 3
 
 class RankingData
 {

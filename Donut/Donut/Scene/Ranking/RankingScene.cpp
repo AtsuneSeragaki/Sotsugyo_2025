@@ -88,30 +88,19 @@ void RankingScene::Draw() const
 	RankingData* ranking = new RankingData();
 	ranking->Initialize();
 
-	double ranking_fontsize = 0.55; // 文字サイズ
-	int default_x = 410; // 固定X座標
-	int default_y = 168; // 固定Y座標
-	int string_space = 80; // ランキング文字の表示間隔
+	double ranking_fontsize = 0.8; // 文字サイズ
+	int default_x = 410 + 75; // 固定X座標
+	int default_y = 168 + 30; // 固定Y座標
+	int string_space = 120; // ランキング文字の表示間隔
 
 	char ranking_buf[50];
 
 	for (int i = 0; i < RANKING_DATA_MAX; i++)
 	{
-		if (i == 0)
-		{// 描画位置を合わせるためにNo.1だけ空白を加えて描画する
+		// ランキングを文字列に変換
+		sprintf_s(ranking_buf, sizeof(ranking_buf), "%08d", ranking->GetScore(i));
 
-			// ランキングを文字列に変換
-			sprintf_s(ranking_buf, sizeof(ranking_buf), "No.%d   : %08d", i + 1, ranking->GetScore(i));
-
-			FontManager::Draw(default_x, default_y + i * string_space, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
-		}
-		else
-		{
-			// ランキングを文字列に変換
-			sprintf_s(ranking_buf, sizeof(ranking_buf), "No.%d  : %08d", i + 1, ranking->GetScore(i));
-
-			FontManager::Draw(default_x, default_y + i * string_space, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
-		}
+		FontManager::DrawNum(default_x, default_y + i * string_space, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 	}
 
 	// メニューボタン

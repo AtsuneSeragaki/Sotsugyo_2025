@@ -27,7 +27,7 @@ HelpScene::HelpScene()
 	background_img[0] = tmp[0];
 	tmp = rm->GetImages("Resource/Images/help2.png");
 	background_img[1] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/triangle.png");
+	tmp = rm->GetImages("Resource/Images/triangle2.png");
 	triangle_img = tmp[0];
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
