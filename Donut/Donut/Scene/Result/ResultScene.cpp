@@ -115,15 +115,15 @@ eSceneType ResultScene::GetNowSceneType() const
 // スコア描画処理
 void ResultScene::DrawScore() const
 {
-	int plus = 20;
+	int plus = 10;
 
-	FontManager::DrawStr(535, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
+	FontManager::DrawStr(535, 170, 0.4, 0.4, 0x766351, "YOUR SCORE");
 
 	// スコアを文字列に変換
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(447 + plus, 225, 0.8, 0.8, 0x5C4630, score_buf);
+	FontManager::DrawNum(447 + plus, 222, 0.85, 0.85, 0x5C4630, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 
 }
@@ -139,17 +139,18 @@ void ResultScene::DrawRanking() const
 	// 文字サイズ
 	double ranking_fontsize = 0.4;
 
-	FontManager::DrawStr(580, 320, ranking_fontsize, ranking_fontsize, 0x5C4630, "RANKING");
+	FontManager::DrawStr(580, 320, ranking_fontsize, ranking_fontsize, 0x766351, "RANKING");
 
 	char ranking_buf[50];
 
 	ranking_fontsize = 0.5;
 
-	for (int i = 0; i < RANKING_DATA_MAX - 2; i++)
+	for (int i = 0; i < RANKING_DATA_MAX; i++)
 	{
 		// ランキングを文字列に変換
 		sprintf_s(ranking_buf, sizeof(ranking_buf),"%08d",ranking->GetScore(i));
 
-		FontManager::DrawNum(480 + plus, 375 + i * 60, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);	
+		FontManager::DrawNum(480 + plus, 375 + i * 60, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
+		//FontManager::DrawNum(480 + plus, 375 + i * 60, ranking_fontsize, ranking_fontsize, 0x766351, ranking_buf);
 	}
 }

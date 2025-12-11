@@ -107,7 +107,7 @@ void Order::Draw() const
         for (int i = 0; i < ORDER_MAX; i++)
         {
             // ドーナツ表示
-            DrawRotaGraph2F((float)ORDER_LX + 115.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
+            DrawRotaGraph2F((float)ORDER_LX + 95.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
             
             // ドーナツの種類表示
             /*Donuts* donut = new Donuts(order_list[i]);
@@ -119,7 +119,7 @@ void Order::Draw() const
             sprintf_s(buf, sizeof(buf), "x %d", order_num[i]);
 
             // ドーナツの個数を表示
-            FontManager::DrawNum(ORDER_LX + 175, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
+            FontManager::DrawNum(ORDER_LX + 157, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
         }
     }
 }

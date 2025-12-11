@@ -762,7 +762,7 @@ void GameMainScene::DrawScore() const
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(115, 128, 0.3, 0.3, 0x5C4630, score_buf);
+	FontManager::DrawNum(113, 125, 0.35, 0.35, 0x5C4630, score_buf);
 }
 
 // ドーナツが枠からはみ出していないか確認する処理
