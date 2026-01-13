@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../SceneBase.h"
+#include "../../Objects/GameObject.h"
 
 // ボタン共通情報
 #define TITLE_BUTTON_WIDTH   300  // ボタンの幅
@@ -31,6 +32,15 @@ class TitleScene : public SceneBase
 private:
 	ButtonState button[TITLE_BUTTON_NUM] = {};  // ボタン情報
 	int background_img; // 背景画像
+	int donut_img[MAX_DONUT_NUM];        // ドーナツ画像
+	float donut1_x;
+	float donut1_y;
+	float donut2_x;
+	float donut2_y;
+	double rotation1;
+	double rotation2;
+	int donut_number[2];
+
 
 public:
 	// 初期化処理
@@ -41,6 +51,10 @@ public:
 	virtual void Draw() const override;
 	// 終了時処理
 	virtual void Finalize() override;
+
+public:
+	// 背景でドーナツを流す
+	void DonutDraw() const;
 
 public:
 	// 現在のシーン情報を返す

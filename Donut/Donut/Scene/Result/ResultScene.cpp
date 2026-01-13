@@ -117,13 +117,13 @@ void ResultScene::DrawScore() const
 {
 	int plus = 10;
 
-	FontManager::DrawStr(535, 170, 0.4, 0.4, 0x766351, "YOUR SCORE");
+	FontManager::DrawStr(535, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
 
 	// スコアを文字列に変換
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(447 + plus, 222, 0.85, 0.85, 0x5C4630, score_buf);
+	FontManager::DrawNum(447 + plus, 222, 0.85, 0.85, 0xffffff, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 
 }
@@ -139,7 +139,7 @@ void ResultScene::DrawRanking() const
 	// 文字サイズ
 	double ranking_fontsize = 0.4;
 
-	FontManager::DrawStr(580, 320, ranking_fontsize, ranking_fontsize, 0x766351, "RANKING");
+	FontManager::DrawStr(580, 320, ranking_fontsize, ranking_fontsize, 0x5C4630, "RANKING");
 
 	char ranking_buf[50];
 
