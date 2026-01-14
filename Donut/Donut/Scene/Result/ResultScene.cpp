@@ -21,6 +21,30 @@ ResultScene::ResultScene(int score)
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/result.png");
 	background_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/line.png");
+	line_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/receipt.png");
+	receipt_img = tmp[0];
+
+	for (int i = 0; i < MAX_DONUT_NUM; i++)
+	{
+		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
+		donut_img[i] = tmp[0];
+	}
+
+	donut1_x = 150.0f;
+	donut1_y = -50.0f;
+
+	donut2_x = 1150.0f;
+	donut2_y = -300.0f;
+
+	rotation1 = 0.0;
+	rotation2 = 10.0;
+
+	donut_number[0] = GetRand(MAX_DONUT_NUM - 1);
+	donut_number[1] = GetRand(MAX_DONUT_NUM - 1);
+
+	receipt_y = 650.0f;
 }
 
 // デストラクタ
@@ -66,6 +90,13 @@ eSceneType ResultScene::Update()
 		}
 	}
 
+	if (receipt_y > 150.0f)
+	{
+		receipt_y -= 2.5f;
+	}
+
+	MoveDonut();
+
 	return GetNowSceneType();
 }
 
@@ -75,6 +106,14 @@ void ResultScene::Draw() const
 	// 背景
 	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 	DrawGraph(0, 0, background_img, FALSE);
+
+	DrawGraph(350, receipt_y, receipt_img, TRUE);
+	// スコア
+	DrawScore();
+
+	DrawBox(0, 560, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
+
+	DrawGraph(305, 550, line_img, TRUE);
 
 	// タイトル
 	//FontManager::Draw(475, 30, 1.0, 1.0, 0x5C4630, "RESULT");
@@ -91,11 +130,12 @@ void ResultScene::Draw() const
 	//	DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
 	//}
 
-	// スコア
-	DrawScore();
+	//DrawDonut();
 
-	// ランキング
-	DrawRanking();
+	
+
+	//// ランキング
+	//DrawRanking();
 	
 	// メニューボタン
 	DrawButton(RESULT_BUTTON_NUM, button);
@@ -117,13 +157,13 @@ void ResultScene::DrawScore() const
 {
 	int plus = 10;
 
-	FontManager::DrawStr(535, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
+	//FontManager::DrawStr(535, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
 
 	// スコアを文字列に変換
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(447 + plus, 222, 0.85, 0.85, 0xffffff, score_buf);
+	FontManager::DrawNum(447 + plus, receipt_y + 310, 0.85, 0.85, 0x5C4630, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 
 }
@@ -154,3 +194,101 @@ void ResultScene::DrawRanking() const
 		//FontManager::DrawNum(480 + plus, 375 + i * 60, ranking_fontsize, ranking_fontsize, 0x766351, ranking_buf);
 	}
 }
+
+void ResultScene::DrawDonut() const
+{
+	float base_radius = 296.5; // 元画像(288x288)の半径
+	double scale = (double)g_DonutInfoTable[6].size / (double)base_radius; // 画像の拡大率
+
+	// 左側ドーナツ描画
+	DrawRotaGraph2F(donut1_x, donut1_y, base_radius, base_radius, scale, rotation1, donut_img[donut_number[0]], TRUE);
+	// 右側ドーナツ描画
+	DrawRotaGraph2F(donut2_x, donut2_y, base_radius, base_radius, scale, rotation2, donut_img[donut_number[1]], TRUE);
+}
+
+// ドーナツの落下処理
+void ResultScene::MoveDonut()
+{
+	float speed = 3.4f;
+
+	// 左側ドーナツの落下処理
+	if (donut1_y <= 900.0f)
+	{
+		donut1_y += speed;
+	}
+	else
+	{// 画面外に出たときの処理
+
+		// ランダムに、次の描画開始地点を決める
+		int ran1 = GetRand(2);
+
+		if (ran1 == 0)
+		{
+			donut1_y = -250.0f;
+		}
+		else if (ran1 == 1)
+		{
+			donut1_y = -350.0f;
+		}
+		else
+		{
+			donut1_y = -450.0f;
+		}
+
+		// 次のドーナツの種類を決める
+		int d_num1 = donut_number[0];
+
+		do {
+			donut_number[0] = GetRand(MAX_DONUT_NUM - 1);
+		} while (d_num1 == donut_number[0]);
+	}
+
+	// 左側ドーナツの角度を更新
+	rotation1 += 0.85 / (double)g_DonutInfoTable[0].size;
+
+	if (rotation1 > DX_TWO_PI)
+	{
+		rotation1 -= DX_TWO_PI;
+	}
+
+	// 右側ドーナツの落下処理
+	if (donut2_y <= 900.0f)
+	{
+		donut2_y += speed;
+	}
+	else
+	{// 画面外に出たときの処理
+
+		// 次の描画開始地点を決める
+		int ran2 = GetRand(2);
+
+		if (ran2 == 0)
+		{
+			donut2_y = -150.0f;
+		}
+		else if (ran2 == 1)
+		{
+			donut2_y = -250.0f;
+		}
+		else
+		{
+			donut2_y = -350.0f;
+		}
+
+		// 次のドーナツの種類を決める
+		int d_num2 = donut_number[1];
+
+		do {
+			donut_number[1] = GetRand(MAX_DONUT_NUM - 1);
+		} while (d_num2 == donut_number[1]);
+	}
+
+	// 右側ドーナツの角度を更新
+	rotation2 += 0.85 / (double)g_DonutInfoTable[0].size;
+
+	if (rotation2 > DX_TWO_PI)
+	{
+		rotation2 -= DX_TWO_PI;
+	}
+}
+

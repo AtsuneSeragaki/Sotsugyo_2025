@@ -6,6 +6,16 @@
 // 1フレーム当たりの時間(マイクロ秒)
 #define DELTA_SECOND (1000000 / TARGET_FREAM_RATE)
 
+enum class DeleteDonutType {
+	DONUT_FRENCH_CRULLER,
+	DONUT_FRENCH_CRULLER_VAR,
+	DONUT_PON_DE_RING,
+	DONUT_PON_DE_RING_MATCHA,
+	DONUT_PON_DE_RING_CHOCOLATE,
+	DONUT_GOLDEN_CHOCOLATE,
+};
+
+
 class SceneManager
 {
 private:

@@ -136,12 +136,12 @@ void Order::SetRandomOrder(int difficulty)
     // 全ドーナツ
     DonutType all_menu[6] =
     {
-        DonutType::DONUT_OLD_FASHIONED_VAR,
+        DonutType::DONUT_FRENCH_CRULLER,
+        DonutType::DONUT_FRENCH_CRULLER_VAR,
+        DonutType::DONUT_PON_DE_RING,
+        DonutType::DONUT_PON_DE_RING_MATCHA,
+        DonutType::DONUT_PON_DE_RING_CHOCOLATE,
         DonutType::DONUT_GOLDEN_CHOCOLATE,
-        DonutType::DONUT_COCONUT_CHOCOLATE,
-        DonutType::DONUT_HALF_CHOCOLATE,
-        DonutType::DONUT_HALF_STRAWBERRY,
-        DonutType::DONUT_PON_DE_RING
     };
 
     // デバック用簡単版

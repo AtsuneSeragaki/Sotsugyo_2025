@@ -70,12 +70,57 @@ eSceneType TitleScene::Update()
 		}
 	}
 
+	MoveDonut();
+
+	return GetNowSceneType();
+}
+
+// 描画処理
+void TitleScene::Draw() const
+{
+	// 背景
+	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
+	DrawGraph(0, 0, background_img, TRUE);
+
+	// タイトル
+	//FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");
+
+	DrawDonut();
+
+	// メニューボタン
+	DrawButton(TITLE_BUTTON_NUM, button);
+}
+
+// 終了時処理
+void TitleScene::Finalize()
+{
+}
+
+void TitleScene::DrawDonut() const
+{
+	float base_radius = 296.5; // 元画像(288x288)の半径
+	double scale = (double)g_DonutInfoTable[6].size / (double)base_radius; // 画像の拡大率
+
+	// 左側ドーナツ描画
+	DrawRotaGraph2F(donut1_x, donut1_y, base_radius, base_radius, scale, rotation1, donut_img[donut_number[0]], TRUE);
+	// 右側ドーナツ描画
+	DrawRotaGraph2F(donut2_x, donut2_y, base_radius, base_radius, scale, rotation2, donut_img[donut_number[1]], TRUE);
+}
+
+// ドーナツの落下処理
+void TitleScene::MoveDonut()
+{
+	float speed = 3.4f;
+
+	// 左側ドーナツの落下処理
 	if (donut1_y <= 900.0f)
 	{
-		donut1_y += 3.4f;
+		donut1_y += speed;
 	}
 	else
-	{
+	{// 画面外に出たときの処理
+
+		// ランダムに、次の描画開始地点を決める
 		int ran1 = GetRand(2);
 
 		if (ran1 == 0)
@@ -91,6 +136,7 @@ eSceneType TitleScene::Update()
 			donut1_y = -450.0f;
 		}
 
+		// 次のドーナツの種類を決める
 		int d_num1 = donut_number[0];
 
 		do {
@@ -98,12 +144,23 @@ eSceneType TitleScene::Update()
 		} while (d_num1 == donut_number[0]);
 	}
 
+	// 左側ドーナツの角度を更新
+	rotation1 += 0.85 / (double)g_DonutInfoTable[0].size;
+
+	if (rotation1 > DX_TWO_PI)
+	{
+		rotation1 -= DX_TWO_PI;
+	}
+
+	// 右側ドーナツの落下処理
 	if (donut2_y <= 900.0f)
 	{
-		donut2_y += 3.4f;
+		donut2_y += speed;
 	}
 	else
-	{
+	{// 画面外に出たときの処理
+
+		// 次の描画開始地点を決める
 		int ran2 = GetRand(2);
 
 		if (ran2 == 0)
@@ -119,6 +176,7 @@ eSceneType TitleScene::Update()
 			donut2_y = -350.0f;
 		}
 
+		// 次のドーナツの種類を決める
 		int d_num2 = donut_number[1];
 
 		do {
@@ -126,59 +184,13 @@ eSceneType TitleScene::Update()
 		} while (d_num2 == donut_number[1]);
 	}
 
-	// 転がり中に回転を更新
-	rotation1 += 0.85 / (double)g_DonutInfoTable[0].size;  // vxに応じて角度を加算（rが大きいとゆっくり回転）
-
-	if (rotation1 > DX_TWO_PI)
-	{
-		rotation1 -= DX_TWO_PI;
-	}
-
-	rotation2 += 0.85 / (double)g_DonutInfoTable[0].size;  // vxに応じて角度を加算（rが大きいとゆっくり回転）
+	// 右側ドーナツの角度を更新
+	rotation2 += 0.85 / (double)g_DonutInfoTable[0].size;
 
 	if (rotation2 > DX_TWO_PI)
 	{
 		rotation2 -= DX_TWO_PI;
 	}
-
-	return GetNowSceneType();
-}
-
-// 描画処理
-void TitleScene::Draw() const
-{
-	// 背景
-	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
-	DrawGraph(0, 0, background_img, TRUE);
-
-	// タイトル
-	//FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");
-
-	DonutDraw();
-
-	// メニューボタン
-	DrawButton(TITLE_BUTTON_NUM, button);
-}
-
-// 終了時処理
-void TitleScene::Finalize()
-{
-}
-
-void TitleScene::DonutDraw() const
-{
-	float base_radius = 296.5; // 元画像(288x288)の半径
-	double scale = (double)g_DonutInfoTable[6].size / (double)base_radius; // 画像の拡大率
-
-	DrawRotaGraph2F(donut1_x, donut1_y, base_radius, base_radius, scale, rotation1, donut_img[donut_number[0]], TRUE);
-	DrawRotaGraph2F(donut2_x, donut2_y, base_radius, base_radius, scale, rotation2, donut_img[donut_number[1]], TRUE);
-
-	/*SetFontSize(20);
-	DrawFormatString(0, 10, 0x000000, "donut1_y:%f", donut1_y);
-	DrawFormatString(0, 40, 0x000000, "donut2_y:%f", donut2_y);
-
-	DrawFormatString(0, 70, 0x000000, "donut_number[0]:%d", donut_number[0]);
-	DrawFormatString(0, 100, 0x000000, "donut_number[1]:%d", donut_number[1]);*/
 }
 
 // 現在のシーン情報を返す

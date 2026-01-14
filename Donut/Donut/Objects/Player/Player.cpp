@@ -8,13 +8,13 @@
 Player::Player() : is_click(true)
 {
 	// 最初は1のドーナツを設定
-	donut_type = DonutType::DONUT_MINI_BASIC;
+	donut_type = DonutType::DONUT_BASIC;
 	const DonutInfo& info = g_DonutInfoTable[static_cast<int>(donut_type)];
 	r = info.size;
 	donut_number = 1;
 
 	// 次のドーナツは3のドーナツを設定
-	next_donut_type = DonutType::DONUT_FRENCH_CRULLER;
+	next_donut_type = DonutType::DONUT_HALF_CHOCOLATE;
 	const DonutInfo& info2 = g_DonutInfoTable[static_cast<int>(next_donut_type)];
 	next_r = info2.size;
 	next_donut_number = 3;
@@ -106,7 +106,7 @@ void Player::ChooseRandomDonut()
 	donut_type = next_donut_type;
 
 	// 次に落とすドーナツを決めなおす
-	next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_OLD_FASHIONED) + 1));
+	next_donut_type = static_cast<DonutType>(rand() % (static_cast<int>(DonutType::DONUT_CHOCOLATE) + 1));
 
 	const DonutInfo& info = g_DonutInfoTable[static_cast<int>(donut_type)];
 	const DonutInfo& info2 = g_DonutInfoTable[static_cast<int>(next_donut_type)];

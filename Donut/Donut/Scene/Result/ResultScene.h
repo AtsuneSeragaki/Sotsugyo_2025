@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../SceneBase.h"
+#include "../../Objects/GameObject.h"
 
 // ボタン共通情報
 #define RESULT_BUTTON_WIDTH   300  // ボタンの幅
@@ -23,7 +24,20 @@ class ResultScene : public SceneBase
 private:
 	int score;  // スコア
 	ButtonState button[RESULT_BUTTON_NUM]; // ボタン情報
-	int background_img;
+	int background_img; // 背景画像
+	int line_img; // 波線画像
+	int receipt_img; // レシート画像
+
+	float receipt_y; // レシートY座標
+
+	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
+	float donut1_x;  // 落下ドーナツ（左側）のX座標
+	float donut1_y;  // 落下ドーナツ（左側）のY座標
+	float donut2_x;  // 落下ドーナツ（右側）のX座標
+	float donut2_y;  // 落下ドーナツ（右側）のY座標
+	double rotation1;  // 落下ドーナツ（左側）の角度
+	double rotation2;  // 落下ドーナツ（右側）の角度
+	int donut_number[2]; // 落下ドーナツの種類
 	
 public:
 	// コンストラクタ
@@ -50,4 +64,8 @@ private:
 	void DrawScore() const;
 	// ランキング描画処理
 	void DrawRanking() const;
+	// 背景でドーナツを流す
+	void DrawDonut() const;
+	// ドーナツの落下処理
+	void MoveDonut();
 };

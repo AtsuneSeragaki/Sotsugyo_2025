@@ -29,6 +29,22 @@ enum class DonutType
 	DONUT_COUNT                 // ドーナツの総数
 };
 
+//enum class DonutType
+//{
+//	DONUT_BASIC,
+//	DONUT_COCONUT_CHOCOLATE,
+//	DONUT_HALF_CHOCOLATE,
+//	DONUT_STRAWBERRY,
+//	DONUT_CHOCOLATE,
+//	DONUT_FRENCH_CRULLER,
+//	DONUT_FRENCH_CRULLER_VAR,
+//	DONUT_PON_DE_RING,
+//	DONUT_PON_DE_RING_MATCHA,
+//	DONUT_PON_DE_RING_CHOCOLATE,
+//	DONUT_GOLDEN_CHOCOLATE,
+//	DONUT_COUNT  // ドーナツの総数
+//};
+
 // ドーナツ情報構造体
 typedef struct {
 	DonutType type;  // ドーナツの種類

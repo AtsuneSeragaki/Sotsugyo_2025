@@ -30,17 +30,16 @@
 class TitleScene : public SceneBase
 {
 private:
-	ButtonState button[TITLE_BUTTON_NUM] = {};  // ボタン情報
+	ButtonState button[TITLE_BUTTON_NUM] = {}; // ボタン情報
 	int background_img; // 背景画像
-	int donut_img[MAX_DONUT_NUM];        // ドーナツ画像
-	float donut1_x;
-	float donut1_y;
-	float donut2_x;
-	float donut2_y;
-	double rotation1;
-	double rotation2;
-	int donut_number[2];
-
+	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
+	float donut1_x;  // 落下ドーナツ（左側）のX座標
+	float donut1_y;  // 落下ドーナツ（左側）のY座標
+	float donut2_x;  // 落下ドーナツ（右側）のX座標
+	float donut2_y;  // 落下ドーナツ（右側）のY座標
+	double rotation1;  // 落下ドーナツ（左側）の角度
+	double rotation2;  // 落下ドーナツ（右側）の角度
+	int donut_number[2]; // 落下ドーナツの種類
 
 public:
 	// 初期化処理
@@ -53,10 +52,12 @@ public:
 	virtual void Finalize() override;
 
 public:
-	// 背景でドーナツを流す
-	void DonutDraw() const;
-
-public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
+
+private:
+	// 背景でドーナツを流す
+	void DrawDonut() const;
+	// ドーナツの落下処理
+	void MoveDonut();
 };
