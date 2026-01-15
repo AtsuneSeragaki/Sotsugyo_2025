@@ -21,6 +21,7 @@ class SceneManager
 private:
 	SceneBase* current_scene; // 現在のシーン
 	bool loop_flag;           // ループするか？
+	int delete_donut_count[6]; // 消したドーナツの数をカウント
 
 public:
 	SceneManager();
@@ -37,6 +38,8 @@ public:
 public:
 	// loop_flgの値を返す
 	bool LoopCheck() const;
+	// 引数で渡された場所のカウントを+1する
+	void SetDonutCount(int donut_num) { delete_donut_count[donut_num]++; }
 
 private:
 	// 描画処理

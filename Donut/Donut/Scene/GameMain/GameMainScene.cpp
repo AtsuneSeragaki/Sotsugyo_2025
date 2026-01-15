@@ -395,6 +395,25 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	{
 		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
 
+		switch (a->GetDonutType())
+		{
+		case DonutType::DONUT_FRENCH_CRULLER:
+			
+
+		case DonutType::DONUT_FRENCH_CRULLER_VAR:
+
+		case DonutType::DONUT_PON_DE_RING:
+
+		case DonutType::DONUT_PON_DE_RING_MATCHA:
+
+		case DonutType::DONUT_PON_DE_RING_CHOCOLATE:
+
+		case DonutType::DONUT_GOLDEN_CHOCOLATE:
+
+		default:
+			break;
+		}
+
 		PlaySoundMem(marge_se, DX_PLAYTYPE_BACK, TRUE);
 
 		// 合体後しばらくゲームオーバー判定を無効にする

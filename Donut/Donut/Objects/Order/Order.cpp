@@ -197,12 +197,12 @@ void Order::SetRandomOrder(int difficulty)
         {
             switch (type)
             {
-            case DonutType::DONUT_OLD_FASHIONED_VAR: return 0;
-            case DonutType::DONUT_GOLDEN_CHOCOLATE:  return 1;
-            case DonutType::DONUT_COCONUT_CHOCOLATE: return 2;
-            case DonutType::DONUT_HALF_CHOCOLATE:    return 3;
-            case DonutType::DONUT_HALF_STRAWBERRY:   return 4;
-            case DonutType::DONUT_PON_DE_RING:       return 5;
+            case DonutType::DONUT_FRENCH_CRULLER: return 0;
+            case DonutType::DONUT_FRENCH_CRULLER_VAR:  return 1;
+            case DonutType::DONUT_PON_DE_RING: return 2;
+            case DonutType::DONUT_PON_DE_RING_MATCHA:    return 3;
+            case DonutType::DONUT_PON_DE_RING_CHOCOLATE:   return 4;
+            case DonutType::DONUT_GOLDEN_CHOCOLATE:       return 5;
             default: return -1;
             }
         };

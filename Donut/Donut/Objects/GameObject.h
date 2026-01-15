@@ -13,37 +13,37 @@
 #define MAX_PATH_LEN 256
 
 // ドーナツの種類
-enum class DonutType
-{
-	DONUT_MINI_BASIC,           // ミスドの小さいドーナツみたいなやつ（ノーマル）
-	DONUT_MINI_VARIANT,         // ミスドの小さいドーナツみたいなやつ（色違い）
-	DONUT_FRENCH_CRULLER,       // フレンチクルーラー
-	DONUT_FRENCH_CRULLER_VAR,   // フレンチクルーラー（色違い）
-	DONUT_OLD_FASHIONED,        // オールドファッション
-	DONUT_OLD_FASHIONED_VAR,    // オールドファッション（色違い）
-	DONUT_GOLDEN_CHOCOLATE,     // ゴールデンチョコレート
-	DONUT_COCONUT_CHOCOLATE,    // ココナツチョコレート
-	DONUT_HALF_CHOCOLATE,       // 半分チョコドーナツ
-	DONUT_HALF_STRAWBERRY,      // 半分ストロベリードーナツ
-	DONUT_PON_DE_RING,          // ポン・デ・リング
-	DONUT_COUNT                 // ドーナツの総数
-};
-
 //enum class DonutType
 //{
-//	DONUT_BASIC,
-//	DONUT_COCONUT_CHOCOLATE,
-//	DONUT_HALF_CHOCOLATE,
-//	DONUT_STRAWBERRY,
-//	DONUT_CHOCOLATE,
-//	DONUT_FRENCH_CRULLER,
-//	DONUT_FRENCH_CRULLER_VAR,
-//	DONUT_PON_DE_RING,
-//	DONUT_PON_DE_RING_MATCHA,
-//	DONUT_PON_DE_RING_CHOCOLATE,
-//	DONUT_GOLDEN_CHOCOLATE,
-//	DONUT_COUNT  // ドーナツの総数
+//	DONUT_MINI_BASIC,           // ミスドの小さいドーナツみたいなやつ（ノーマル）
+//	DONUT_MINI_VARIANT,         // ミスドの小さいドーナツみたいなやつ（色違い）
+//	DONUT_FRENCH_CRULLER,       // フレンチクルーラー
+//	DONUT_FRENCH_CRULLER_VAR,   // フレンチクルーラー（色違い）
+//	DONUT_OLD_FASHIONED,        // オールドファッション
+//	DONUT_OLD_FASHIONED_VAR,    // オールドファッション（色違い）
+//	DONUT_GOLDEN_CHOCOLATE,     // ゴールデンチョコレート
+//	DONUT_COCONUT_CHOCOLATE,    // ココナツチョコレート
+//	DONUT_HALF_CHOCOLATE,       // 半分チョコドーナツ
+//	DONUT_HALF_STRAWBERRY,      // 半分ストロベリードーナツ
+//	DONUT_PON_DE_RING,          // ポン・デ・リング
+//	DONUT_COUNT                 // ドーナツの総数
 //};
+
+enum class DonutType
+{
+	DONUT_BASIC,
+	DONUT_COCONUT_CHOCOLATE,
+	DONUT_HALF_CHOCOLATE,
+	DONUT_STRAWBERRY,
+	DONUT_CHOCOLATE,
+	DONUT_FRENCH_CRULLER,
+	DONUT_FRENCH_CRULLER_VAR,
+	DONUT_PON_DE_RING,
+	DONUT_PON_DE_RING_MATCHA,
+	DONUT_PON_DE_RING_CHOCOLATE,
+	DONUT_GOLDEN_CHOCOLATE,
+	DONUT_COUNT  // ドーナツの総数
+};
 
 // ドーナツ情報構造体
 typedef struct {
