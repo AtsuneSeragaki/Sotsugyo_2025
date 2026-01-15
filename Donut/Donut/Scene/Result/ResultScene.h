@@ -38,10 +38,11 @@ private:
 	double rotation1;  // 落下ドーナツ（左側）の角度
 	double rotation2;  // 落下ドーナツ（右側）の角度
 	int donut_number[2]; // 落下ドーナツの種類
+	int donut_count[6]; // 消したドーナツの数をカウント
 	
 public:
 	// コンストラクタ
-	ResultScene(int score);
+	ResultScene(int score,int* delete_donut_count);
 	// デストラクタ
 	~ResultScene();
 

@@ -57,6 +57,7 @@ private:
 	int circle_image;
 	int background_img;
 	int pause_img;
+	static int delete_donut_count[6]; // 消したドーナツの数をカウント
 
 public:
 	// コンストラクタ
@@ -84,6 +85,8 @@ public:
 
 	// スコアを返す処理(戻り値：スコア)
 	int GetScore(){ return score; }
+
+	int* GetDeleteDonutCount() { return delete_donut_count; }
 
 private:
 	// ドーナツ同士の当たり判定
@@ -127,4 +130,10 @@ private:
 
 	// 次のドーナツを生成できる時間をカウントする処理
 	void CountDonutCreateTime();
+
+	// 引数で渡された場所のカウントを+1する
+	void SetDonutCount(int donut_num) { delete_donut_count[donut_num]++; }
+
+	// 引数で渡された場所のカウントを取得する
+	int GetDonutCount(int donut_num) const { return delete_donut_count[donut_num]; }
 };

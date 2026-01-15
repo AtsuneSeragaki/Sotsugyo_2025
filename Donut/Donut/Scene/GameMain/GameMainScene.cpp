@@ -8,6 +8,7 @@
 #include "DxLib.h"
 
 int GameMainScene::score = 0;
+int GameMainScene::delete_donut_count[6] = {};
 
 // コンストラクタ
 GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0),pause_img(0)
@@ -69,6 +70,11 @@ void GameMainScene::Initialize()
 
 	donut_creat_flg = true;
 	donut_creat_count = 0;
+
+	for (int i = 0; i < 6; i++)
+	{
+		delete_donut_count[i] = 0;
+	}
 }
 
 // 更新処理
@@ -325,6 +331,12 @@ void GameMainScene::Draw() const
 			FontManager::DrawStr(420, 350, 0.75, 0.75, 0x1A2E40, "GAME OVER!");
 		}
 	}
+
+	/*for (int i = 0; i < 6; i++)
+	{
+		DrawFormatString(0, 0 + i * 40, 0x000000, "Donut%d:%d", i, delete_donut_count[i]);
+	}*/
+	
 }
 
 // 終了時処理
@@ -394,25 +406,6 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 	if (a->GetDonutType() == b->GetDonutType() && !a->IsMerged() && !b->IsMerged())
 	{
 		int nextTypeIndex = static_cast<int>(a->GetDonutType()) + 1;
-
-		switch (a->GetDonutType())
-		{
-		case DonutType::DONUT_FRENCH_CRULLER:
-			
-
-		case DonutType::DONUT_FRENCH_CRULLER_VAR:
-
-		case DonutType::DONUT_PON_DE_RING:
-
-		case DonutType::DONUT_PON_DE_RING_MATCHA:
-
-		case DonutType::DONUT_PON_DE_RING_CHOCOLATE:
-
-		case DonutType::DONUT_GOLDEN_CHOCOLATE:
-
-		default:
-			break;
-		}
 
 		PlaySoundMem(marge_se, DX_PLAYTYPE_BACK, TRUE);
 
@@ -698,6 +691,29 @@ void GameMainScene::OnPlayerClick()
 			{
 				if (donut->GetPlayerCollisionFlg() == true)
 				{
+					switch (donut->GetDonutType())
+					{
+					case DonutType::DONUT_FRENCH_CRULLER:
+						SetDonutCount(0);
+						break;
+					case DonutType::DONUT_FRENCH_CRULLER_VAR:
+						SetDonutCount(1);
+						break;
+					case DonutType::DONUT_PON_DE_RING:
+						SetDonutCount(2);
+						break;
+					case DonutType::DONUT_PON_DE_RING_MATCHA:
+						SetDonutCount(3);
+						break;
+					case DonutType::DONUT_PON_DE_RING_CHOCOLATE:
+						SetDonutCount(4);
+						break;
+					case DonutType::DONUT_GOLDEN_CHOCOLATE:
+						SetDonutCount(5);
+						break;
+					default:
+						break;
+					}
 					order->DecrementDonutNum(donut->GetDonutType());
 					donut->SetDead(true);
 				}

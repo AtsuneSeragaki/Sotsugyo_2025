@@ -7,7 +7,7 @@
 #include "DxLib.h"
 
 // コンストラクタ
-ResultScene::ResultScene(int score)
+ResultScene::ResultScene(int score,int* delete_donut_count)
 {
 	this->score = score;
 
@@ -45,6 +45,12 @@ ResultScene::ResultScene(int score)
 	donut_number[1] = GetRand(MAX_DONUT_NUM - 1);
 
 	receipt_y = 650.0f;
+
+	for (int i = 0; i < 6; i++)
+	{
+		
+		this->donut_count[i] = delete_donut_count[i];
+	}
 }
 
 // デストラクタ
@@ -132,7 +138,10 @@ void ResultScene::Draw() const
 
 	//DrawDonut();
 
-	
+	for (int i = 0; i < 6; i++)
+	{
+		DrawFormatString(0, 0 + i * 40, 0x000000, "Donut%d:%d", i, donut_count[i]);
+	}
 
 	//// ランキング
 	//DrawRanking();

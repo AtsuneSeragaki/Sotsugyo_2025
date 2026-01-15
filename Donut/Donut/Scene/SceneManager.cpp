@@ -48,7 +48,7 @@ void SceneManager::Initialize()
 
 	FontManager::Initialize();
 
-	ChangeScene(eSceneType::eResult);
+	ChangeScene(eSceneType::eTitle);
 }
 
 void SceneManager::Update()
@@ -171,7 +171,8 @@ SceneBase* SceneManager::CreateScene(eSceneType new_scene_type)
 	{
 		GameMainScene* gm = dynamic_cast<GameMainScene*>(current_scene);
 		int score = gm ? gm->GetScore() : 0; // gm‚ªnullptr‚È‚ç0‚É‚·‚é
-		return dynamic_cast<SceneBase*>(new ResultScene(score));
+		int* delete_donut_count = gm ? gm->GetDeleteDonutCount() : 0;
+		return dynamic_cast<SceneBase*>(new ResultScene(score,delete_donut_count));
 	}
 
 	case eSceneType::eRanking:
