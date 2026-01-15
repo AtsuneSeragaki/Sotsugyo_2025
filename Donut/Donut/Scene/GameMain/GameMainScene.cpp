@@ -328,7 +328,7 @@ void GameMainScene::Draw() const
 
 		if (is_gameover)
 		{
-			FontManager::DrawStr(420, 350, 0.75, 0.75, 0x1A2E40, "GAME OVER!");
+			FontManager::DrawStr(420, 350, 0.75, 0.75, 0xffffff, "GAME OVER!");
 		}
 	}
 
@@ -820,7 +820,12 @@ void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 	float d_locy = donut->GetLocation().y - donut->GetRadiusSize();
 
 	// ドーナツが上枠を超えていて、ほぼ静止しているならゲームオーバー
-	if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	/*if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	{
+		is_gameover = true;
+	}*/
+
+	if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
 	{
 		is_gameover = true;
 	}

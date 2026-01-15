@@ -46,6 +46,8 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 
 	receipt_y = 650.0f;
 
+	//receipt_y = 150.0f;
+
 	for (int i = 0; i < 6; i++)
 	{
 		
@@ -138,10 +140,10 @@ void ResultScene::Draw() const
 
 	//DrawDonut();
 
-	for (int i = 0; i < 6; i++)
+	/*for (int i = 0; i < 6; i++)
 	{
 		DrawFormatString(0, 0 + i * 40, 0x000000, "Donut%d:%d", i, donut_count[i]);
-	}
+	}*/
 
 	//// ランキング
 	//DrawRanking();
@@ -168,11 +170,29 @@ void ResultScene::DrawScore() const
 
 	//FontManager::DrawStr(535, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
 
+	for (int i = 0; i < 6; i++)
+	{
+		// スコアを文字列に変換
+		char buf[16];
+		sprintf_s(buf, sizeof(buf), "%d", donut_count[i]);
+
+		if (i < 3)
+		{
+			// ドーナツの個数を表示
+			FontManager::DrawNum(525 + 185 * i, receipt_y + 90, 0.45, 0.45, 0x5C4630, buf);
+		}
+		else
+		{
+			// ドーナツの個数を表示
+			FontManager::DrawNum(525 + 185 * (i - 3), receipt_y + 190, 0.45, 0.45, 0x5C4630, buf);
+		}
+	}
+
 	// スコアを文字列に変換
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(447 + plus, receipt_y + 310, 0.85, 0.85, 0x5C4630, score_buf);
+	FontManager::DrawNum(445 + plus, receipt_y + 310, 0.85, 0.85, 0x5C4630, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 
 }
