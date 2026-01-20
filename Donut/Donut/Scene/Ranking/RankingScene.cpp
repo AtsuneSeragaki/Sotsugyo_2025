@@ -15,6 +15,20 @@ RankingScene::RankingScene()
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/ranking.png");
 	background_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/effect1.png");
+	effect_img[0] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/effect2.png");
+	effect_img[1] = tmp[0];
+
+	for (int i = 0; i < 3; i++)
+	{
+		effect_alpha[i] = 0;
+		effect_reverse[i] = 0;
+	}
+
+	effect_num[0] = 0;
+	effect_num[1] = 1;
+	effect_num[2] = 0;
 }
 
 // デストラクタ
@@ -60,6 +74,27 @@ eSceneType RankingScene::Update()
 		}
 	}
 
+	for (int i = 0; i < 3; i++)
+	{
+		if (effect_alpha[i] < 60)
+		{
+			effect_alpha[i]++;
+		}
+		else
+		{
+			effect_alpha[i] = 0;
+			if (effect_num[i] == 0)
+			{
+				effect_num[i] = 1;
+			}
+			else
+			{
+				effect_num[i] = 0;
+			}
+		}
+		
+	}
+
 	return GetNowSceneType();
 }
 
@@ -67,31 +102,67 @@ eSceneType RankingScene::Update()
 void RankingScene::Draw() const
 {
 	// 背景
-	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 	DrawGraph(0, 0, background_img, FALSE);
 
-	// タイトル
-	//FontManager::Draw(430, 30, 1.0, 1.0, 0x5C4630, "RANKING");
+	int effect1_x = 180;
+	int effect1_y = 230;
 
-	// ランキング表示背景
-	//DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
+	int t = GetNowCount();
+	
+	float swayX = sinf(t * 0.004f) * 10.0f;   // 横揺れ
+	float swayY = cosf(t * 0.003f) * 6.0f;    // 縦揺れ
 
-	//// ランキング表示背景枠の太さ
-	//int box_line_width = 3;
+	// エフェクト
+	if (effect_num[0] == 0)
+	{
+		DrawRotaGraph(effect1_x + swayX,effect1_y + swayY,1.0, 0.0, effect_img[0], TRUE);
 
-	//// ランキング表示背景枠描画(枠を太くするために複数描画)
-	//for (int j = 0; j < box_line_width; j++)
-	//{
-	//	DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
-	//}
+		DrawRotaGraph(effect1_x + 100 - swayX * 0.6f,effect1_y - 30 + swayY * 0.6f,1.0, 0.0, effect_img[1], TRUE);
+	}
+	else
+	{
+		DrawRotaGraph(effect1_x - 10 - swayX,effect1_y - 30 + swayY,1.0, 0.0, effect_img[1], TRUE);
+
+		DrawRotaGraph(effect1_x + 110 + swayX * 0.6f,effect1_y + swayY * 0.6f,1.0, 0.0, effect_img[0], TRUE);
+	}
+
+	int effect2_x = 595;
+	int effect2_y = 230;
+
+	// エフェクト
+	if (effect_num[1] == 0)
+	{
+		DrawRotaGraph(effect2_x, effect2_y, 1.0, 0.0, effect_img[0], TRUE);
+		DrawRotaGraph(effect2_x + 100, effect2_y - 30, 1.0, 0.0, effect_img[1], TRUE);
+	}
+	else
+	{
+		DrawRotaGraph(effect2_x - 10, effect2_y - 30, 1.0, 0.0, effect_img[1], TRUE);
+		DrawRotaGraph(effect2_x + 110, effect2_y, 1.0, 0.0, effect_img[0], TRUE);
+	}
+
+	int effect3_x = 1005;
+	int effect3_y = 230;
+
+	// エフェクト
+	if (effect_num[2] == 0)
+	{
+		DrawRotaGraph(effect3_x, effect3_y, 1.0, 0.0, effect_img[0], TRUE);
+		DrawRotaGraph(effect3_x + 100, effect3_y - 30, 1.0, 0.0, effect_img[1], TRUE);
+	}
+	else
+	{
+		DrawRotaGraph(effect3_x - 10, effect3_y - 30, 1.0, 0.0, effect_img[0], TRUE);
+		DrawRotaGraph(effect3_x + 100, effect3_y, 1.0, 0.0, effect_img[1], TRUE);
+	}
 
 	RankingData* ranking = new RankingData();
 	ranking->Initialize();
 
-	double ranking_fontsize = 0.8; // 文字サイズ
-	int default_x = 410 + 75; // 固定X座標
-	int default_y = 168 + 30; // 固定Y座標
-	int string_space = 120; // ランキング文字の表示間隔
+	double ranking_fontsize = 0.6; // 文字サイズ
+	int default_x = 83; // 固定X座標
+	int default_y = 333; // 固定Y座標
+	int string_space = 412; // ランキング文字の表示間隔
 
 	char ranking_buf[50];
 
@@ -100,7 +171,7 @@ void RankingScene::Draw() const
 		// ランキングを文字列に変換
 		sprintf_s(ranking_buf, sizeof(ranking_buf), "%08d", ranking->GetScore(i));
 
-		FontManager::DrawNum(default_x, default_y + i * string_space, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
+		FontManager::DrawNum(default_x + i * string_space, default_y, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 	}
 
 	// メニューボタン

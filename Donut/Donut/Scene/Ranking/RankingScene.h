@@ -17,7 +17,11 @@ class RankingScene : public SceneBase
 {
 private:
 	ButtonState button[RANKING_BUTTON_NUM]; // ボタン情報
-	int background_img;
+	int background_img; // 背景画像
+	int effect_img[2];  // キラキラエフェクト画像
+	int effect_alpha[3]; // エフェクトの透明度
+	int effect_num[3]; // エフェクトの番号
+	int effect_reverse[3]; // エフェクトの透明度減らすか増やすか
 	
 public:
 	// コンストラクタ

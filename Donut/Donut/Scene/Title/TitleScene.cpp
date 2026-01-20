@@ -23,6 +23,15 @@ void TitleScene::Initialize()
 		donut_img[i] = tmp[0];
 	}
 
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow1.png");
+	donut_shadow_img[0] = tmp[0];
+
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow2.png");
+	donut_shadow_img[1] = tmp[0];
+
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow3.png");
+	donut_shadow_img[2] = tmp[0];
+
 	donut1_x = 150.0f;
 	donut1_y = -50.0f;
 
@@ -101,10 +110,45 @@ void TitleScene::DrawDonut() const
 	float base_radius = 296.5; // 元画像(288x288)の半径
 	double scale = (double)g_DonutInfoTable[6].size / (double)base_radius; // 画像の拡大率
 
+	float shadow = 5;
+
 	// 左側ドーナツ描画
+	// 影
+	if (donut_number[0] < 5 || donut_number[0] == 10)
+	{
+		DrawRotaGraph2F(donut1_x + shadow, donut1_y + shadow, base_radius, base_radius, scale, rotation1, donut_shadow_img[0], TRUE);
+	}
+	else if (donut_number[0] < 7)
+	{
+		DrawRotaGraph2F(donut1_x + shadow, donut1_y + shadow, base_radius, base_radius, scale, rotation1, donut_shadow_img[1], TRUE);
+	}
+	else
+	{
+		DrawRotaGraph2F(donut1_x + shadow, donut1_y + shadow, base_radius, base_radius, scale, rotation1, donut_shadow_img[2], TRUE);
+	}
+
+	// ドーナツ本体
 	DrawRotaGraph2F(donut1_x, donut1_y, base_radius, base_radius, scale, rotation1, donut_img[donut_number[0]], TRUE);
+	
+
 	// 右側ドーナツ描画
+	// 影
+	if (donut_number[1] < 5 || donut_number[1] == 10)
+	{
+		DrawRotaGraph2F(donut2_x + shadow, donut2_y + shadow, base_radius, base_radius, scale, rotation2, donut_shadow_img[0], TRUE);
+	}
+	else if (donut_number[1] < 7)
+	{
+		DrawRotaGraph2F(donut2_x + shadow, donut2_y + shadow, base_radius, base_radius, scale, rotation2, donut_shadow_img[1], TRUE);
+	}
+	else
+	{
+		DrawRotaGraph2F(donut2_x + shadow, donut2_y + shadow, base_radius, base_radius, scale, rotation2, donut_shadow_img[2], TRUE);
+	}
+
+	// ドーナツ本体
 	DrawRotaGraph2F(donut2_x, donut2_y, base_radius, base_radius, scale, rotation2, donut_img[donut_number[1]], TRUE);
+
 }
 
 // ドーナツの落下処理
