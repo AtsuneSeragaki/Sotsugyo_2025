@@ -15,20 +15,26 @@ RankingScene::RankingScene()
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/ranking.png");
 	background_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/effect1.png");
-	effect_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/effect2.png");
-	effect_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/donut2/donut2.png");
+	donut_img[0] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow1.png");
+	donut_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank1.png");
+	rank_img[0] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank2.png");
+	rank_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank3.png");
+	rank_img[2] = tmp[0];
 
-	for (int i = 0; i < 3; i++)
+	drop_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
+	ChangeVolumeSoundMem(170, drop_se);
+
+	for (int i = 0; i < RANK_MAX_NUM; i++)
 	{
-		effect_alpha[i] = 0;
-		effect_reverse[i] = 0;
+		donut_num[i] = -200;
 	}
 
-	effect_num[0] = 0;
-	effect_num[1] = 1;
-	effect_num[2] = 0;
+	donut_y = 387.0f;
 }
 
 // デストラクタ
@@ -74,25 +80,40 @@ eSceneType RankingScene::Update()
 		}
 	}
 
-	for (int i = 0; i < 3; i++)
+	// 0番目
+	if(donut_num[0] < donut_y)
 	{
-		if (effect_alpha[i] < 60)
+		donut_num[0] += 20;
+
+		if (donut_num[0] >= donut_y)
 		{
-			effect_alpha[i]++;
+			donut_num[0] = donut_y;
+			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 		}
-		else
+	}
+
+	// 1番目
+	if (donut_num[0] == donut_y && donut_num[1] < donut_y)
+	{
+		donut_num[1] += 20;
+
+		if (donut_num[1] >= donut_y)
 		{
-			effect_alpha[i] = 0;
-			if (effect_num[i] == 0)
-			{
-				effect_num[i] = 1;
-			}
-			else
-			{
-				effect_num[i] = 0;
-			}
+			donut_num[1] = donut_y;
+			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 		}
-		
+	}
+
+	// 2番目
+	if (donut_num[1] == donut_y && donut_num[2] < donut_y)
+	{
+		donut_num[2] += 20;
+
+		if (donut_num[2] >= donut_y)
+		{
+			donut_num[2] = donut_y;
+			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
+		}
 	}
 
 	return GetNowSceneType();
@@ -104,56 +125,23 @@ void RankingScene::Draw() const
 	// 背景
 	DrawGraph(0, 0, background_img, FALSE);
 
-	int effect1_x = 180;
-	int effect1_y = 230;
+	float base_radius = 296.5; // 元画像(288x288)の半径
+	double scale = 0.57; // 画像の拡大率
 
-	int t = GetNowCount();
-	
-	float swayX = sinf(t * 0.004f) * 10.0f;   // 横揺れ
-	float swayY = cosf(t * 0.003f) * 6.0f;    // 縦揺れ
+	float donut_x = 235.0f;
 
-	// エフェクト
-	if (effect_num[0] == 0)
+	float donut_width = 410.0f;
+
+	float shadow_x = 5;
+	float shadow_y = 9;
+
+	for (int i = 0; i < RANK_MAX_NUM; i++)
 	{
-		DrawRotaGraph(effect1_x + swayX,effect1_y + swayY,1.0, 0.0, effect_img[0], TRUE);
+		DrawRotaGraph2F(donut_x + i * donut_width + shadow_x, donut_num[i] + shadow_y, base_radius, base_radius, scale, 0, donut_img[1], TRUE);
 
-		DrawRotaGraph(effect1_x + 100 - swayX * 0.6f,effect1_y - 30 + swayY * 0.6f,1.0, 0.0, effect_img[1], TRUE);
-	}
-	else
-	{
-		DrawRotaGraph(effect1_x - 10 - swayX,effect1_y - 30 + swayY,1.0, 0.0, effect_img[1], TRUE);
+		DrawRotaGraph2F(donut_x + i * donut_width, donut_num[i], base_radius, base_radius, scale, 0, donut_img[0], TRUE);
 
-		DrawRotaGraph(effect1_x + 110 + swayX * 0.6f,effect1_y + swayY * 0.6f,1.0, 0.0, effect_img[0], TRUE);
-	}
-
-	int effect2_x = 595;
-	int effect2_y = 230;
-
-	// エフェクト
-	if (effect_num[1] == 0)
-	{
-		DrawRotaGraph(effect2_x, effect2_y, 1.0, 0.0, effect_img[0], TRUE);
-		DrawRotaGraph(effect2_x + 100, effect2_y - 30, 1.0, 0.0, effect_img[1], TRUE);
-	}
-	else
-	{
-		DrawRotaGraph(effect2_x - 10, effect2_y - 30, 1.0, 0.0, effect_img[1], TRUE);
-		DrawRotaGraph(effect2_x + 110, effect2_y, 1.0, 0.0, effect_img[0], TRUE);
-	}
-
-	int effect3_x = 1005;
-	int effect3_y = 230;
-
-	// エフェクト
-	if (effect_num[2] == 0)
-	{
-		DrawRotaGraph(effect3_x, effect3_y, 1.0, 0.0, effect_img[0], TRUE);
-		DrawRotaGraph(effect3_x + 100, effect3_y - 30, 1.0, 0.0, effect_img[1], TRUE);
-	}
-	else
-	{
-		DrawRotaGraph(effect3_x - 10, effect3_y - 30, 1.0, 0.0, effect_img[0], TRUE);
-		DrawRotaGraph(effect3_x + 100, effect3_y, 1.0, 0.0, effect_img[1], TRUE);
+		DrawRotaGraph2F(donut_x + 40 + i * donut_width, donut_num[i] - 140, base_radius, base_radius, 0.32, 0, rank_img[i], TRUE);
 	}
 
 	RankingData* ranking = new RankingData();
@@ -171,8 +159,9 @@ void RankingScene::Draw() const
 		// ランキングを文字列に変換
 		sprintf_s(ranking_buf, sizeof(ranking_buf), "%08d", ranking->GetScore(i));
 
-		FontManager::DrawNum(default_x + i * string_space, default_y, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
+		FontManager::DrawNum(default_x + i * string_space, donut_num[i] - 54, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 	}
+
 
 	// メニューボタン
 	DrawButton(RANKING_BUTTON_NUM, button);
