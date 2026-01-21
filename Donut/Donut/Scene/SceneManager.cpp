@@ -48,7 +48,7 @@ void SceneManager::Initialize()
 
 	FontManager::Initialize();
 
-	ChangeScene(eSceneType::eRanking);
+	ChangeScene(eSceneType::eGameMain);
 }
 
 void SceneManager::Update()

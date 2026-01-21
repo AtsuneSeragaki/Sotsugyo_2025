@@ -58,6 +58,9 @@ private:
 	int background_img;
 	int pause_img;
 	static int delete_donut_count[6]; // 消したドーナツの数をカウント
+	int gameover_y;
+	int gameover_y_cnt;
+	int gameover_se;
 
 public:
 	// コンストラクタ

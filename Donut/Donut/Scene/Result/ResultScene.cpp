@@ -25,6 +25,8 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	line_img = tmp[0];
 	tmp = rm->GetImages("Resource/Images/receipt.png");
 	receipt_img = tmp[0];
+	receipt_se = rm->GetSounds("Resource/Sounds/result_se.mp3");
+	ChangeVolumeSoundMem(150, receipt_se);
 
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
@@ -100,6 +102,8 @@ eSceneType ResultScene::Update()
 
 	if (receipt_y > 150.0f)
 	{
+		PlaySoundMem(receipt_se, DX_PLAYTYPE_BACK, TRUE);
+
 		receipt_y -= 2.5f;
 	}
 

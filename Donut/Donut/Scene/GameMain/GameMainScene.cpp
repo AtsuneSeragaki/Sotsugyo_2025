@@ -11,7 +11,7 @@ int GameMainScene::score = 0;
 int GameMainScene::delete_donut_count[6] = {};
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0),pause_img(0)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0),pause_img(0),gameover_y(0),gameover_y_cnt(0),gameover_se(0)
 {
 }
 
@@ -52,6 +52,9 @@ void GameMainScene::Initialize()
 	delete_se = rm->GetSounds("Resource/Sounds/GameMain/delete_se.mp3");
 	ChangeVolumeSoundMem(200, delete_se);
 
+	gameover_se = rm->GetSounds("Resource/Sounds/GameMain/gameover_se.mp3");
+	ChangeVolumeSoundMem(200, delete_se);
+
 	std::vector<int> tmp;
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
@@ -75,6 +78,9 @@ void GameMainScene::Initialize()
 	{
 		delete_donut_count[i] = 0;
 	}
+
+	gameover_y = 300;
+	gameover_y_cnt = -100;
 }
 
 // 更新処理
@@ -94,11 +100,28 @@ eSceneType GameMainScene::Update()
 
 	if (is_gameover)
 	{
-		gameover_timer++;
-
-		if (gameover_timer > 110)
+		if (gameover_y_cnt == -100)
 		{
-			return eSceneType::eResult;
+			PlaySoundMem(gameover_se, DX_PLAYTYPE_BACK, TRUE);
+		}
+
+		if (gameover_y_cnt < gameover_y)
+		{
+			gameover_y_cnt += 7;
+
+			if (gameover_y_cnt >= gameover_y)
+			{
+				gameover_y_cnt = gameover_y;
+			}
+		}
+		else
+		{
+			gameover_timer++;
+
+			if (gameover_timer > 110)
+			{
+				return eSceneType::eResult;
+			}
 		}
 
 		return eSceneType::eGameMain;
@@ -188,7 +211,6 @@ void GameMainScene::Draw() const
 		SetDrawBright(120, 120, 120);
 
 		// ゲームメイン背景描画
-		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 		DrawGraph(0, 0, background_img, FALSE);
 
 		// ドーナツを落とす枠描画
@@ -210,9 +232,6 @@ void GameMainScene::Draw() const
 		DrawScore();
 
 		// 進化の輪描画
-		/*FontManager::Draw(960, 300, 0.2, 0.2, 0x5C4630, "DONUT EVOLUTION CHART");
-		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);*/
-
 		for (int i = 0; i < numDonuts; i++) {
 			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
 
@@ -242,14 +261,6 @@ void GameMainScene::Draw() const
 			);
 		}
 
-		//DrawGraph(997, 425, circle_image, TRUE);
-
-		// 進化の輪枠描画(枠を太くするために複数描画)
-		/*for (int j = 0; j < line_width; j++)
-		{
-			DrawCircleAA(1080.0f, 510.0f, 170.0f + j, 64,0xA67C52, FALSE);
-		}*/
-
 		// ポーズボタン描画
 		DrawButton(1, button);
 
@@ -258,15 +269,18 @@ void GameMainScene::Draw() const
 
 		PauseDraw();
 	}
-	else
+	else if (is_gameover)
 	{
+		// ポーズ画面以外は暗くする
+		// 描画輝度セット
+		SetDrawBright(120, 120, 120);
+		
 		// ゲームメイン背景描画
-		//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 		DrawGraph(0, 0, background_img, FALSE);
 
 		// ドーナツを落とす枠描画
 		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
-		
+
 		// オブジェクト描画
 		for (GameObject* obj : gameobjects->GetObjectList())
 		{
@@ -283,9 +297,6 @@ void GameMainScene::Draw() const
 		DrawScore();
 
 		// 進化の輪描画
-		/*FontManager::Draw(925, 290, 0.25, 0.25, 0x5C4630, "DONUT EVOLUTION CHART");
-		DrawCircle(1080, 510, 170, 0xD8C3A5, TRUE);*/
-
 		for (int i = 0; i < numDonuts; i++) {
 			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
 
@@ -315,28 +326,73 @@ void GameMainScene::Draw() const
 			);
 		}
 
-		//DrawGraph(1002, 428, circle_image, TRUE);
-
-		// 進化の輪枠描画(枠を太くするために複数描画)
-		/*for (int j = 0; j < line_width; j++)
-		{
-			DrawCircleAA(1080.0f, 510.0f, 170.0f + j, 64, 0xA67C52, FALSE);
-		}*/
-
 		// ポーズボタン描画
 		DrawButton(1, button);
 
-		if (is_gameover)
-		{
-			FontManager::DrawStr(420, 350, 0.75, 0.75, 0xffffff, "GAME OVER!");
-		}
-	}
+		// 描画輝度を元に戻す
+		SetDrawBright(255, 255, 255);
 
-	/*for (int i = 0; i < 6; i++)
+		//FontManager::DrawStr(280, gameover_y_cnt, 1.2, 1.2, 0xffffff, "GAME OVER!");
+		FontManager::DrawStr(380, gameover_y_cnt, 1.3, 1.3, 0xffffff, "CLOSED!");
+
+
+	}
+	else
 	{
-		DrawFormatString(0, 0 + i * 40, 0x000000, "Donut%d:%d", i, delete_donut_count[i]);
-	}*/
-	
+		// ゲームメイン背景描画
+		DrawGraph(0, 0, background_img, FALSE);
+
+		// ドーナツを落とす枠描画
+		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
+		
+		// オブジェクト描画
+		for (GameObject* obj : gameobjects->GetObjectList())
+		{
+			obj->Draw();
+		}
+
+		// ドーナツを落とす枠描画(枠を太くするために複数描画)
+		for (int i = 0; i < line_width; i++)
+		{
+			DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
+		}
+
+		// スコア描画
+		DrawScore();
+
+		// 進化の輪描画
+		for (int i = 0; i < numDonuts; i++) {
+			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
+
+			int w, h;
+			GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
+
+			float centerX = 1085.0f;
+			float centerY = 513.0f;
+			float radius = 125.0f;
+
+			float base_radius = 296.5f; // 元画像(288x288)の半径
+			double scale = 28.0 / (double)base_radius; // 表示サイズ調整
+
+			// 円周上の位置
+			float x = centerX + radius * cosf(angle);
+			float y = centerY + radius * sinf(angle);
+
+			// DrawRotaGraph2F の中心を画像中心に設定
+			DrawRotaGraph2F(
+				x, y,              // 描画位置
+				base_radius,        // 画像内で回転の基準X（中心）
+				base_radius,        // 回転の基準Y（中心）
+				scale,              // 拡大率
+				0.0,              // 回転角度（円周に沿って向けたい場合）
+				donut_image[i],
+				TRUE
+			);
+		}
+
+		// ポーズボタン描画
+		DrawButton(1, button);
+	}	
 }
 
 // 終了時処理
@@ -820,15 +876,15 @@ void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 	float d_locy = donut->GetLocation().y - donut->GetRadiusSize();
 
 	// ドーナツが上枠を超えていて、ほぼ静止しているならゲームオーバー
-	if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
-	{
-		is_gameover = true;
-	}
-
-	/*if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	/*if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
 	{
 		is_gameover = true;
 	}*/
+
+	if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	{
+		is_gameover = true;
+	}
 }
 
 // 次のドーナツを生成できる時間をカウントする処理
