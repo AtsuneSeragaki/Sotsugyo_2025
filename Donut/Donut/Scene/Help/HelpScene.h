@@ -32,6 +32,7 @@ private:
 	int background_img[MAX_PAGE_NUM];    // 背景画像
 	int triangle_img;                    // 三角形ボタン画像
 	int donut_img[MAX_DONUT_NUM];        // ドーナツ画像
+	int donut_shadow_img[3];             // ドーナツの影画像
 	int page_num;                        // 現在のページ番号
 	bool triangle_collision;             // 三角形ボタンとプレイヤーが当たっているか？(true:当たっている false:当たっていない)
 

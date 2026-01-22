@@ -118,7 +118,7 @@ eSceneType GameMainScene::Update()
 		{
 			gameover_timer++;
 
-			if (gameover_timer > 110)
+			if (gameover_timer > 70)
 			{
 				return eSceneType::eResult;
 			}

@@ -110,7 +110,7 @@ void TitleScene::DrawDonut() const
 	float base_radius = 296.5; // Œ³‰æ‘œ(288x288)‚Ì”¼Œa
 	double scale = (double)g_DonutInfoTable[6].size / (double)base_radius; // ‰æ‘œ‚ÌŠg‘å—¦
 
-	float shadow = 5;
+	float shadow = 5.0f;
 
 	// ¶‘¤ƒh[ƒiƒc•`‰æ
 	// ‰e

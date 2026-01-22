@@ -27,9 +27,7 @@ private:
 	int background_img; // 背景画像
 	int line_img; // 波線画像
 	int receipt_img; // レシート画像
-
 	float receipt_y; // レシートY座標
-
 	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
 	float donut1_x;  // 落下ドーナツ（左側）のX座標
 	float donut1_y;  // 落下ドーナツ（左側）のY座標
@@ -39,8 +37,9 @@ private:
 	double rotation2;  // 落下ドーナツ（右側）の角度
 	int donut_number[2]; // 落下ドーナツの種類
 	int donut_count[6]; // 消したドーナツの数をカウント
-
 	int receipt_se;
+	bool receipt_se_flg;
+	char time_buf[64];
 	
 public:
 	// コンストラクタ
@@ -71,4 +70,5 @@ private:
 	void DrawDonut() const;
 	// ドーナツの落下処理
 	void MoveDonut();
+	void GetNowTime();
 };

@@ -29,6 +29,12 @@ HelpScene::HelpScene()
 	background_img[1] = tmp[0];
 	tmp = rm->GetImages("Resource/Images/triangle2.png");
 	triangle_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow1.png");
+	donut_shadow_img[0] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow2.png");
+	donut_shadow_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow3.png");
+	donut_shadow_img[2] = tmp[0];
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
 		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
@@ -107,15 +113,13 @@ eSceneType HelpScene::Update()
 // 描画処理
 void HelpScene::Draw() const
 {
-	// 三角形ボタン
 	int y = 300; // Y座標
-	double triangle_font_scale = 0.28; // フォントサイズ
-	int triangle_font_y = y - 38; // フォントY座標 
-	int shadow_pos = 5;
-	int offset_y = 2;
+	int shadow_pos = 5; // 元画像からの影の位置
+	int offset_y = 2;   // カーソルが三角形ボタンに当たったときの移動量
 
 	if (page_num == 0)
-	{
+	{// 1ページ目の描画
+
 		// 背景
 		DrawGraph(0, 0, background_img[0], FALSE);
 
@@ -124,6 +128,7 @@ void HelpScene::Draw() const
 		float current_x = 120.0f;   // 最初のドーナツ左端のX座標
 		float base_radius = 296.5f; // 元画像(593x593)の半径
 
+		// ドーナツ表示
 		for (int i = 0; i < MAX_DONUT_NUM; i++) 
 		{
 			double scale = ((double)g_DonutInfoTable[i].size - 7.0) / (double)base_radius; // 画像の拡大率
@@ -134,6 +139,27 @@ void HelpScene::Draw() const
 			// DrawRotaGraph2F の左上座標 = current_x + 画像中心からのオフセット
 			float draw_x = current_x;
 			float draw_y = donut_y - draw_h / 2;     // Yは中心に揃える
+			float shadow_x = 4.0f;
+			float shadow_y = 6.5f;
+
+			// 左側ドーナツ描画
+			// 影
+			if (i < 5)
+			{
+				DrawRotaGraph2F(draw_x + shadow_x / 2, draw_y + shadow_y / 2, base_radius, base_radius, scale, 0.0, donut_shadow_img[0], TRUE);
+			}
+			else if (i < 7)
+			{
+				DrawRotaGraph2F(draw_x + shadow_x / 1.7, draw_y + shadow_y / 1.7, base_radius, base_radius, scale, 0.0, donut_shadow_img[1], TRUE);
+			}
+			else if (i == 10)
+			{
+				DrawRotaGraph2F(draw_x + shadow_x, draw_y + shadow_y, base_radius, base_radius, scale, 0.0, donut_shadow_img[0], TRUE);
+			}
+			else
+			{
+				DrawRotaGraph2F(draw_x + shadow_x / 1.2, draw_y + shadow_y / 1.2, base_radius, base_radius, scale, 0.0, donut_shadow_img[2], TRUE);
+			}
 
 			DrawRotaGraph2F(draw_x, draw_y, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
 
@@ -141,15 +167,11 @@ void HelpScene::Draw() const
 			current_x += draw_w + spacing;
 		}
 
-		// どのページにいるかの表示
-		/*DrawCircleAA(630, 570, 7, 64, 0xA67C52, TRUE);
-		DrawCircleAA(680, 570, 7, 64, 0x5C4630, TRUE);*/
-
-		//FontManager::Draw(1150 + 3, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "NEXT");
-
+		// 三角形ボタン
 		if (triangle_collision)
-		{
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+		{// カーソルが当たっているとき
+
+			// 三角形ボタンの色を暗くする
 			SetDrawBright(115, 128, 128);
 
 			// 三角形ボタン
@@ -159,13 +181,15 @@ void HelpScene::Draw() const
 			SetDrawBright(255, 255, 255);
 		}
 		else
-		{
+		{// カーソルが当たっていないとき
 
-			// ボタン影描画
+			// 元画像を影みたいに暗くする
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
 			SetDrawBright(0, 0, 0);
+
+			// 三角形ボタン影
 			DrawGraph(1150 + shadow_pos, y + shadow_pos, triangle_img, TRUE);
+
 			// 描画輝度を元に戻す
 			SetDrawBright(255, 255, 255);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -175,19 +199,16 @@ void HelpScene::Draw() const
 		}
 	}
 	else
-	{
+	{// 2ページ目の描画
+
 		// 背景
 		DrawGraph(0, 0, background_img[1], FALSE);
 
-		// どのページにいるかの表示
-		/*DrawCircleAA(630, 570, 7, 64, 0x5C4630, TRUE);
-		DrawCircleAA(680, 570, 7, 64, 0xA67C52, TRUE);
-
-		FontManager::Draw(80 + 5, triangle_font_y, triangle_font_scale, triangle_font_scale, 0x5C4630, "BACK");*/
-
+		// 三角形ボタン
 		if (triangle_collision)
-		{
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
+		{// カーソルが当たっているとき
+
+			// 三角形ボタンの色を暗くする
 			SetDrawBright(128, 128, 128);
 
 			// 三角形ボタン
@@ -197,13 +218,16 @@ void HelpScene::Draw() const
 			SetDrawBright(255, 255, 255);
 		}
 		else
-		{
-			// ボタン影描画
+		{// カーソルが当たっていないとき
+
+			// 元画像を影みたいに暗くする
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
-			// プレイヤーカーソルが当たっている時は、ボタンの色を暗くする
 			SetDrawBright(0, 0, 0);
+			
+			// 三角形ボタン影
 			DrawTurnGraph(80 + shadow_pos, y + shadow_pos, triangle_img, TRUE);
-			// 描画輝度を元に戻す
+			
+			// 描画設定を元に戻す
 			SetDrawBright(255, 255, 255);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -212,14 +236,8 @@ void HelpScene::Draw() const
 		}
 	}
 
-	// タイトル
-	//FontManager::Draw(330, 30, 1, 1, 0x5C4630, "HOW TO PLAY");
-
 	// メニューボタン
 	DrawButton(HELP_BUTTON_NUM, button);
-
-	SetDrawBright(255, 255, 255);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 // 終了時処理

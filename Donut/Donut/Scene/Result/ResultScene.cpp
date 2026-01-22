@@ -4,6 +4,7 @@
 #include "../../Utility/ResourceManager.h"
 #include "../../Utility/FontManager.h"
 #include <cstdio>
+#include <time.h>
 #include "DxLib.h"
 
 // コンストラクタ
@@ -26,7 +27,7 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	tmp = rm->GetImages("Resource/Images/receipt.png");
 	receipt_img = tmp[0];
 	receipt_se = rm->GetSounds("Resource/Sounds/result_se.mp3");
-	ChangeVolumeSoundMem(150, receipt_se);
+	ChangeVolumeSoundMem(200, receipt_se);
 
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
@@ -55,6 +56,10 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 		
 		this->donut_count[i] = delete_donut_count[i];
 	}
+
+	receipt_se_flg = false;
+
+	GetNowTime();
 }
 
 // デストラクタ
@@ -100,9 +105,14 @@ eSceneType ResultScene::Update()
 		}
 	}
 
-	if (receipt_y > 150.0f)
+	if (receipt_se_flg == false)
 	{
 		PlaySoundMem(receipt_se, DX_PLAYTYPE_BACK, TRUE);
+		receipt_se_flg = true;
+	}
+
+	if (receipt_y > 150.0f)
+	{
 
 		receipt_y -= 2.5f;
 	}
@@ -123,31 +133,11 @@ void ResultScene::Draw() const
 	// スコア
 	DrawScore();
 
+	FontManager::DrawNum(600, receipt_y + 55, 0.15, 0.15, 0x5C4630, time_buf);
+
 	DrawBox(0, 560, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 	DrawGraph(305, 550, line_img, TRUE);
-
-	// タイトル
-	//FontManager::Draw(475, 30, 1.0, 1.0, 0x5C4630, "RESULT");
-
-	// リザルト表示背景
-	//DrawBox(340, 150, 940, 560, 0xD8C3A5, TRUE);
-
-	//// リザルト表示背景枠の太さ
-	//int box_line_width = 3;
-
-	//// リザルト表示背景枠描画(枠を太くするために複数描画)
-	//for (int j = 0; j < box_line_width; j++)
-	//{
-	//	DrawBox(340 - j, 150 - j, 940 + j, 560 + j, 0xA67C52, FALSE);
-	//}
-
-	//DrawDonut();
-
-	/*for (int i = 0; i < 6; i++)
-	{
-		DrawFormatString(0, 0 + i * 40, 0x000000, "Donut%d:%d", i, donut_count[i]);
-	}*/
 
 	//// ランキング
 	//DrawRanking();
@@ -183,12 +173,12 @@ void ResultScene::DrawScore() const
 		if (i < 3)
 		{
 			// ドーナツの個数を表示
-			FontManager::DrawNum(525 + 185 * i, receipt_y + 90, 0.45, 0.45, 0x5C4630, buf);
+			FontManager::DrawNum(525 + 185 * i, receipt_y + 98, 0.45, 0.45, 0x5C4630, buf);
 		}
 		else
 		{
 			// ドーナツの個数を表示
-			FontManager::DrawNum(525 + 185 * (i - 3), receipt_y + 190, 0.45, 0.45, 0x5C4630, buf);
+			FontManager::DrawNum(525 + 185 * (i - 3), receipt_y + 198, 0.45, 0.45, 0x5C4630, buf);
 		}
 	}
 
@@ -196,9 +186,8 @@ void ResultScene::DrawScore() const
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(445 + plus, receipt_y + 310, 0.85, 0.85, 0x5C4630, score_buf);
+	FontManager::DrawNum(445 + plus, receipt_y + 318, 0.85, 0.85, 0x5C4630, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
-
 }
 
 // ランキング描画処理
@@ -323,5 +312,24 @@ void ResultScene::MoveDonut()
 	{
 		rotation2 -= DX_TWO_PI;
 	}
+}
+
+void ResultScene::GetNowTime()
+{
+	time_t timer = time(NULL);
+
+	struct tm now;              // ポインタではなく実体
+	localtime_s(&now, &timer);  // 安全版
+
+	sprintf_s(
+		time_buf,
+		sizeof(time_buf),
+		"%02d/%02d/%02d %02d:%02d",
+		now.tm_year % 100,
+		now.tm_mon + 1,
+		now.tm_mday,
+		now.tm_hour,
+		now.tm_min
+	);
 }
 
