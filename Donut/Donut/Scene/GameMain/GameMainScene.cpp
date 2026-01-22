@@ -881,6 +881,7 @@ void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 		is_gameover = true;
 	}*/
 
+	// デバック用（すぐゲームオーバーにできるように設定）
 	if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
 	{
 		is_gameover = true;

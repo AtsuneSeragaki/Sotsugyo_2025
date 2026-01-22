@@ -15,9 +15,9 @@ RankingScene::RankingScene()
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/ranking.png");
 	background_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut2/donut2.png");
+	tmp = rm->GetImages("Resource/Images/donut/donut2.png");
 	donut_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut2/donut_shadow1.png");
+	tmp = rm->GetImages("Resource/Images/donut/donut_shadow1.png");
 	donut_img[1] = tmp[0];
 	tmp = rm->GetImages("Resource/Images/rank1.png");
 	rank_img[0] = tmp[0];

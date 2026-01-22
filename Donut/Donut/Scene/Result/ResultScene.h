@@ -40,6 +40,9 @@ private:
 	int receipt_se;
 	bool receipt_se_flg;
 	char time_buf[64];
+	int rank_img[4];
+	double rank_scale;
+	int rank_se;
 	
 public:
 	// コンストラクタ

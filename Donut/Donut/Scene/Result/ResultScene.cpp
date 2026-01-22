@@ -26,8 +26,18 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	line_img = tmp[0];
 	tmp = rm->GetImages("Resource/Images/receipt.png");
 	receipt_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank/c.png");
+	rank_img[0] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank/b.png");
+	rank_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank/a.png");
+	rank_img[2] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/rank/s.png");
+	rank_img[3] = tmp[0];
 	receipt_se = rm->GetSounds("Resource/Sounds/result_se.mp3");
 	ChangeVolumeSoundMem(200, receipt_se);
+	rank_se = rm->GetSounds("Resource/Sounds/rank_se.mp3");
+	ChangeVolumeSoundMem(200, rank_se);
 
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
@@ -60,6 +70,8 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	receipt_se_flg = false;
 
 	GetNowTime();
+
+	rank_scale = 1.45;
 }
 
 // デストラクタ
@@ -113,8 +125,26 @@ eSceneType ResultScene::Update()
 
 	if (receipt_y > 150.0f)
 	{
-
 		receipt_y -= 2.5f;
+
+		if (receipt_y <= 150.0f)
+		{
+			receipt_y = 150.0f;
+		}
+	}
+	
+	if(receipt_y <= 150.0f)
+	{
+		if (rank_scale > 1.0)
+		{
+			rank_scale -= 0.03;
+
+			if (rank_scale <= 1.0)
+			{
+				rank_scale = 1.0;
+				PlaySoundMem(rank_se, DX_PLAYTYPE_BACK, TRUE);
+			}
+		}
 	}
 
 	MoveDonut();
@@ -130,17 +160,42 @@ void ResultScene::Draw() const
 	DrawGraph(0, 0, background_img, FALSE);
 
 	DrawGraph(350, receipt_y, receipt_img, TRUE);
+	
 	// スコア
 	DrawScore();
 
+	float rank_x = 1130.0f;
+	float rank_y = 320.0f;
+	float rank_cx = 97.5f;
+	float rank_cy = 94.0f;
+
+	// レシートが最後まで出たら、ランク表示
+	if (receipt_y <= 150.0f)
+	{
+		if (score < 10000)
+		{
+			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[0], TRUE);
+		}
+		else if (score < 15000)
+		{
+			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[1], TRUE);
+		}
+		else if (score < 20000)
+		{
+			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[2], TRUE);
+		}
+		else
+		{
+			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[3], TRUE);
+		}
+	}
+	
+	// リザルト画面に遷移した日時
 	FontManager::DrawNum(600, receipt_y + 55, 0.15, 0.15, 0x5C4630, time_buf);
 
 	DrawBox(0, 560, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
 	DrawGraph(305, 550, line_img, TRUE);
-
-	//// ランキング
-	//DrawRanking();
 	
 	// メニューボタン
 	DrawButton(RESULT_BUTTON_NUM, button);
