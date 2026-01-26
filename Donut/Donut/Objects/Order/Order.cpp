@@ -15,11 +15,22 @@ Order::Order()
     clear_timer = 0;
 
     ResourceManager* rm = ResourceManager::GetInstance();
-    clear_se = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
+    std::vector<int> tmp;
+    tmp = rm->GetImages("Resource/Images/box.png");
+    box_img = tmp[0];
+    tmp = rm->GetImages("Resource/Images/clear.png");
+    clear_img = tmp[0];
 
+    clear_se = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 
     SetDonutImage();
+
+    box_x = -220.0f;
+    donut_num = 3;
+    donut_y = 60.0f;
+    clear_anim_flg = false;
+    clear_extend = 1.27;
 }
 
 // デストラクタ
@@ -35,6 +46,11 @@ void Order::Initialize()
     SetRandomOrder(difficulty);
     complete_order = false;
     clear_timer = 0;
+    box_x = -220.0f;
+    donut_num = 3;
+    donut_y = 60.0f;
+    clear_anim_flg = false;
+    clear_extend = 1.27;
 }
 
 // 更新処理
@@ -43,76 +59,194 @@ void Order::Update()
     // オーダーのドーナツの個数が全て0になったらクリアしたことにする
     if (order_num[0] <= 0 && order_num[1] <= 0 && order_num[2] <= 0 && order_num[3] <= 0)
     {
-        complete_order = true;
+        clear_anim_flg = true;
     }
 
-    // オーダーを全てクリアしたら、次のオーダーを設定
-    if (complete_order)
+    if (clear_anim_flg)
     {
-        if (clear_timer <= 80)
+        if (donut_num == 3 && box_x < 30.0f)
         {
-            if (clear_timer == 0)
-            {
-                PlaySoundMem(clear_se, DX_PLAYTYPE_BACK, TRUE);
-            }
+            box_x += 30.0f;
 
-            clear_timer++;
+            if (box_x >= 30.0f)
+            {
+                box_x = 30.0f;
+            }
         }
         else
         {
-            // 難易度MAXじゃなかったら、難易度を1上げる
-            if (difficulty < DIFFICULTY_MAX)
+            if (donut_num <= -1 && clear_timer < 70)
             {
-                difficulty++;
+                clear_timer++;
+
+                if (clear_timer > 5 && clear_extend > 1.0)
+                {
+                    clear_extend -= 0.03;
+
+                    if (clear_extend <= 1.0)
+                    {
+                        clear_extend = 1.0;
+                    }
+                }
+                
+                if(clear_timer > 60)
+                {
+                    if (box_x > -300.0f)
+                    {
+                        box_x -= 60.0f;
+
+                        if (box_x <= -300.0f)
+                        {
+                            box_x = -300.0f;
+                        }
+                    }
+                }
             }
+            else if(donut_num <= -1 && clear_timer >= 70)
+            {
+                donut_num = 3;
+                clear_anim_flg = false;
+                donut_y = 60.0f;
+                box_x = -220.0f;
 
-            SetRandomOrder(difficulty);
+                 // 難易度MAXじゃなかったら、難易度を1上げる
+                if (difficulty < DIFFICULTY_MAX)
+                {
+                    difficulty++;
+                }
 
-            //PlaySoundMem(next_order_se, DX_PLAYTYPE_BACK, TRUE);
+                SetRandomOrder(difficulty);
 
-            clear_timer = 0;
+                clear_timer = 0;
+                clear_extend = 1.27;
+            }
+            else
+            {
+                  donut_y += 20.0f;
+
+                  if (donut_y >= 250.0f)
+                  {
+                      donut_num--;
+
+                      if (donut_num > -1)
+                      {
+                          donut_y = 60.0f;
+                      }
+                  }
+            }
         }
     }
+    /*else
+    {
+        clear_anim_flg = true;
+    }*/
+
+    //if (clear_anim_flg)
+    //{
+    //    if (donut_num == 3 && box_x < 30.0f)
+    //    {
+    //        box_x += 30.0f;
+
+    //        if (box_x >= 30.0f)
+    //        {
+    //            box_x = 30.0f;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (donut_num <= -1 && clear_timer < 70)
+    //        {
+    //            clear_timer++;
+
+    //            if (clear_timer > 5 && clear_extend > 1.0)
+    //            {
+    //                clear_extend -= 0.03;
+
+    //                if (clear_extend <= 1.0)
+    //                {
+    //                    clear_extend = 1.0;
+    //                }
+    //            }
+
+    //            if (clear_timer > 60)
+    //            {
+    //                if (box_x > -300.0f)
+    //                {
+    //                    box_x -= 60.0f;
+
+    //                    if (box_x <= -300.0f)
+    //                    {
+    //                        box_x = -300.0f;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        else if (donut_num <= -1 && clear_timer >= 70)
+    //        {
+    //            donut_num = 3;
+    //            clear_anim_flg = false;
+    //            donut_y = 60.0f;
+    //            box_x = -220.0f;
+
+    //             // 難易度MAXじゃなかったら、難易度を1上げる
+    //            if (difficulty < DIFFICULTY_MAX)
+    //            {
+    //                difficulty++;
+    //            }
+
+    //            SetRandomOrder(difficulty);
+
+    //            clear_timer = 0;
+    //            clear_extend = 1.27;
+    //        }
+    //        else
+    //        {
+    //            donut_y += 20.0f;
+
+    //            if (donut_y >= 250.0f)
+    //            {
+    //                donut_num--;
+
+    //                if (donut_num > -1)
+    //                {
+    //                    donut_y = 60.0f;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 }
 
 // 描画処理
 void Order::Draw() const
 {
-    // オーダーの枠を表示
-    //DrawBox(ORDER_LX, ORDER_LY, ORDER_RX, ORDER_RY, 0xffffff, TRUE);
+    float base_radius = 296.5; // 元画像(288x288)の半径
+    double scale = 40.0 / (double)base_radius; // 画像の拡大率
 
-    //// 枠の太さ
-    //int line_width = 3;
-    //// 枠描画(枠を太くするために複数描画)
-    //for (int j = 0; j < line_width; j++)
-    //{
-    //    DrawBox(ORDER_LX - j, ORDER_LY - j, ORDER_RX + j, ORDER_RY + j, 0xA67C52, FALSE);
-    //}
+    if (clear_anim_flg)
+    {
+        if (box_x >= 30.0f && donut_num >= 0)
+        {
+            // ドーナツ表示
+            DrawRotaGraph2F((float)ORDER_LX + 150.0f, (float)ORDER_LY + donut_y, base_radius, base_radius, 0.13, 0.0, donut_img[donut_num], TRUE);
+        }
 
-    //FontManager::Draw(ORDER_LX + 105, ORDER_LY + 13, 0.3, 0.3, 0x5C4630, "ORDER");
+        if (clear_timer > 5 && clear_timer < 50)
+        {
+            DrawRotaGraph2F(ORDER_LX + 150, ORDER_LY + 120, 121.0, 23.5, clear_extend, 0.0, clear_img, TRUE);
+        }
 
-    if (complete_order && clear_timer <= 80)
-    {// オーダーをクリアした時
-
-        FontManager::DrawStr(ORDER_LX + 15, ORDER_LY + 165, 1.0, 1.0, 0xff5555, "Clear!");
+        DrawGraph(ORDER_LX + box_x, ORDER_LY + 165, box_img, TRUE);
     }
     else
     {// それ以外
 
-        //float base_radius = 46.5; // 元画像(93x93)の半径
-        float base_radius = 296.5; // 元画像(288x288)の半径
-        double scale = 40.0 / (double)base_radius; // 画像の拡大率
-
+        
         // オーダーのドーナツを表示
         for (int i = 0; i < ORDER_MAX; i++)
         {
             // ドーナツ表示
             DrawRotaGraph2F((float)ORDER_LX + 95.0f, (float)ORDER_LY + 95.0f + 90.0f * i, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
-            
-            // ドーナツの種類表示
-            /*Donuts* donut = new Donuts(order_list[i]);
-            SetFontSize(20);
-            DrawFormatString(ORDER_LX + 107, ORDER_LY + 80 + 90 * i + 10, 0x5C4630, "%d", donut->GetDonutNumber(order_list[i]));*/
 
             // スコアを文字列に変換
             char buf[16];
@@ -121,7 +255,9 @@ void Order::Draw() const
             // ドーナツの個数を表示
             FontManager::DrawNum(ORDER_LX + 157, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
         }
-    }
+    }    
+
+    DrawFormatString(0, 0, 0x000000, "%d", difficulty);
 }
 
 // 終了時処理

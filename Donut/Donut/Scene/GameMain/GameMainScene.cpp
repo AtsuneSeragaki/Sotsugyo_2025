@@ -876,16 +876,16 @@ void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 	float d_locy = donut->GetLocation().y - donut->GetRadiusSize();
 
 	// ドーナツが上枠を超えていて、ほぼ静止しているならゲームオーバー
-	/*if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
-	{
-		is_gameover = true;
-	}*/
-
-	// デバック用（すぐゲームオーバーにできるように設定）
-	if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
 	{
 		is_gameover = true;
 	}
+
+	// デバック用（すぐゲームオーバーにできるように設定）
+	/*if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	{
+		is_gameover = true;
+	}*/
 }
 
 // 次のドーナツを生成できる時間をカウントする処理

@@ -20,6 +20,13 @@ private:
 	int clear_se;                    // クリアした時の効果音データ
 	int next_order_se;               // 次のオーダーに変わる時の効果音データ
 	int donut_img[ORDER_MAX];        // ドーナツ画像
+	int box_img;                     // 箱画像
+	int donut_num;                   // アニメーションするドーナツの番号
+	float donut_y;                   // アニメーションするドーナツのY座標
+	float box_x;                     // 箱のX座標
+	bool clear_anim_flg;             // クリアアニメーション中か？
+	int clear_img;                   // クリア文字画像
+	double clear_extend;             // クリア文字画像の大きさ
 
 public:
 	// コンストラクタ
