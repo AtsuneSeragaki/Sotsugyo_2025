@@ -68,10 +68,6 @@ void Order::Update()
     {
         ClearAnim();
     }
-    else
-    {
-        clear_anim_flg = true;
-    }
 }
 
 // 描画処理
