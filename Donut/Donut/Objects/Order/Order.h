@@ -21,7 +21,6 @@ private:
 	int order_num[ORDER_MAX];        // それぞれのオーダーの個数
 	int difficulty;                  // 難易度
 	int clear_timer;                 //	クリアの文字を出す時間
-	int clear_se;                    // クリアした時の効果音データ
 	int next_order_se;               // 次のオーダーに変わる時の効果音データ
 	int donut_img[ORDER_MAX];        // ドーナツ画像
 	int box_img;                     // 箱画像
@@ -33,6 +32,7 @@ private:
 	double clear_extend;             // クリア文字画像の大きさ
 	bool box_moved_flg;              // 箱が動き終わったか？
 	bool donut_anim_flg;             // ドーナツのアニメーションが終わったか？
+	int clear_se[3];                 // クリアアニメーション効果音
 
 public:
 	// コンストラクタ

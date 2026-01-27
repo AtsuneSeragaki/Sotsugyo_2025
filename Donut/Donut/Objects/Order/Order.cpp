@@ -11,7 +11,6 @@ Order::Order()
     difficulty = 0;
     // オーダーを設定
     SetRandomOrder(difficulty);
-    clear_timer = 0;
 
     ResourceManager* rm = ResourceManager::GetInstance();
     std::vector<int> tmp;
@@ -20,7 +19,11 @@ Order::Order()
     tmp = rm->GetImages("Resource/Images/clear.png");
     clear_img = tmp[0];
 
-    clear_se = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
+    clear_se[0] = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
+    clear_se[1] = rm->GetSounds("Resource/Sounds/GameMain/box_move_se.mp3");
+    ChangeVolumeSoundMem(150, clear_se[1]);
+    clear_se[2] = rm->GetSounds("Resource/Sounds/GameMain/clear_donut_se.mp3");
+    ChangeVolumeSoundMem(200, clear_se[2]);
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 
     SetDonutImage();
@@ -42,6 +45,9 @@ void Order::Initialize()
     SetRandomOrder(difficulty);
     // クリアアニメーションの変数を全てリセット
     ClearAnimReset();
+
+    // デバック用
+    clear_anim_flg = true;
 }
 
 // 更新処理
@@ -63,7 +69,7 @@ void Order::Update()
 // 描画処理
 void Order::Draw() const
 {
-    float base_radius = 296.5; // 元画像(288x288)の半径
+    float base_radius = 296.5; // 元画像(593x593)の中心座標
     double scale = 40.0 / (double)base_radius; // 画像の拡大率
 
     if (clear_anim_flg)
@@ -76,15 +82,16 @@ void Order::Draw() const
 
         if (clear_timer > 5 && clear_timer < 50)
         {
+            // 文字表示
             DrawRotaGraph2F((float)ORDER_LX + 150.0f, (float)ORDER_LY + 120.0f, 121.0, 23.5, clear_extend, 0.0, clear_img, TRUE);
         }
 
+        // 箱表示
         DrawGraphF((float)ORDER_LX + box_x, (float)ORDER_LY + 165.0f, box_img, TRUE);
     }
     else
     {// それ以外
 
-        
         // オーダーのドーナツを表示
         for (int i = 0; i < ORDER_MAX; i++)
         {
@@ -98,9 +105,7 @@ void Order::Draw() const
             // ドーナツの個数を表示
             FontManager::DrawNum(ORDER_LX + 157, ORDER_LY + 75 + 90 * i, 0.45, 0.45, 0x5C4630, buf);
         }
-    }    
-
-    //DrawFormatString(0, 0, 0x000000, "%d", donut_num);
+    }
 }
 
 // 終了時処理
@@ -275,6 +280,11 @@ void Order::ClearAnim()
 
 void Order::ClearMoveBox()
 {
+    if (box_x == FIRST_BOX_X)
+    {
+        //PlaySoundMem(clear_se[1], DX_PLAYTYPE_BACK, TRUE);
+    }
+
     box_x += 40.0f;
 
     // 最終的な位置まで移動したら、フラグをtrueに
@@ -287,17 +297,25 @@ void Order::ClearMoveBox()
 
 void Order::ClearDonutMove()
 {
-    donut_y += 20.0f;
+    if (donut_y == FIRST_DONUT_Y)
+    {
+        PlaySoundMem(clear_se[2], DX_PLAYTYPE_BACK, TRUE);
+    }
+
+    donut_y += 13.0f;
 
     // 最終的なY座標まで移動したら、次のドーナツに変更
     if (donut_y >= MAX_DONUT_Y)
     {
+        
+
         donut_num--;
 
         // 最後のドーナツまで移動したら、フラグをtrueに
         if (donut_num <= -1)
         {
             donut_anim_flg = true;
+            PlaySoundMem(clear_se[0], DX_PLAYTYPE_BACK,TRUE);
             return;
         }
 
@@ -324,6 +342,11 @@ void Order::ClearStringAnim()
 
         if (clear_timer > 60)
         {
+            if (clear_timer == 61)
+            {
+                //PlaySoundMem(clear_se[1], DX_PLAYTYPE_BACK, TRUE);
+            }
+
             if (box_x > -300.0f)
             {
                 box_x -= 60.0f;
@@ -344,6 +367,8 @@ void Order::ClearStringAnim()
         }
 
         SetRandomOrder(difficulty);
+
+        PlaySoundMem(next_order_se, DX_PLAYTYPE_BACK, TRUE);
 
         // クリアアニメーションの変数を全てリセット
         ClearAnimReset();
