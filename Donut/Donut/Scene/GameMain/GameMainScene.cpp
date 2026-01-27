@@ -480,14 +480,14 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			// bを削除対象に
 			b->SetDead(true);
 
-			AddScore(a);
+			//AddScore(a);
 
 			return;
 		}
 		else if (nextTypeIndex == MAX_DONUT_NUM)
 		{
 			// 最大まで進化したもの同士が合体すると、両方消える
-			AddScore(a);
+			//AddScore(a);
 
 			// aを削除対象に
 			a->SetDead(true);
@@ -751,21 +751,27 @@ void GameMainScene::OnPlayerClick()
 					{
 					case DonutType::DONUT_FRENCH_CRULLER:
 						SetDonutCount(0);
+						AddScore(donut);
 						break;
 					case DonutType::DONUT_FRENCH_CRULLER_VAR:
 						SetDonutCount(1);
+						AddScore(donut);
 						break;
 					case DonutType::DONUT_PON_DE_RING:
 						SetDonutCount(2);
+						AddScore(donut);
 						break;
 					case DonutType::DONUT_PON_DE_RING_MATCHA:
 						SetDonutCount(3);
+						AddScore(donut);
 						break;
 					case DonutType::DONUT_PON_DE_RING_CHOCOLATE:
 						SetDonutCount(4);
+						AddScore(donut);
 						break;
 					case DonutType::DONUT_GOLDEN_CHOCOLATE:
 						SetDonutCount(5);
+						AddScore(donut);
 						break;
 					default:
 						break;
@@ -835,25 +841,29 @@ void GameMainScene::MakeDonutList()
 // スコア描画処理
 void GameMainScene::DrawScore() const
 {
-	// スコア描画背景
-	//DrawCircle(200, 135, 105, 0xD8C3A5, TRUE);
+	std::string num = std::to_string(score);
+	int len = num.length();
+	std::string res = "";
+	int count = 0;
 
-	//// 枠の太さ
-	//int line_width = 3;
+	for (int i = len - 1; i >= 0; --i) {
+		res = num[i] + res;
+		count++;
+		if (count % 3 == 0 && i != 0) {
+			res = "," + res;
+		}
+	}
 
-	//// 枠描画(枠を太くするために複数描画)
-	//for (int j = 0; j < line_width; j++)
-	//{
-	//	DrawCircleAA(200.0f, 135.0f, 105.0f + j, 64, 0xA67C52, FALSE);
-	//}
-	//
-	//FontManager::Draw(155, 65, 0.3, 0.3, 0x5C4630, "SCORE");
+	int charWidth = (int)(100 * 0.22f); // 35pxくらい
+	int rightX = 280;
+
+	int drawX = rightX - (int)(res.length() * charWidth);
 
 	// スコアを文字列に変換
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(113, 125, 0.35, 0.35, 0x5C4630, score_buf);
+	FontManager::DrawNum(drawX, 120, 0.35, 0.35, 0x5C4630, res.c_str());
 }
 
 // ドーナツが枠からはみ出していないか確認する処理
