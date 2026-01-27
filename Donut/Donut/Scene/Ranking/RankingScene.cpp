@@ -31,10 +31,9 @@ RankingScene::RankingScene()
 
 	for (int i = 0; i < RANK_MAX_NUM; i++)
 	{
-		donut_num[i] = -200;
+		donut_num[i] = -200.0f;
+		donut_anim_flg[i] = false;
 	}
-
-	donut_y = 387.0f;
 }
 
 // デストラクタ
@@ -51,6 +50,16 @@ void RankingScene::Initialize()
 eSceneType RankingScene::Update()
 {
 	InputManager* input = InputManager::GetInstance();
+
+	// ドーナツの落下アニメーション
+	for (int i = 0; i < 3; i++)
+	{
+		// 前のドーナツがアニメーション終了していたら、再生
+		if (i == 0 || donut_anim_flg[i - 1] == true)
+		{
+			RankingDonutAnim(i);
+		}
+	}
 
 	// ボタンとプレイヤーカーソルの当たり判定
 	for (int i = 0; i < RANKING_BUTTON_NUM; i++)
@@ -77,42 +86,6 @@ eSceneType RankingScene::Update()
 				// それぞれの画面に遷移
 				return button[i].targetScene;
 			}
-		}
-	}
-
-	// 0番目
-	if(donut_num[0] < donut_y)
-	{
-		donut_num[0] += 20;
-
-		if (donut_num[0] >= donut_y)
-		{
-			donut_num[0] = donut_y;
-			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
-		}
-	}
-
-	// 1番目
-	if (donut_num[0] == donut_y && donut_num[1] < donut_y)
-	{
-		donut_num[1] += 20;
-
-		if (donut_num[1] >= donut_y)
-		{
-			donut_num[1] = donut_y;
-			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
-		}
-	}
-
-	// 2番目
-	if (donut_num[1] == donut_y && donut_num[2] < donut_y)
-	{
-		donut_num[2] += 20;
-
-		if (donut_num[2] >= donut_y)
-		{
-			donut_num[2] = donut_y;
-			PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 
@@ -159,7 +132,7 @@ void RankingScene::Draw() const
 		// ランキングを文字列に変換
 		sprintf_s(ranking_buf, sizeof(ranking_buf), "%08d", ranking->GetScore(i));
 
-		FontManager::DrawNum(default_x + i * string_space, donut_num[i] - 54, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
+		FontManager::DrawNum(default_x + i * string_space, (int)donut_num[i] - 54, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 	}
 
 
@@ -176,4 +149,19 @@ void RankingScene::Finalize()
 eSceneType RankingScene::GetNowSceneType() const
 {
 	return eSceneType::eRanking;
+}
+
+void RankingScene::RankingDonutAnim(int index)
+{
+	donut_num[index] += 20.0f;
+
+	// 最終的なY座標まで移動したら、フラグをtrueに
+	if (donut_num[index] >= RANKING_MAX_DONUT_Y)
+	{
+		donut_num[index] = RANKING_MAX_DONUT_Y;
+		donut_anim_flg[index] = true;
+
+		// 効果音再生
+		PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
+	}
 }

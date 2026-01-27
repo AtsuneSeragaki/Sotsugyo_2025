@@ -126,7 +126,7 @@ void HelpScene::Draw() const
 		float donut_y = 430.0f; // 描画Y座標（縦位置）
 		float spacing = 15.0f;     // ドーナツ同士の空白幅（px）
 		float current_x = 120.0f;   // 最初のドーナツ左端のX座標
-		float base_radius = 296.5f; // 元画像(593x593)の半径
+		float base_radius = 296.5; // 元画像(593x593)の半径
 
 		// ドーナツ表示
 		for (int i = 0; i < MAX_DONUT_NUM; i++) 
@@ -146,11 +146,11 @@ void HelpScene::Draw() const
 			// 影
 			if (i < 5)
 			{
-				DrawRotaGraph2F(draw_x + shadow_x / 2, draw_y + shadow_y / 2, base_radius, base_radius, scale, 0.0, donut_shadow_img[0], TRUE);
+				DrawRotaGraph2F(draw_x + shadow_x / 2.0f, draw_y + shadow_y / 2.0f, base_radius, base_radius, scale, 0.0, donut_shadow_img[0], TRUE);
 			}
 			else if (i < 7)
 			{
-				DrawRotaGraph2F(draw_x + shadow_x / 1.7, draw_y + shadow_y / 1.7, base_radius, base_radius, scale, 0.0, donut_shadow_img[1], TRUE);
+				DrawRotaGraph2F(draw_x + shadow_x / 1.7f, draw_y + shadow_y / 1.7f, base_radius, base_radius, scale, 0.0, donut_shadow_img[1], TRUE);
 			}
 			else if (i == 10)
 			{
@@ -158,7 +158,7 @@ void HelpScene::Draw() const
 			}
 			else
 			{
-				DrawRotaGraph2F(draw_x + shadow_x / 1.2, draw_y + shadow_y / 1.2, base_radius, base_radius, scale, 0.0, donut_shadow_img[2], TRUE);
+				DrawRotaGraph2F(draw_x + shadow_x / 1.2f, draw_y + shadow_y / 1.2f, base_radius, base_radius, scale, 0.0, donut_shadow_img[2], TRUE);
 			}
 
 			DrawRotaGraph2F(draw_x, draw_y, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);

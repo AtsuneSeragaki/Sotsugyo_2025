@@ -7,14 +7,18 @@
 #define ORDER_RX  ORDER_LX + 300   // オーダーの枠X座標(右下)
 #define ORDER_RY  680              // オーダーの枠Y座標(右下)
 #define ORDER_MAX 4                // オーダーの数
-#define DIFFICULTY_MAX 5           // 難易度MAXの数            
+#define DIFFICULTY_MAX 5           // 難易度MAXの数
+#define FIRST_BOX_X -220.0f        // (アニメーション用)箱の初期X座標
+#define MAX_BOX_X 30.0f            // (アニメーション用)箱の最終的なX座標
+#define FIRST_DONUT_Y 60.0f        // (アニメーション用)ドーナツの初期Y座標
+#define MAX_DONUT_Y 250.0f         // (アニメーション用)ドーナツの最終的なY座標
+#define FIRST_STRING_SCALE 1.27    // (アニメーション用)文字の初期拡大率
 
 class Order : public GameObject
 {
 private:
 	DonutType order_list[ORDER_MAX]; // オーダーリスト(ドーナツ4種類)
 	int order_num[ORDER_MAX];        // それぞれのオーダーの個数
-	bool complete_order;             // オーダー全てクリアしたか？フラグ
 	int difficulty;                  // 難易度
 	int clear_timer;                 //	クリアの文字を出す時間
 	int clear_se;                    // クリアした時の効果音データ
@@ -27,6 +31,8 @@ private:
 	bool clear_anim_flg;             // クリアアニメーション中か？
 	int clear_img;                   // クリア文字画像
 	double clear_extend;             // クリア文字画像の大きさ
+	bool box_moved_flg;              // 箱が動き終わったか？
+	bool donut_anim_flg;             // ドーナツのアニメーションが終わったか？
 
 public:
 	// コンストラクタ
@@ -63,4 +69,19 @@ public:
 
 	// オーダーリストにあるドーナツ画像を設定
 	void SetDonutImage();
+
+	// オーダークリアした時のアニメーション処理
+	void ClearAnim();
+
+	// 箱の移動処理(クリアアニメーション)
+	void ClearMoveBox();
+
+	// ドーナツの移動処理(クリアアニメーション)
+	void ClearDonutMove();
+
+	// 文字のアニメーション処理(クリアアニメーション)
+	void ClearStringAnim();
+
+	// クリアアニメーションの変数を全てリセット
+	void ClearAnimReset();
 };

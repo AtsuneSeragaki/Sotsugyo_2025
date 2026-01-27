@@ -16,16 +16,18 @@
 
 #define RANK_MAX_NUM 3
 
+#define RANKING_MAX_DONUT_Y 387.0f // ドーナツの最終的なY座標 
+
 class RankingScene : public SceneBase
 {
 private:
 	ButtonState button[RANKING_BUTTON_NUM]; // ボタン情報
-	int background_img; // 背景画像
-	int donut_img[2];   // ドーナツ画像
-	int rank_img[RANK_MAX_NUM];  // 王冠画像
-	int donut_num[RANK_MAX_NUM]; // エフェクトの番号
-	float donut_y; // ドーナツのY座標（中心）
-	int drop_se; // ドーナツの落下音
+	int background_img;                     // 背景画像
+	int rank_img[RANK_MAX_NUM];             // 王冠画像
+	int donut_img[2];                       // ドーナツ画像(0:ノーマル 1:影)
+	int drop_se;                            // ドーナツの落下音
+	float donut_num[RANK_MAX_NUM];          // それぞれのドーナツのY座標
+	bool  donut_anim_flg[RANK_MAX_NUM];     // (ドーナツ)アニメーションが終了したか？ 
 	
 public:
 	// コンストラクタ
@@ -46,4 +48,8 @@ public:
 public:
 	// 現在のシーン情報を返す
 	virtual eSceneType GetNowSceneType() const override;
+
+private:
+	// ドーナツのアニメーション処理(引数：アニメーションさせるドーナツの番号)
+	void RankingDonutAnim(int index);
 };

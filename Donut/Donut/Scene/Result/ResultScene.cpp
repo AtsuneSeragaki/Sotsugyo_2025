@@ -159,7 +159,7 @@ void ResultScene::Draw() const
 	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 	DrawGraph(0, 0, background_img, FALSE);
 
-	DrawGraph(350, receipt_y, receipt_img, TRUE);
+	DrawGraph(350, (int)receipt_y, receipt_img, TRUE);
 	
 	// スコア
 	DrawScore();
@@ -191,7 +191,7 @@ void ResultScene::Draw() const
 	}
 	
 	// リザルト画面に遷移した日時
-	FontManager::DrawNum(600, receipt_y + 55, 0.15, 0.15, 0x5C4630, time_buf);
+	FontManager::DrawNum(600, (int)receipt_y + 55, 0.15, 0.15, 0x5C4630, time_buf);
 
 	DrawBox(0, 560, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR, TRUE);
 
@@ -228,12 +228,12 @@ void ResultScene::DrawScore() const
 		if (i < 3)
 		{
 			// ドーナツの個数を表示
-			FontManager::DrawNum(525 + 185 * i, receipt_y + 98, 0.45, 0.45, 0x5C4630, buf);
+			FontManager::DrawNum(525 + 185 * i, (int)receipt_y + 98, 0.45, 0.45, 0x5C4630, buf);
 		}
 		else
 		{
 			// ドーナツの個数を表示
-			FontManager::DrawNum(525 + 185 * (i - 3), receipt_y + 198, 0.45, 0.45, 0x5C4630, buf);
+			FontManager::DrawNum(525 + 185 * (i - 3), (int)receipt_y + 198, 0.45, 0.45, 0x5C4630, buf);
 		}
 	}
 
@@ -241,7 +241,7 @@ void ResultScene::DrawScore() const
 	char score_buf[16];
 	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(445 + plus, receipt_y + 318, 0.85, 0.85, 0x5C4630, score_buf);
+	FontManager::DrawNum(445 + plus, (int)receipt_y + 318, 0.85, 0.85, 0x5C4630, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 }
 

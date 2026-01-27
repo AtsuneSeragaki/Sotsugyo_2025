@@ -11,7 +11,6 @@ Order::Order()
     difficulty = 0;
     // オーダーを設定
     SetRandomOrder(difficulty);
-    complete_order = false;
     clear_timer = 0;
 
     ResourceManager* rm = ResourceManager::GetInstance();
@@ -26,11 +25,8 @@ Order::Order()
 
     SetDonutImage();
 
-    box_x = -220.0f;
-    donut_num = 3;
-    donut_y = 60.0f;
-    clear_anim_flg = false;
-    clear_extend = 1.27;
+    // クリアアニメーションの変数を全てリセット
+    ClearAnimReset();
 }
 
 // デストラクタ
@@ -44,13 +40,8 @@ void Order::Initialize()
     difficulty = 0;
     // オーダーを設定
     SetRandomOrder(difficulty);
-    complete_order = false;
-    clear_timer = 0;
-    box_x = -220.0f;
-    donut_num = 3;
-    donut_y = 60.0f;
-    clear_anim_flg = false;
-    clear_extend = 1.27;
+    // クリアアニメーションの変数を全てリセット
+    ClearAnimReset();
 }
 
 // 更新処理
@@ -62,159 +53,11 @@ void Order::Update()
         clear_anim_flg = true;
     }
 
+    // クリアしたらアニメーション再生
     if (clear_anim_flg)
     {
-        if (donut_num == 3 && box_x < 30.0f)
-        {
-            box_x += 30.0f;
-
-            if (box_x >= 30.0f)
-            {
-                box_x = 30.0f;
-            }
-        }
-        else
-        {
-            if (donut_num <= -1 && clear_timer < 70)
-            {
-                clear_timer++;
-
-                if (clear_timer > 5 && clear_extend > 1.0)
-                {
-                    clear_extend -= 0.03;
-
-                    if (clear_extend <= 1.0)
-                    {
-                        clear_extend = 1.0;
-                    }
-                }
-                
-                if(clear_timer > 60)
-                {
-                    if (box_x > -300.0f)
-                    {
-                        box_x -= 60.0f;
-
-                        if (box_x <= -300.0f)
-                        {
-                            box_x = -300.0f;
-                        }
-                    }
-                }
-            }
-            else if(donut_num <= -1 && clear_timer >= 70)
-            {
-                donut_num = 3;
-                clear_anim_flg = false;
-                donut_y = 60.0f;
-                box_x = -220.0f;
-
-                 // 難易度MAXじゃなかったら、難易度を1上げる
-                if (difficulty < DIFFICULTY_MAX)
-                {
-                    difficulty++;
-                }
-
-                SetRandomOrder(difficulty);
-
-                clear_timer = 0;
-                clear_extend = 1.27;
-            }
-            else
-            {
-                  donut_y += 20.0f;
-
-                  if (donut_y >= 250.0f)
-                  {
-                      donut_num--;
-
-                      if (donut_num > -1)
-                      {
-                          donut_y = 60.0f;
-                      }
-                  }
-            }
-        }
+        ClearAnim();
     }
-    /*else
-    {
-        clear_anim_flg = true;
-    }*/
-
-    //if (clear_anim_flg)
-    //{
-    //    if (donut_num == 3 && box_x < 30.0f)
-    //    {
-    //        box_x += 30.0f;
-
-    //        if (box_x >= 30.0f)
-    //        {
-    //            box_x = 30.0f;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (donut_num <= -1 && clear_timer < 70)
-    //        {
-    //            clear_timer++;
-
-    //            if (clear_timer > 5 && clear_extend > 1.0)
-    //            {
-    //                clear_extend -= 0.03;
-
-    //                if (clear_extend <= 1.0)
-    //                {
-    //                    clear_extend = 1.0;
-    //                }
-    //            }
-
-    //            if (clear_timer > 60)
-    //            {
-    //                if (box_x > -300.0f)
-    //                {
-    //                    box_x -= 60.0f;
-
-    //                    if (box_x <= -300.0f)
-    //                    {
-    //                        box_x = -300.0f;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        else if (donut_num <= -1 && clear_timer >= 70)
-    //        {
-    //            donut_num = 3;
-    //            clear_anim_flg = false;
-    //            donut_y = 60.0f;
-    //            box_x = -220.0f;
-
-    //             // 難易度MAXじゃなかったら、難易度を1上げる
-    //            if (difficulty < DIFFICULTY_MAX)
-    //            {
-    //                difficulty++;
-    //            }
-
-    //            SetRandomOrder(difficulty);
-
-    //            clear_timer = 0;
-    //            clear_extend = 1.27;
-    //        }
-    //        else
-    //        {
-    //            donut_y += 20.0f;
-
-    //            if (donut_y >= 250.0f)
-    //            {
-    //                donut_num--;
-
-    //                if (donut_num > -1)
-    //                {
-    //                    donut_y = 60.0f;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 }
 
 // 描画処理
@@ -233,10 +76,10 @@ void Order::Draw() const
 
         if (clear_timer > 5 && clear_timer < 50)
         {
-            DrawRotaGraph2F(ORDER_LX + 150, ORDER_LY + 120, 121.0, 23.5, clear_extend, 0.0, clear_img, TRUE);
+            DrawRotaGraph2F((float)ORDER_LX + 150.0f, (float)ORDER_LY + 120.0f, 121.0, 23.5, clear_extend, 0.0, clear_img, TRUE);
         }
 
-        DrawGraph(ORDER_LX + box_x, ORDER_LY + 165, box_img, TRUE);
+        DrawGraphF((float)ORDER_LX + box_x, (float)ORDER_LY + 165.0f, box_img, TRUE);
     }
     else
     {// それ以外
@@ -257,7 +100,7 @@ void Order::Draw() const
         }
     }    
 
-    DrawFormatString(0, 0, 0x000000, "%d", difficulty);
+    //DrawFormatString(0, 0, 0x000000, "%d", donut_num);
 }
 
 // 終了時処理
@@ -280,18 +123,6 @@ void Order::SetRandomOrder(int difficulty)
         DonutType::DONUT_GOLDEN_CHOCOLATE,
     };
 
-    // デバック用簡単版
-    /*DonutType all_menu[6] =
-    {
-        DonutType::DONUT_MINI_BASIC,
-        DonutType::DONUT_MINI_VARIANT,
-        DonutType::DONUT_FRENCH_CRULLER,
-        DonutType::DONUT_FRENCH_CRULLER_VAR,
-        DonutType::DONUT_OLD_FASHIONED,
-        DonutType::DONUT_OLD_FASHIONED_VAR,
-    };*/
-   
-
     // 難易度ごとの使用可能範囲・個数幅
     int min_index = 0, max_index = 5;
     int min_count = 1, max_count = 1;
@@ -304,8 +135,6 @@ void Order::SetRandomOrder(int difficulty)
     else                      { min_index = 2; max_index = 5; min_count = 2; max_count = 3; }
 
     int available_types = max_index - min_index + 1;
-
-    complete_order = false;
 
     // 使用可能な種類だけコピー
     std::vector<DonutType> menu_vec(all_menu + min_index, all_menu + max_index + 1);
@@ -330,38 +159,23 @@ void Order::SetRandomOrder(int difficulty)
         items.push_back({ order_list[i], order_num[i] });
 
     auto get_index_in_menu = [](DonutType type) -> int
+    {
+        switch (type)
         {
-            switch (type)
-            {
-            case DonutType::DONUT_FRENCH_CRULLER: return 0;
-            case DonutType::DONUT_FRENCH_CRULLER_VAR:  return 1;
-            case DonutType::DONUT_PON_DE_RING: return 2;
-            case DonutType::DONUT_PON_DE_RING_MATCHA:    return 3;
-            case DonutType::DONUT_PON_DE_RING_CHOCOLATE:   return 4;
-            case DonutType::DONUT_GOLDEN_CHOCOLATE:       return 5;
-            default: return -1;
-            }
-        };
-
-    // デバック用簡単版
-   /* auto get_index_in_menu = [](DonutType type) -> int
-        {
-            switch (type)
-            {
-            case DonutType::DONUT_MINI_BASIC:         return 0;
-            case DonutType::DONUT_MINI_VARIANT:       return 1;
-            case DonutType::DONUT_FRENCH_CRULLER:     return 2;
-            case DonutType::DONUT_FRENCH_CRULLER_VAR: return 3;
-            case DonutType::DONUT_OLD_FASHIONED:      return 4;
-            case DonutType::DONUT_OLD_FASHIONED_VAR:  return 5;
-            default: return -1;
-            }
-        };*/
+        case DonutType::DONUT_FRENCH_CRULLER: return 0;
+        case DonutType::DONUT_FRENCH_CRULLER_VAR:  return 1;
+        case DonutType::DONUT_PON_DE_RING: return 2;
+        case DonutType::DONUT_PON_DE_RING_MATCHA:    return 3;
+        case DonutType::DONUT_PON_DE_RING_CHOCOLATE:   return 4;
+        case DonutType::DONUT_GOLDEN_CHOCOLATE:       return 5;
+        default: return -1;
+        }
+    };
 
     std::sort(items.begin(), items.end(), [&](const OrderItem& a, const OrderItem& b)
-        {
-            return get_index_in_menu(a.type) > get_index_in_menu(b.type);
-        });
+    {
+        return get_index_in_menu(a.type) > get_index_in_menu(b.type);
+    });
 
     for (int i = 0; i < ORDER_MAX; ++i)
     {
@@ -435,4 +249,119 @@ void Order::SetDonutImage()
         tmp = rm->GetImages(info.image_path);
         donut_img[i] = tmp[0];
     }
+}
+
+void Order::ClearAnim()
+{
+    if (!box_moved_flg)
+    {
+        // 箱の移動
+        ClearMoveBox();
+    }
+    else
+    {
+        if (!donut_anim_flg)
+        {
+            // ドーナツの移動
+            ClearDonutMove();
+        }
+        else
+        {
+            // 文字のアニメーション
+            ClearStringAnim();
+        }
+    }
+}
+
+void Order::ClearMoveBox()
+{
+    box_x += 40.0f;
+
+    // 最終的な位置まで移動したら、フラグをtrueに
+    if (box_x >= MAX_BOX_X)
+    {
+        box_x = MAX_BOX_X;
+        box_moved_flg = true;
+    }
+}
+
+void Order::ClearDonutMove()
+{
+    donut_y += 20.0f;
+
+    // 最終的なY座標まで移動したら、次のドーナツに変更
+    if (donut_y >= MAX_DONUT_Y)
+    {
+        donut_num--;
+
+        // 最後のドーナツまで移動したら、フラグをtrueに
+        if (donut_num <= -1)
+        {
+            donut_anim_flg = true;
+            return;
+        }
+
+        // 初期位置に戻す
+        donut_y = FIRST_DONUT_Y;
+    }
+}
+
+void Order::ClearStringAnim()
+{
+    if (clear_timer < 70)
+    {
+        clear_timer++;
+
+        if (clear_timer > 5 && clear_extend > 1.0)
+        {
+            clear_extend -= 0.03;
+
+            if (clear_extend <= 1.0)
+            {
+                clear_extend = 1.0;
+            }
+        }
+
+        if (clear_timer > 60)
+        {
+            if (box_x > -300.0f)
+            {
+                box_x -= 60.0f;
+
+                if (box_x <= -300.0f)
+                {
+                    box_x = -300.0f;
+                }
+            }
+        }
+    }
+    else
+    {
+        // 難易度MAXじゃなかったら、難易度を1上げる
+        if (difficulty < DIFFICULTY_MAX)
+        {
+            difficulty++;
+        }
+
+        SetRandomOrder(difficulty);
+
+        // クリアアニメーションの変数を全てリセット
+        ClearAnimReset();
+    }
+}
+
+void Order::ClearAnimReset()
+{
+    donut_num = ORDER_MAX - 1;
+    donut_y = FIRST_DONUT_Y;
+    donut_anim_flg = false;
+
+    box_x = FIRST_BOX_X;
+    box_moved_flg = false;
+    
+    clear_timer = 0;
+    
+    clear_extend = FIRST_STRING_SCALE;
+    
+    clear_anim_flg = false;
 }
