@@ -22,8 +22,8 @@ Order::Order()
     clear_se[0] = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
     clear_se[1] = rm->GetSounds("Resource/Sounds/GameMain/box_move_se.mp3");
     ChangeVolumeSoundMem(150, clear_se[1]);
-    clear_se[2] = rm->GetSounds("Resource/Sounds/GameMain/clear_donut_se.mp3");
-    ChangeVolumeSoundMem(200, clear_se[2]);
+    clear_se[2] = rm->GetSounds("Resource/Sounds/GameMain/drop_se.mp3");
+    ChangeVolumeSoundMem(170, clear_se[2]);
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 
     SetDonutImage();
@@ -47,7 +47,11 @@ void Order::Initialize()
     ClearAnimReset();
 
     // デバック用
-    clear_anim_flg = true;
+   /*clear_anim_flg = true;
+    order_num[0] = 0;
+    order_num[1] = 0;
+    order_num[2] = 0;
+    order_num[3] = 1;*/
 }
 
 // 更新処理
@@ -63,6 +67,10 @@ void Order::Update()
     if (clear_anim_flg)
     {
         ClearAnim();
+    }
+    else
+    {
+        clear_anim_flg = true;
     }
 }
 
@@ -241,6 +249,7 @@ int Order::GetDonutOrderNum(DonutType type)
     return 0;
 }
 
+// オーダーリストにあるドーナツ画像を設定
 void Order::SetDonutImage()
 {
     ResourceManager* rm = ResourceManager::GetInstance();
@@ -256,6 +265,7 @@ void Order::SetDonutImage()
     }
 }
 
+// オーダークリアした時のアニメーション処理
 void Order::ClearAnim()
 {
     if (!box_moved_flg)
@@ -278,14 +288,10 @@ void Order::ClearAnim()
     }
 }
 
+// 箱の移動処理(クリアアニメーション)
 void Order::ClearMoveBox()
 {
-    if (box_x == FIRST_BOX_X)
-    {
-        //PlaySoundMem(clear_se[1], DX_PLAYTYPE_BACK, TRUE);
-    }
-
-    box_x += 40.0f;
+    box_x += 30.0f;
 
     // 最終的な位置まで移動したら、フラグをtrueに
     if (box_x >= MAX_BOX_X)
@@ -295,11 +301,12 @@ void Order::ClearMoveBox()
     }
 }
 
+// ドーナツの移動処理(クリアアニメーション)
 void Order::ClearDonutMove()
 {
     if (donut_y == FIRST_DONUT_Y)
     {
-        PlaySoundMem(clear_se[2], DX_PLAYTYPE_BACK, TRUE);
+        PlaySoundMem(clear_se[1], DX_PLAYTYPE_BACK, TRUE);
     }
 
     donut_y += 13.0f;
@@ -307,8 +314,6 @@ void Order::ClearDonutMove()
     // 最終的なY座標まで移動したら、次のドーナツに変更
     if (donut_y >= MAX_DONUT_Y)
     {
-        
-
         donut_num--;
 
         // 最後のドーナツまで移動したら、フラグをtrueに
@@ -324,6 +329,7 @@ void Order::ClearDonutMove()
     }
 }
 
+// 文字のアニメーション処理(クリアアニメーション)
 void Order::ClearStringAnim()
 {
     if (clear_timer < 70)
@@ -342,11 +348,6 @@ void Order::ClearStringAnim()
 
         if (clear_timer > 60)
         {
-            if (clear_timer == 61)
-            {
-                //PlaySoundMem(clear_se[1], DX_PLAYTYPE_BACK, TRUE);
-            }
-
             if (box_x > -300.0f)
             {
                 box_x -= 60.0f;
@@ -375,6 +376,7 @@ void Order::ClearStringAnim()
     }
 }
 
+// クリアアニメーションの変数を全てリセット
 void Order::ClearAnimReset()
 {
     donut_num = ORDER_MAX - 1;
