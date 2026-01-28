@@ -25,6 +25,8 @@ RankingScene::RankingScene()
 	rank_img[1] = tmp[0];
 	tmp = rm->GetImages("Resource/Images/rank3.png");
 	rank_img[2] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/star.png");
+	star_img = tmp[0];
 
 	drop_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
 	ChangeVolumeSoundMem(170, drop_se);
@@ -110,29 +112,55 @@ void RankingScene::Draw() const
 
 	for (int i = 0; i < RANK_MAX_NUM; i++)
 	{
+		// ドーナツの影
 		DrawRotaGraph2F(donut_x + i * donut_width + shadow_x, donut_num[i] + shadow_y, base_radius, base_radius, scale, 0, donut_img[1], TRUE);
 
+		// ドーナツ
 		DrawRotaGraph2F(donut_x + i * donut_width, donut_num[i], base_radius, base_radius, scale, 0, donut_img[0], TRUE);
 
+		// 順位
 		DrawRotaGraph2F(donut_x + 40 + i * donut_width, donut_num[i] - 140, base_radius, base_radius, 0.32, 0, rank_img[i], TRUE);
+		
+		// 星
+		DrawRotaGraph2F(donut_x + i * donut_width - 128, donut_num[i] - 25, 21.5, 20.5, 1.0, 0, star_img, TRUE);
 	}
 
 	RankingData* ranking = new RankingData();
 	ranking->Initialize();
 
-	double ranking_fontsize = 0.6; // 文字サイズ
-	int default_x = 83; // 固定X座標
-	int default_y = 333; // 固定Y座標
-	int string_space = 412; // ランキング文字の表示間隔
+	double ranking_fontsize = 0.55; // 文字サイズ
+	int default_x = 377; // 固定X座標
+	int default_y = 340; // 固定Y座標
+	int string_space = 410; // ランキング文字の表示間隔
 
 	char ranking_buf[50];
 
 	for (int i = 0; i < RANKING_DATA_MAX; i++)
 	{
+		std::string num = std::to_string(ranking->GetScore(i));
+		int len = num.length();
+		std::string res = "";
+		int count = 0;
+
+		for (int i = len - 1; i >= 0; --i) {
+			res = num[i] + res;
+			count++;
+			if (count % 3 == 0 && i != 0) {
+				res = "," + res;
+			}
+		}
+
+		int charWidth = (int)(100 * 0.34f); // 35pxくらい
+		int rightX = default_x + i * string_space;
+
+		int drawX = rightX - (int)(res.length() * charWidth);
+
+		FontManager::DrawNum(drawX, (int)donut_num[i] - 50, ranking_fontsize, ranking_fontsize, 0x5C4630, res.c_str());
+
 		// ランキングを文字列に変換
 		sprintf_s(ranking_buf, sizeof(ranking_buf), "%08d", ranking->GetScore(i));
 
-		FontManager::DrawNum(default_x + i * string_space, (int)donut_num[i] - 54, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
+		//FontManager::DrawNum(default_x + i * string_space, (int)donut_num[i] - 54, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 	}
 
 
@@ -153,15 +181,20 @@ eSceneType RankingScene::GetNowSceneType() const
 
 void RankingScene::RankingDonutAnim(int index)
 {
+	// すでにアニメ終了しているなら、位置は固定したまま何もしない
+	if (donut_anim_flg[index])
+	{
+		donut_num[index] = RANKING_MAX_DONUT_Y;
+		return;
+	}
+
 	donut_num[index] += 20.0f;
 
 	// 最終的なY座標まで移動したら、フラグをtrueに
-	if (donut_num[index] >= RANKING_MAX_DONUT_Y)
+	if (!donut_anim_flg[index] && donut_num[index] >= RANKING_MAX_DONUT_Y)
 	{
+		PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 		donut_num[index] = RANKING_MAX_DONUT_Y;
 		donut_anim_flg[index] = true;
-
-		// 効果音再生
-		PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
 	}
 }

@@ -1,6 +1,7 @@
 #include "EndScene.h"
 #include "../../Utility/FontManager.h"
 #include "../../Utility/ResourceManager.h"
+#include "../../Objects/BGM/BGMManager.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -10,6 +11,10 @@ EndScene::EndScene():end_timer(0)
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/end.png");
 	background_img = tmp[0];
+	end_se = rm->GetSounds("Resource/Sounds/GameMain/gameover_se.mp3");
+	ChangeVolumeSoundMem(200, end_se);
+
+	BGMManager::Stop();
 }
 
 // デストラクタ
@@ -25,9 +30,14 @@ void EndScene::Initialize()
 // 更新処理
 eSceneType EndScene::Update()
 {
-	if (end_timer < 120)
+	if (end_timer < 200)
 	{
 		end_timer++;
+
+		if (end_timer == 30)
+		{
+			PlaySoundMem(end_se, DX_PLAYTYPE_BACK, TRUE);
+		}
 	}
 	else
 	{

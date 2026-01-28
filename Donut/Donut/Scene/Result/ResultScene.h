@@ -29,13 +29,6 @@ private:
 	int receipt_img; // レシート画像
 	float receipt_y; // レシートY座標
 	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
-	float donut1_x;  // 落下ドーナツ（左側）のX座標
-	float donut1_y;  // 落下ドーナツ（左側）のY座標
-	float donut2_x;  // 落下ドーナツ（右側）のX座標
-	float donut2_y;  // 落下ドーナツ（右側）のY座標
-	double rotation1;  // 落下ドーナツ（左側）の角度
-	double rotation2;  // 落下ドーナツ（右側）の角度
-	int donut_number[2]; // 落下ドーナツの種類
 	int donut_count[6]; // 消したドーナツの数をカウント
 	int receipt_se;
 	bool receipt_se_flg;
@@ -43,6 +36,12 @@ private:
 	int rank_img[4];
 	double rank_scale;
 	int rank_se;
+	int high_score_img;
+	bool high_score_flg;
+	double high_score_scale;
+	bool rank_moved_flg;
+	bool high_score_moved_flg;
+	bool receipt_moved_flg;
 	
 public:
 	// コンストラクタ
@@ -69,9 +68,12 @@ private:
 	void DrawScore() const;
 	// ランキング描画処理
 	void DrawRanking() const;
-	// 背景でドーナツを流す
-	void DrawDonut() const;
-	// ドーナツの落下処理
-	void MoveDonut();
+	// 現在の日時を取得する処理
 	void GetNowTime();
+	// レシートアニメーション処理
+	void ReceiptAnim();
+	// ランクアニメーション処理
+	void RankAnim();
+	// ハイスコアアニメーション処理
+	void HighScoreAnim();
 };

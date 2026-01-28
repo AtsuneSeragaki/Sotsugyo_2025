@@ -24,6 +24,7 @@ private:
 	ButtonState button[RANKING_BUTTON_NUM]; // ボタン情報
 	int background_img;                     // 背景画像
 	int rank_img[RANK_MAX_NUM];             // 王冠画像
+	int star_img;                           // 星画像
 	int donut_img[2];                       // ドーナツ画像(0:ノーマル 1:影)
 	int drop_se;                            // ドーナツの落下音
 	float donut_num[RANK_MAX_NUM];          // それぞれのドーナツのY座標
