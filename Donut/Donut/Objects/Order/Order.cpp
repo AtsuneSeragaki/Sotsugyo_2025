@@ -138,10 +138,10 @@ void Order::SetRandomOrder(int difficulty)
 
     if (difficulty <= 0) { min_index = 0; max_index = 3; min_count = 1; max_count = 1; }
     else if (difficulty == 1) { min_index = 1; max_index = 4; min_count = 1; max_count = 1; }
-    else if (difficulty == 2) { min_index = 1; max_index = 4; min_count = 1; max_count = 2; }
-    else if (difficulty == 3) { min_index = 2; max_index = 5; min_count = 1; max_count = 1; }
-    else if (difficulty == 4) { min_index = 2; max_index = 5; min_count = 1; max_count = 2; }
-    else                      { min_index = 2; max_index = 5; min_count = 2; max_count = 3; }
+    else if (difficulty == 2) { min_index = 2; max_index = 5; min_count = 1; max_count = 1; }
+    else if (difficulty == 3) { min_index = 2; max_index = 5; min_count = 1; max_count = 2; }
+    else if (difficulty == 4) { min_index = 2; max_index = 5; min_count = 2; max_count = 2; }
+    else                      { min_index = 2; max_index = 5; min_count = 3; max_count = 3; }
 
     int available_types = max_index - min_index + 1;
 

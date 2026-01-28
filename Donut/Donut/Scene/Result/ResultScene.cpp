@@ -172,15 +172,15 @@ void ResultScene::Draw() const
 	// レシートが最後まで出たら、ランク表示
 	if (receipt_y <= 150.0f)
 	{
-		if (score < 10000)
+		if (score < 1800)
 		{
 			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[0], TRUE);
 		}
-		else if (score < 15000)
+		else if (score < 4000)
 		{
 			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[1], TRUE);
 		}
-		else if (score < 20000)
+		else if (score < 10000)
 		{
 			DrawRotaGraph2F(rank_x, rank_y, rank_cx, rank_cy, rank_scale, 0.0, rank_img[2], TRUE);
 		}
@@ -217,7 +217,25 @@ void ResultScene::DrawScore() const
 {
 	int plus = 10;
 
-	//FontManager::DrawStr(535, 170, 0.4, 0.4, 0x5C4630, "YOUR SCORE");
+	std::string num = std::to_string(score);
+	int len = num.length();
+	std::string res = "";
+	int count = 0;
+
+	for (int i = len - 1; i >= 0; --i) {
+		res = num[i] + res;
+		count++;
+		if (count % 3 == 0 && i != 0) {
+			res = "," + res;
+		}
+	}
+
+	int charWidth = (int)(100 * 0.34f); // 35pxくらい
+	int rightX = 750;
+
+	int drawX = rightX - (int)(res.length() * charWidth);
+
+	FontManager::DrawNum(drawX, (int)receipt_y + 318, 0.75, 0.75, 0x5C4630, res.c_str());
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -237,11 +255,11 @@ void ResultScene::DrawScore() const
 		}
 	}
 
-	// スコアを文字列に変換
-	char score_buf[16];
-	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
+	//// スコアを文字列に変換
+	//char score_buf[16];
+	//sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
 
-	FontManager::DrawNum(445 + plus, (int)receipt_y + 318, 0.85, 0.85, 0x5C4630, score_buf);
+	//FontManager::DrawNum(445 + plus, (int)receipt_y + 318, 0.85, 0.85, 0x5C4630, score_buf);
 	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 }
 

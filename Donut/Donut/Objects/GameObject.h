@@ -3,31 +3,14 @@
 #include "../Utility/Vector2D.h"
 
 // ドーナツ落とす枠の情報
-#define FRAME_WIDTH  480                  // ドーナツ落とす枠の幅
-#define FRAME_HEIGHT 560                  // ドーナツ落とす枠の高さ
-#define FRAME_LX 400                      // ドーナツ落とす枠の左上X座標
-#define FRAME_LY 120                      // ドーナツ落とす枠の左上Y座標
+#define FRAME_WIDTH  450                  // ドーナツ落とす枠の幅
+#define FRAME_HEIGHT 540                  // ドーナツ落とす枠の高さ
+#define FRAME_LX 413                      // ドーナツ落とす枠の左上X座標
+#define FRAME_LY 140                      // ドーナツ落とす枠の左上Y座標
 #define FRAME_RX FRAME_LX + FRAME_WIDTH   // ドーナツ落とす枠の右下X座標(左上X座標 + 枠の幅)
 #define FRAME_RY FRAME_LY + FRAME_HEIGHT  // ドーナツ落とす枠の右下Y座標(左上Y座標 + 枠の高さ)
 
 #define MAX_PATH_LEN 256
-
-// ドーナツの種類
-//enum class DonutType
-//{
-//	DONUT_MINI_BASIC,           // ミスドの小さいドーナツみたいなやつ（ノーマル）
-//	DONUT_MINI_VARIANT,         // ミスドの小さいドーナツみたいなやつ（色違い）
-//	DONUT_FRENCH_CRULLER,       // フレンチクルーラー
-//	DONUT_FRENCH_CRULLER_VAR,   // フレンチクルーラー（色違い）
-//	DONUT_OLD_FASHIONED,        // オールドファッション
-//	DONUT_OLD_FASHIONED_VAR,    // オールドファッション（色違い）
-//	DONUT_GOLDEN_CHOCOLATE,     // ゴールデンチョコレート
-//	DONUT_COCONUT_CHOCOLATE,    // ココナツチョコレート
-//	DONUT_HALF_CHOCOLATE,       // 半分チョコドーナツ
-//	DONUT_HALF_STRAWBERRY,      // 半分ストロベリードーナツ
-//	DONUT_PON_DE_RING,          // ポン・デ・リング
-//	DONUT_COUNT                 // ドーナツの総数
-//};
 
 enum class DonutType
 {

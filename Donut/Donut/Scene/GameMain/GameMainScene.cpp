@@ -685,13 +685,13 @@ void GameMainScene::AddScore(Donuts* donut)
 {
 	int add_score = score + donut->GetDonutScore(donut->GetDonutType());
 
-	if (add_score < 99999999)
+	if (add_score < 999999)
 	{
 		score = add_score;
 	}
 	else
 	{
-		score = 99999999;
+		score = 999999;
 	}
 }
 
