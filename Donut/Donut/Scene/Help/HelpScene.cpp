@@ -23,17 +23,17 @@ HelpScene::HelpScene()
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/help.png");
+	tmp = rm->GetImages("Resource/Images/help/help.png");
 	background_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/help2.png");
+	tmp = rm->GetImages("Resource/Images/help/help2.png");
 	background_img[1] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/triangle2.png");
+	tmp = rm->GetImages("Resource/Images/help/triangle2.png");
 	triangle_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow1.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow1.png");
 	donut_shadow_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow2.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow2.png");
 	donut_shadow_img[1] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow3.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow3.png");
 	donut_shadow_img[2] = tmp[0];
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{

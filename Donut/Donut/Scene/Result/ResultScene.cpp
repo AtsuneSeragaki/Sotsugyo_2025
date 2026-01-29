@@ -25,26 +25,26 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/result.png");
+	tmp = rm->GetImages("Resource/Images/result/result.png");
 	background_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/line.png");
+	tmp = rm->GetImages("Resource/Images/result/line.png");
 	line_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/receipt.png");
+	tmp = rm->GetImages("Resource/Images/result/receipt.png");
 	receipt_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank/c.png");
+	tmp = rm->GetImages("Resource/Images/result/c.png");
 	rank_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank/b.png");
+	tmp = rm->GetImages("Resource/Images/result/b.png");
 	rank_img[1] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank/a.png");
+	tmp = rm->GetImages("Resource/Images/result/a.png");
 	rank_img[2] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank/s.png");
+	tmp = rm->GetImages("Resource/Images/result/s.png");
 	rank_img[3] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank/highscore.png");
+	tmp = rm->GetImages("Resource/Images/result/highscore.png");
 	high_score_img = tmp[0];
 
-	receipt_se = rm->GetSounds("Resource/Sounds/result_se.mp3");
+	receipt_se = rm->GetSounds("Resource/Sounds/result/receipt_se.mp3");
 	ChangeVolumeSoundMem(200, receipt_se);
-	rank_se = rm->GetSounds("Resource/Sounds/rank_se.mp3");
+	rank_se = rm->GetSounds("Resource/Sounds/result/rank_se.mp3");
 	ChangeVolumeSoundMem(200, rank_se);
 
 	for (int i = 0; i < MAX_DONUT_NUM; i++)

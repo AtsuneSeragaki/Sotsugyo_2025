@@ -14,15 +14,15 @@ Order::Order()
 
     ResourceManager* rm = ResourceManager::GetInstance();
     std::vector<int> tmp;
-    tmp = rm->GetImages("Resource/Images/box.png");
+    tmp = rm->GetImages("Resource/Images/gamemain/box.png");
     box_img = tmp[0];
-    tmp = rm->GetImages("Resource/Images/clear.png");
+    tmp = rm->GetImages("Resource/Images/gamemain/clear.png");
     clear_img = tmp[0];
 
-    clear_se[0] = rm->GetSounds("Resource/Sounds/GameMain/clear_se.mp3");
-    clear_se[1] = rm->GetSounds("Resource/Sounds/GameMain/box_move_se.mp3");
+    clear_se[0] = rm->GetSounds("Resource/Sounds/gamemain/clear_se.mp3");
+    clear_se[1] = rm->GetSounds("Resource/Sounds/gamemain/box_move_se.mp3");
     ChangeVolumeSoundMem(150, clear_se[1]);
-    clear_se[2] = rm->GetSounds("Resource/Sounds/GameMain/drop_se.mp3");
+    clear_se[2] = rm->GetSounds("Resource/Sounds/gamemain/drop_se.mp3");
     ChangeVolumeSoundMem(170, clear_se[2]);
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 

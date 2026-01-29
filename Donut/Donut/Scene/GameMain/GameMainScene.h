@@ -139,4 +139,7 @@ private:
 
 	// 引数で渡された場所のカウントを取得する
 	int GetDonutCount(int donut_num) const { return delete_donut_count[donut_num]; }
+
+	// ゲームメイン描画(基本)
+	void DrawNormal() const;
 };

@@ -14,7 +14,7 @@ void TitleScene::Initialize()
 
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/title2.png");
+	tmp = rm->GetImages("Resource/Images/title/title.png");
 	background_img = tmp[0];
 
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
@@ -23,13 +23,13 @@ void TitleScene::Initialize()
 		donut_img[i] = tmp[0];
 	}
 
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow1.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow1.png");
 	donut_shadow_img[0] = tmp[0];
 
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow2.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow2.png");
 	donut_shadow_img[1] = tmp[0];
 
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow3.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow3.png");
 	donut_shadow_img[2] = tmp[0];
 
 	donut1_x = 150.0f;

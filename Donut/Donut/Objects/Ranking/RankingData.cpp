@@ -21,12 +21,12 @@ void RankingData::Initialize()
 	FILE* fp = nullptr;
 
 	// ファイルオープン
-	errno_t result = fopen_s(&fp, "Resource/Data/ranking_data.txt", "r");
+	errno_t result = fopen_s(&fp, "Resource/RankingData/ranking_data.txt", "r");
 
 	// エラーチェック
 	if (result != 0)
 	{
-		throw("Resource/Data/ranking_data.txtが開けませんでした\n");
+		throw("Resource/RankingData/ranking_data.txtが開けませんでした\n");
 	}
 
 	// 対象ファイルから読み込む
@@ -90,12 +90,12 @@ void RankingData::SortData()
 	FILE* fp = nullptr;
 
 	// ファイルオープン
-	errno_t result = fopen_s(&fp, "Resource/Data/ranking_data.txt", "w");
+	errno_t result = fopen_s(&fp, "Resource/RankingData/ranking_data.txt", "w");
 
 	// エラーチェック
 	if (result != 0)
 	{
-		throw("Resource/Data/ranking_data.txtが開けませんでした\n");
+		throw("Resource/RankingData/ranking_data.txtが開けませんでした\n");
 	}
 
 	// 対象ファイルに書き込み

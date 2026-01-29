@@ -21,7 +21,7 @@ SceneBase::SceneBase() : frame_count(0),button_se_handle(0),button_string_color(
 	button_se_handle = rm->GetSounds("Resource/Sounds/button_se.mp3");
 	
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/button.png");
+	tmp = rm->GetImages("Resource/Images/button/button.png");
 	button_img = tmp[0];
 }
 

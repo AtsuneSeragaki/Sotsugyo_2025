@@ -9,7 +9,7 @@ EndScene::EndScene():end_timer(0)
 {
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/end.png");
+	tmp = rm->GetImages("Resource/Images/end/end.png");
 	background_img = tmp[0];
 	end_se = rm->GetSounds("Resource/Sounds/GameMain/gameover_se.mp3");
 	ChangeVolumeSoundMem(200, end_se);

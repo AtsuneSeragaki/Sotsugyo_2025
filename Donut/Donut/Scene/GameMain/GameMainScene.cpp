@@ -43,16 +43,16 @@ void GameMainScene::Initialize()
 	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{19,28,0x5C4630,0.38,0.38},"BACK TO TITLE" };
 
 	ResourceManager* rm = ResourceManager::GetInstance();
-	marge_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
+	marge_se = rm->GetSounds("Resource/Sounds/gamemain/marge_se.mp3");
 	ChangeVolumeSoundMem(200, marge_se);
 
-	drop_se = rm->GetSounds("Resource/Sounds/GameMain/drop_se.mp3");
+	drop_se = rm->GetSounds("Resource/Sounds/gamemain/drop_se.mp3");
 	ChangeVolumeSoundMem(170, drop_se);
 
-	delete_se = rm->GetSounds("Resource/Sounds/GameMain/delete_se.mp3");
+	delete_se = rm->GetSounds("Resource/Sounds/gamemain/delete_se.mp3");
 	ChangeVolumeSoundMem(200, delete_se);
 
-	gameover_se = rm->GetSounds("Resource/Sounds/GameMain/gameover_se.mp3");
+	gameover_se = rm->GetSounds("Resource/Sounds/gamemain/gameover_se.mp3");
 	ChangeVolumeSoundMem(200, gameover_se);
 
 	std::vector<int> tmp;
@@ -62,13 +62,13 @@ void GameMainScene::Initialize()
 		donut_image[i] = tmp[0];
 	}
 
-	tmp = rm->GetImages("Resource/Images/circle.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/circle.png");
 	circle_image = tmp[0];
 
-	tmp = rm->GetImages("Resource/Images/gamemain.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/gamemain.png");
 	background_img = tmp[0];
 
-	tmp = rm->GetImages("Resource/Images/pause.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/pause.png");
 	pause_img = tmp[0];
 
 	donut_creat_flg = true;
@@ -193,76 +193,14 @@ eSceneType GameMainScene::Update()
 // 描画処理
 void GameMainScene::Draw() const
 {   
-	// 枠の太さ
-	int line_width = 3;
-
-	const int numDonuts = 11;
-	const float centerX = 1080.0f;
-	const float centerY = 510.0f;
-	const float radius = 170.0f;
-
-	float angleOffset = -3.14159265f / 2.5f; // 上方向スタートに調整
-
 	if (pause)
-	{// ポーズ画面描画
+	{// ポーズ
 
 		// ポーズ画面以外は暗くする
 		// 描画輝度セット
 		SetDrawBright(120, 120, 120);
 
-		// ゲームメイン背景描画
-		DrawGraph(0, 0, background_img, FALSE);
-
-		// ドーナツを落とす枠描画
-		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
-
-		// オブジェクト描画
-		for (GameObject* obj : gameobjects->GetObjectList())
-		{
-			obj->Draw();
-		}
-
-		// ドーナツを落とす枠描画(枠を太くするために複数描画)
-		for (int i = 0; i < line_width; i++)
-		{
-			DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
-		}
-
-		// スコア描画
-		DrawScore();
-
-		// 進化の輪描画
-		for (int i = 0; i < numDonuts; i++) {
-			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
-
-			int w, h;
-			GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
-			
-			float centerX = 1085.0f;
-			float centerY = 513.0f;
-			float radius = 125.0f;
-
-			float base_radius = 296.5f; // 元画像(288x288)の半径
-			double scale = 28.0 / (double)base_radius; // 表示サイズ調整
-
-			// 円周上の位置
-			float x = centerX + radius * cosf(angle);
-			float y = centerY + radius * sinf(angle);
-
-			// DrawRotaGraph2F の中心を画像中心に設定
-			DrawRotaGraph2F(
-				x, y,              // 描画位置
-				base_radius,        // 画像内で回転の基準X（中心）
-				base_radius,        // 回転の基準Y（中心）
-				scale,              // 拡大率
-				0.0,              // 回転角度（円周に沿って向けたい場合）
-				donut_image[i],
-				TRUE
-			);
-		}
-
-		// ポーズボタン描画
-		DrawButton(1, button);
+		DrawNormal();
 
 		// 描画輝度を元に戻す
 		SetDrawBright(255, 255, 255);
@@ -270,128 +208,23 @@ void GameMainScene::Draw() const
 		PauseDraw();
 	}
 	else if (is_gameover)
-	{
-		// ポーズ画面以外は暗くする
+	{// ゲームオーバー
+
+		// ゲームオーバー文字以外は暗くする
 		// 描画輝度セット
 		SetDrawBright(120, 120, 120);
 		
-		// ゲームメイン背景描画
-		DrawGraph(0, 0, background_img, FALSE);
-
-		// ドーナツを落とす枠描画
-		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
-
-		// オブジェクト描画
-		for (GameObject* obj : gameobjects->GetObjectList())
-		{
-			obj->Draw();
-		}
-
-		// ドーナツを落とす枠描画(枠を太くするために複数描画)
-		for (int i = 0; i < line_width; i++)
-		{
-			DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
-		}
-
-		// スコア描画
-		DrawScore();
-
-		// 進化の輪描画
-		for (int i = 0; i < numDonuts; i++) {
-			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
-
-			int w, h;
-			GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
-
-			float centerX = 1085.0f;
-			float centerY = 513.0f;
-			float radius = 125.0f;
-
-			float base_radius = 296.5f; // 元画像(288x288)の半径
-			double scale = 28.0 / (double)base_radius; // 表示サイズ調整
-
-			// 円周上の位置
-			float x = centerX + radius * cosf(angle);
-			float y = centerY + radius * sinf(angle);
-
-			// DrawRotaGraph2F の中心を画像中心に設定
-			DrawRotaGraph2F(
-				x, y,              // 描画位置
-				base_radius,        // 画像内で回転の基準X（中心）
-				base_radius,        // 回転の基準Y（中心）
-				scale,              // 拡大率
-				0.0,              // 回転角度（円周に沿って向けたい場合）
-				donut_image[i],
-				TRUE
-			);
-		}
-
-		// ポーズボタン描画
-		DrawButton(1, button);
+		DrawNormal();
 
 		// 描画輝度を元に戻す
 		SetDrawBright(255, 255, 255);
 
-		//FontManager::DrawStr(280, gameover_y_cnt, 1.2, 1.2, 0xffffff, "GAME OVER!");
 		FontManager::DrawStr(380, gameover_y_cnt, 1.3, 1.3, 0xffffff, "CLOSED!");
-
-
 	}
 	else
-	{
-		// ゲームメイン背景描画
-		DrawGraph(0, 0, background_img, FALSE);
+	{// 基本
 
-		// ドーナツを落とす枠描画
-		DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
-		
-		// オブジェクト描画
-		for (GameObject* obj : gameobjects->GetObjectList())
-		{
-			obj->Draw();
-		}
-
-		// ドーナツを落とす枠描画(枠を太くするために複数描画)
-		for (int i = 0; i < line_width; i++)
-		{
-			DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
-		}
-
-		// スコア描画
-		DrawScore();
-
-		// 進化の輪描画
-		for (int i = 0; i < numDonuts; i++) {
-			float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
-
-			int w, h;
-			GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
-
-			float centerX = 1085.0f;
-			float centerY = 513.0f;
-			float radius = 125.0f;
-
-			float base_radius = 296.5f; // 元画像(288x288)の半径
-			double scale = 28.0 / (double)base_radius; // 表示サイズ調整
-
-			// 円周上の位置
-			float x = centerX + radius * cosf(angle);
-			float y = centerY + radius * sinf(angle);
-
-			// DrawRotaGraph2F の中心を画像中心に設定
-			DrawRotaGraph2F(
-				x, y,              // 描画位置
-				base_radius,        // 画像内で回転の基準X（中心）
-				base_radius,        // 回転の基準Y（中心）
-				scale,              // 拡大率
-				0.0,              // 回転角度（円周に沿って向けたい場合）
-				donut_image[i],
-				TRUE
-			);
-		}
-
-		// ポーズボタン描画
-		DrawButton(1, button);
+		DrawNormal();
 	}	
 }
 
@@ -855,15 +688,11 @@ void GameMainScene::DrawScore() const
 	}
 
 	int charWidth = (int)(100 * 0.22f); // 35pxくらい
-	int rightX = 280;
+	int rightX = 295;
 
 	int drawX = rightX - (int)(res.length() * charWidth);
 
-	// スコアを文字列に変換
-	char score_buf[16];
-	sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
-
-	FontManager::DrawNum(drawX, 120, 0.35, 0.35, 0x5C4630, res.c_str());
+	FontManager::DrawNum(drawX, 118, 0.35, 0.35, 0x5C4630, res.c_str());
 }
 
 // ドーナツが枠からはみ出していないか確認する処理
@@ -886,16 +715,16 @@ void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 	float d_locy = donut->GetLocation().y - donut->GetRadiusSize();
 
 	// ドーナツが上枠を超えていて、ほぼ静止しているならゲームオーバー
-	/*if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
-	{
-		is_gameover = true;
-	}*/
-
-	// デバック用（すぐゲームオーバーにできるように設定）
-	if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	if (d_locy < upper_line && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
 	{
 		is_gameover = true;
 	}
+
+	// デバック用（すぐゲームオーバーにできるように設定）
+	/*if (d_locy < 640 && donut->GetLanded() && fabs(donut->GetVelocity().y) < 0.5f)
+	{
+		is_gameover = true;
+	}*/
 }
 
 // 次のドーナツを生成できる時間をカウントする処理
@@ -915,5 +744,77 @@ void GameMainScene::CountDonutCreateTime()
 		donut_creat_flg = true;
 		donut_creat_count = 0;
 	}
+}
+
+// ゲームメイン描画(基本)
+void GameMainScene::DrawNormal() const
+{
+	// 枠の太さ
+	int line_width = 3;
+
+	const int numDonuts = 11;
+	const float centerX = 1080.0f;
+	const float centerY = 510.0f;
+	const float radius = 170.0f;
+
+	float angleOffset = -3.14159265f / 2.5f; // 上方向スタートに調整
+
+	int frame_line_width = 17;
+
+	// ゲームメイン背景描画
+	DrawGraph(0, 0, background_img, FALSE);
+
+	// ドーナツを落とす枠描画
+	DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
+	//DrawBox(FRAME_LX + frame_line_width, FRAME_LY + frame_line_width, FRAME_RX - frame_line_width, FRAME_RY - frame_line_width, 0xF3E3CC, TRUE);
+
+
+	// オブジェクト描画
+	for (GameObject* obj : gameobjects->GetObjectList())
+	{
+		obj->Draw();
+	}
+
+	// ドーナツを落とす枠描画(枠を太くするために複数描画)
+	for (int i = 0; i < line_width; i++)
+	{
+		DrawBox(FRAME_LX - i, FRAME_LY - i, FRAME_RX + i, FRAME_RY + i, 0xA67C52, FALSE);
+	}
+
+	// スコア描画
+	DrawScore();
+
+	// 進化の輪描画
+	for (int i = 0; i < numDonuts; i++) {
+		float angle = 2.0f * 3.14159265f * i / numDonuts + angleOffset;
+
+		int w, h;
+		GetGraphSize(donut_image[i], &w, &h);  // 画像サイズ取得
+
+		float centerX = 1080.0f;
+		float centerY = 517.0f;
+		float radius = 125.0f;
+
+		float base_radius = 296.5f; // 元画像(288x288)の半径
+		double scale = 28.0 / (double)base_radius; // 表示サイズ調整
+
+		// 円周上の位置
+		float x = centerX + radius * cosf(angle);
+		float y = centerY + radius * sinf(angle);
+
+		// DrawRotaGraph2F の中心を画像中心に設定
+		DrawRotaGraph2F(
+			x, y,       // 描画位置
+			base_radius,// 画像内で回転の基準X（中心）
+			base_radius,// 回転の基準Y（中心）
+			scale,      // 拡大率
+			0.0,        // 回転角度（円周に沿って向けたい場合）
+			donut_image[i],
+			TRUE
+		);
+	}
+
+	// ポーズボタン描画
+	DrawButton(1, button);
 }
 

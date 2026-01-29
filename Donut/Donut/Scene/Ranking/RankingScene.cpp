@@ -13,22 +13,22 @@ RankingScene::RankingScene()
 	
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
-	tmp = rm->GetImages("Resource/Images/ranking.png");
+	tmp = rm->GetImages("Resource/Images/ranking/ranking.png");
 	background_img = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut/donut2.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut2.png");
 	donut_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/donut/donut_shadow1.png");
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow1.png");
 	donut_img[1] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank1.png");
+	tmp = rm->GetImages("Resource/Images/ranking/rank1.png");
 	rank_img[0] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank2.png");
+	tmp = rm->GetImages("Resource/Images/ranking/rank2.png");
 	rank_img[1] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/rank3.png");
+	tmp = rm->GetImages("Resource/Images/ranking/rank3.png");
 	rank_img[2] = tmp[0];
-	tmp = rm->GetImages("Resource/Images/star.png");
+	tmp = rm->GetImages("Resource/Images/ranking/star.png");
 	star_img = tmp[0];
 
-	drop_se = rm->GetSounds("Resource/Sounds/GameMain/marge_se.mp3");
+	drop_se = rm->GetSounds("Resource/Sounds/gamemain/marge_se.mp3");
 	ChangeVolumeSoundMem(170, drop_se);
 
 	for (int i = 0; i < RANK_MAX_NUM; i++)

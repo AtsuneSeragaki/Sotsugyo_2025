@@ -5,7 +5,7 @@
 // ドーナツ落とす枠の情報
 #define FRAME_WIDTH  450                  // ドーナツ落とす枠の幅
 #define FRAME_HEIGHT 540                  // ドーナツ落とす枠の高さ
-#define FRAME_LX 413                      // ドーナツ落とす枠の左上X座標
+#define FRAME_LX 410                      // ドーナツ落とす枠の左上X座標
 #define FRAME_LY 140                      // ドーナツ落とす枠の左上Y座標
 #define FRAME_RX FRAME_LX + FRAME_WIDTH   // ドーナツ落とす枠の右下X座標(左上X座標 + 枠の幅)
 #define FRAME_RY FRAME_LY + FRAME_HEIGHT  // ドーナツ落とす枠の右下Y座標(左上Y座標 + 枠の高さ)
