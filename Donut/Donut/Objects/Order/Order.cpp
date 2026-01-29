@@ -47,11 +47,11 @@ void Order::Initialize()
     ClearAnimReset();
 
     // デバック用
-   /*clear_anim_flg = true;
+   clear_anim_flg = true;
     order_num[0] = 0;
     order_num[1] = 0;
     order_num[2] = 0;
-    order_num[3] = 1;*/
+    order_num[3] = 1;
 }
 
 // 更新処理
@@ -68,6 +68,10 @@ void Order::Update()
     {
         ClearAnim();
     }
+    else
+    {// 連続再生(デバック用)
+        clear_anim_flg = true;
+    }
 }
 
 // 描画処理
@@ -81,13 +85,13 @@ void Order::Draw() const
         if (box_x >= 30.0f && donut_num >= 0)
         {
             // ドーナツ表示
-            DrawRotaGraph2F((float)ORDER_LX + 150.0f, (float)ORDER_LY + donut_y, base_radius, base_radius, 0.13, 0.0, donut_img[donut_num], TRUE);
+            DrawRotaGraph2F((float)ORDER_LX + 153.0f, (float)ORDER_LY + donut_y, base_radius, base_radius, 0.13, 0.0, donut_img[donut_num], TRUE);
         }
 
         if (clear_timer > 5 && clear_timer < 50)
         {
             // 文字表示
-            DrawRotaGraph2F((float)ORDER_LX + 150.0f, (float)ORDER_LY + 120.0f, 121.0, 23.5, clear_extend, 0.0, clear_img, TRUE);
+            DrawRotaGraph2F((float)ORDER_LX + 153.0f, (float)ORDER_LY + 120.0f, 121.0, 23.5, clear_extend, 0.0, clear_img, TRUE);
         }
 
         // 箱表示

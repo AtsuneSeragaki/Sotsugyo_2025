@@ -9,8 +9,8 @@
 #define ORDER_MAX 4                // オーダーの数
 #define DIFFICULTY_MAX 5           // 難易度MAXの数
 #define FIRST_BOX_X -220.0f        // (アニメーション用)箱の初期X座標
-#define MAX_BOX_X 30.0f            // (アニメーション用)箱の最終的なX座標
-#define FIRST_DONUT_Y 60.0f        // (アニメーション用)ドーナツの初期Y座標
+#define MAX_BOX_X 33.0f            // (アニメーション用)箱の最終的なX座標
+#define FIRST_DONUT_Y 90.0f        // (アニメーション用)ドーナツの初期Y座標
 #define MAX_DONUT_Y 250.0f         // (アニメーション用)ドーナツの最終的なY座標
 #define FIRST_STRING_SCALE 1.27    // (アニメーション用)文字の初期拡大率
 
