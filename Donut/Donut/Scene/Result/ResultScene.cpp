@@ -233,7 +233,7 @@ void ResultScene::DrawScore() const
 	int plus = 10;
 
 	std::string num = std::to_string(score);
-	int len = num.length();
+	int len = (int)num.length();
 	std::string res = "";
 	int count = 0;
 

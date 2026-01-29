@@ -138,7 +138,7 @@ void RankingScene::Draw() const
 	for (int i = 0; i < RANKING_DATA_MAX; i++)
 	{
 		std::string num = std::to_string(ranking->GetScore(i));
-		int len = num.length();
+		int len = (int)num.length();
 		std::string res = "";
 		int count = 0;
 

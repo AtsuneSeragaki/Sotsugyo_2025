@@ -675,7 +675,7 @@ void GameMainScene::MakeDonutList()
 void GameMainScene::DrawScore() const
 {
 	std::string num = std::to_string(score);
-	int len = num.length();
+	int len = (int)num.length();
 	std::string res = "";
 	int count = 0;
 
