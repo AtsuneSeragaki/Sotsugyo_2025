@@ -47,11 +47,11 @@ void Order::Initialize()
     ClearAnimReset();
 
     // デバック用
-   clear_anim_flg = true;
+  /* clear_anim_flg = true;
     order_num[0] = 0;
     order_num[1] = 0;
     order_num[2] = 0;
-    order_num[3] = 1;
+    order_num[3] = 1;*/
 }
 
 // 更新処理
@@ -68,10 +68,10 @@ void Order::Update()
     {
         ClearAnim();
     }
-    else
-    {// 連続再生(デバック用)
-        clear_anim_flg = true;
-    }
+    //else
+    //{// 連続再生(デバック用)
+    //    clear_anim_flg = true;
+    //}
 }
 
 // 描画処理
