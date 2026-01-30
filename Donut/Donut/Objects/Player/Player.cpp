@@ -98,7 +98,7 @@ void Player::Draw() const
 	DrawRotaGraph2F(1078.0f, 150.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
 
 	// 次に落とすドーナツ番号の描画(右上)
-	DrawFormatString(0, 0, 0x000000, "%d", click_timer);
+	//DrawFormatString(0, 0, 0x000000, "%d", click_timer);
 }
 
 // 終了時処理
