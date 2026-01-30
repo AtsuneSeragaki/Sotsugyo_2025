@@ -53,7 +53,10 @@ void Player::Update()
 	// カーソル移動制限
 	LocXControl();
 
-	click_timer++;
+	if (click_timer_flg)
+	{
+		click_timer++;
+	}
 }
 
 // 描画処理
@@ -95,7 +98,7 @@ void Player::Draw() const
 	DrawRotaGraph2F(1078.0f, 150.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
 
 	// 次に落とすドーナツ番号の描画(右上)
-	//DrawFormatString(1072, 157, 0x5C4630, "%d", next_donut_number);
+	DrawFormatString(0, 0, 0x000000, "%d", click_timer);
 }
 
 // 終了時処理
@@ -127,6 +130,16 @@ void Player::ChooseRandomDonut()
 
 	donut_number = info.number;
 	next_donut_number = info2.number;
+}
+
+void Player::StartClickTimer()
+{
+	/*if (!click_timer_flg)
+	{
+		click_timer_flg = true;
+	}*/
+
+	click_timer_flg = true;
 }
 
 // ドーナツを落とす枠の範囲しか横移動出来ないようにする処理

@@ -13,6 +13,7 @@ private:
 	bool donut_collision;           // ドーナツと当たっているか？
 	int donut_img[2];               // ドーナツ画像
 	int click_timer;
+	bool click_timer_flg;
 
 public:
 	// コンストラクタ
@@ -74,6 +75,10 @@ public:
 	int GetClickTimer() { return click_timer; }
 
 	void ResetClickTimer() { click_timer = 0; }
+
+	void StopClickTimer() { click_timer_flg = false; }
+
+	void StartClickTimer();
 
 private:
 	// ドーナツを落とす枠の範囲しか横移動出来ないようにする処理

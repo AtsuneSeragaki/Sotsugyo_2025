@@ -431,6 +431,7 @@ void GameMainScene::HitDonutPlayerCollision()
 		{
 			if (CheckDonutPlayerCollision(donut) == 1)
 			{
+				player->StopClickTimer();
 				donut->SetPlayerCollisionFlg(true);
 
 				// 当たっているドーナツが一つでもあればtrue
@@ -442,6 +443,7 @@ void GameMainScene::HitDonutPlayerCollision()
 			else
 			{
 				donut->SetPlayerCollisionFlg(false);
+				player->StartClickTimer();
 			}
 		}
 	}
@@ -650,6 +652,7 @@ void GameMainScene::OnPlayerClick()
 			PlaySoundMem(delete_se, DX_PLAYTYPE_BACK, TRUE);
 
 			player->SetDonutCollision(false);
+			player->StartClickTimer();
 
 			// 処理が終わったのでクリア
 			donut_collision.clear();
@@ -657,6 +660,7 @@ void GameMainScene::OnPlayerClick()
 		else if (!button[1].collision && !player->GetClickFlg() && donut_creat_flg == true)
 		{// 左クリックされたらドーナツを落とす
 
+			player->StartClickTimer();
 			player->SetClickFlg(true);
 
 			donut_creat_flg = false;
