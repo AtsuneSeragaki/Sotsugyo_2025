@@ -27,6 +27,8 @@ Player::Player() : is_click(true)
 	donut_img[0] = tmp[0];
 	tmp = rm->GetImages(info2.image_path);
 	donut_img[1] = tmp[0];
+
+	click_timer = 0;
 }
 
 // デストラクタ
@@ -50,6 +52,8 @@ void Player::Update()
 
 	// カーソル移動制限
 	LocXControl();
+
+	click_timer++;
 }
 
 // 描画処理

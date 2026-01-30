@@ -130,6 +130,39 @@ eSceneType GameMainScene::Update()
 	if (!pause)
 	{// ポーズ状態じゃないとき
 
+		if (player->GetClickTimer() >= 90)
+		{
+			Donuts* donut = nullptr;
+
+			if (donut_creat_flg == true)
+			{
+				player->SetClickFlg(true);
+
+				donut_creat_flg = false;
+
+				// 落とすドーナツの種類を取得
+				DonutType type = player->GetDonutType();
+
+				// ドーナツを追加(落とす)
+				donut = gameobjects->CreateGameObject<Donuts>(Vector2D(player->GetLocation().x, 60.0f), type);
+
+				PlaySoundMem(drop_se, DX_PLAYTYPE_BACK, TRUE);
+
+				// 次に落とすドーナツの種類を決める
+				player->ChooseRandomDonut();
+
+				// 落とすドーナツの情報を変更する
+				player->SetDonutRadius(donut->GetDonutRadius(player->GetDonutType()));
+				player->SetDonutNumber(donut->GetDonutNumber(player->GetDonutType()));
+
+				// 次に落とすドーナツの情報を変更する
+				player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
+				player->SetNextDonutNumber(donut->GetDonutNumber(player->GetNextDonutType()));
+
+				player->ResetClickTimer();
+			}
+		}
+
 		if (!donut_creat_flg)
 		{
 			CountDonutCreateTime();
@@ -646,6 +679,8 @@ void GameMainScene::OnPlayerClick()
 			// 次に落とすドーナツの情報を変更する
 			player->SetNextDonutRadius(donut->GetDonutRadius(player->GetNextDonutType()));
 			player->SetNextDonutNumber(donut->GetDonutNumber(player->GetNextDonutType()));
+
+			player->ResetClickTimer();
 		}
 	}
 	else

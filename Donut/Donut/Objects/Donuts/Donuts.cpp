@@ -137,7 +137,7 @@ void Donuts::SetImage(const char* path)
 void Donuts::FallDonut(const std::vector<Donuts*>& others)
 {
     // 重力適用
-    vy += 0.5f;
+    vy += 0.8f;
     location.y += vy;
     location.x += vx;
 

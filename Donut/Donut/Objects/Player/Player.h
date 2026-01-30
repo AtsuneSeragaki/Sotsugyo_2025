@@ -12,6 +12,7 @@ private:
 	int next_donut_number;          // ネクストドーナツの番号
 	bool donut_collision;           // ドーナツと当たっているか？
 	int donut_img[2];               // ドーナツ画像
+	int click_timer;
 
 public:
 	// コンストラクタ
@@ -69,6 +70,10 @@ public:
 
 	// プレイヤーのX座標を設定
 	void SetPlayerPosX(float pos_x) { location.x = pos_x; }
+
+	int GetClickTimer() { return click_timer; }
+
+	void ResetClickTimer() { click_timer = 0; }
 
 private:
 	// ドーナツを落とす枠の範囲しか横移動出来ないようにする処理
