@@ -5,8 +5,8 @@
 class RankingData
 {
 private:
-	int rank[RANKING_DATA_MAX];   // ランク
-	int score[RANKING_DATA_MAX];  // スコア
+	int rank[RANKING_DATA_MAX];   // ランクデータ
+	int score[RANKING_DATA_MAX];  // スコアデータ
 
 public:
 

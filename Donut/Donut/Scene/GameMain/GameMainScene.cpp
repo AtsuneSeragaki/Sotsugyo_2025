@@ -11,7 +11,7 @@ int GameMainScene::score = 0;
 int GameMainScene::delete_donut_count[6] = {};
 
 // コンストラクタ
-GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},is_donutgraphloaded(false),circle_image(0),background_img(0),pause_img(0),gameover_y(0),gameover_y_cnt(0),gameover_se(0)
+GameMainScene::GameMainScene():gameobjects(nullptr),player(nullptr),order(nullptr),is_gameover(false),pause(false),gameover_timer(0),button{},marge_se(0),drop_se(0),delete_se(0),donut_creat_count(0),donut_creat_flg(true),ranking_data(nullptr),can_check_gameover(false),donut_image{},background_img(0),pause_img(0),gameover_y(0),gameover_y_cnt(0),gameover_se(0)
 {
 }
 
@@ -42,34 +42,29 @@ void GameMainScene::Initialize()
 	// 「タイトルに戻る」ボタン初期化
 	button[2] = { PAUSE_B2_LX,PAUSE_B2_RX,PAUSE_B1B2_LY,PAUSE_B1B2_RY,false,eSceneType::eTitle,{19,28,0x5C4630,0.38,0.38},"BACK TO TITLE" };
 
+	// 音源読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
 	marge_se = rm->GetSounds("Resource/Sounds/gamemain/marge_se.mp3");
 	ChangeVolumeSoundMem(200, marge_se);
-
 	drop_se = rm->GetSounds("Resource/Sounds/gamemain/drop_se.mp3");
 	ChangeVolumeSoundMem(170, drop_se);
-
 	delete_se = rm->GetSounds("Resource/Sounds/gamemain/delete_se.mp3");
 	ChangeVolumeSoundMem(200, delete_se);
-
 	gameover_se = rm->GetSounds("Resource/Sounds/gamemain/gameover_se.mp3");
 	ChangeVolumeSoundMem(200, gameover_se);
 
+	// 画像読み込み
 	std::vector<int> tmp;
+	tmp = rm->GetImages("Resource/Images/gamemain/gamemain.png");
+	background_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/gamemain/pause.png");
+	pause_img = tmp[0];
+
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
 		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
 		donut_image[i] = tmp[0];
 	}
-
-	tmp = rm->GetImages("Resource/Images/gamemain/circle.png");
-	circle_image = tmp[0];
-
-	tmp = rm->GetImages("Resource/Images/gamemain/gamemain.png");
-	background_img = tmp[0];
-
-	tmp = rm->GetImages("Resource/Images/gamemain/pause.png");
-	pause_img = tmp[0];
 
 	donut_creat_flg = true;
 	donut_creat_count = 0;
@@ -346,15 +341,11 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 			// bを削除対象に
 			b->SetDead(true);
 
-			//AddScore(a);
-
 			return;
 		}
 		else if (nextTypeIndex == MAX_DONUT_NUM)
-		{
-			// 最大まで進化したもの同士が合体すると、両方消える
-			//AddScore(a);
-
+		{// 最大まで進化したもの同士が合体すると、両方消える
+			
 			// aを削除対象に
 			a->SetDead(true);
 
@@ -363,12 +354,6 @@ void GameMainScene::ResolveDonutCollision(Donuts* a, Donuts* b)
 
 			return;
 		}
-
-		//// ←ここで速度をリセット or 抑制して跳ね防止
-		//a->SetVelocity({ 0.0f, 0.0f });
-		//b->SetVelocity({ 0.0f, 0.0f });
-
-		//return; // ※以降の反発処理をスキップ！
 	}
 
 	// ドーナツの質量を半径に比例させる
@@ -737,15 +722,6 @@ void GameMainScene::DrawScore() const
 // ドーナツが枠からはみ出していないか確認する処理
 void GameMainScene::CheckDonutOutOfFrame(Donuts* donut)
 {
-	//float upper_line = FRAME_LY;    // 上枠の位置
-	//float d_locy = donut->GetLocation().y - donut->GetRadiusSize(); // ドーナツの上側のY座標
-
-	//// ドーナツが上枠からはみ出していないか確認
-	//if (d_locy < upper_line && donut->GetLanded())
-	//{
-	//	is_gameover = true;
-	//}
-
 	// 合体直後の不安定時間はスキップ
 	if (!can_check_gameover)
 		return;
@@ -805,8 +781,6 @@ void GameMainScene::DrawNormal() const
 
 	// ドーナツを落とす枠描画
 	DrawBox(FRAME_LX, FRAME_LY, FRAME_RX, FRAME_RY, 0xD8C3A5, TRUE);
-	//DrawBox(FRAME_LX + frame_line_width, FRAME_LY + frame_line_width, FRAME_RX - frame_line_width, FRAME_RY - frame_line_width, 0xF3E3CC, TRUE);
-
 
 	// オブジェクト描画
 	for (GameObject* obj : gameobjects->GetObjectList())

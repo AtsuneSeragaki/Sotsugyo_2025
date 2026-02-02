@@ -19,20 +19,9 @@ public:
 	~GameObjectManager();
 
 public:
-	// オブジェクトを生成するか確認する処理
-	void CheckCreateObject();
-	
-	// オブジェクトを削除するか確認する処理
-	void CheckDestroyObject();
 	
 	// 生成したゲームオブジェクトのリストを取得する処理
 	const std::vector<GameObject*>& GetObjectList() const;
-	
-	// オブジェクトを削除する処理
-	void DestroyGameObject(GameObject*);
-	
-	// 当たり判定を確認する処理
-	void CheckCollision();
 	
 	// 削除対象のオブジェクトをリストから取り除く処理
 	void RemoveDeadObjects();

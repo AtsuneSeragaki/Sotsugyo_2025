@@ -12,25 +12,23 @@ void TitleScene::Initialize()
 	button[2] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_RANKING_BUTTON_LY,TITLE_RANKING_BUTTON_RY,false,eSceneType::eRanking,{70,15,0x5C4630,0.4,0.4},"RANKING" };
 	button[3] = { TITLE_BUTTON_LX,TITLE_BUTTON_RX,TITLE_END_BUTTON_LY,TITLE_END_BUTTON_RY,false,eSceneType::eEnd,{115,15,0x5C4630,0.4,0.4},"EXIT" };
 
+	// âÊëúì«Ç›çûÇ›
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/title/title.png");
 	background_img = tmp[0];
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow1.png");
+	donut_shadow_img[0] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow2.png");
+	donut_shadow_img[1] = tmp[0];
+	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow3.png");
+	donut_shadow_img[2] = tmp[0];
 
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
 		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
 		donut_img[i] = tmp[0];
 	}
-
-	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow1.png");
-	donut_shadow_img[0] = tmp[0];
-
-	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow2.png");
-	donut_shadow_img[1] = tmp[0];
-
-	tmp = rm->GetImages("Resource/Images/gamemain/donut/donut_shadow3.png");
-	donut_shadow_img[2] = tmp[0];
 
 	donut1_x = 150.0f;
 	donut1_y = -50.0f;
@@ -88,11 +86,7 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	// îwåi
-	//DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xE0D9CE, TRUE);
 	DrawGraph(0, 0, background_img, TRUE);
-
-	// É^ÉCÉgÉã
-	//FontManager::Draw(355, 100, 1, 1, 0x5C4630, "DONUT POP");
 
 	DrawDonut();
 

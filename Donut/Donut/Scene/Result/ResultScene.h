@@ -22,26 +22,26 @@
 class ResultScene : public SceneBase
 {
 private:
-	int score;  // スコア
 	ButtonState button[RESULT_BUTTON_NUM]; // ボタン情報
-	int background_img; // 背景画像
-	int line_img; // 波線画像
-	int receipt_img; // レシート画像
-	float receipt_y; // レシートY座標
+	int score;                    // スコア
+	int background_img;           // 背景画像
+	int line_img;                 // 波線画像
+	int receipt_img;              // レシート画像
+	float receipt_y;              // レシートY座標
 	int donut_img[MAX_DONUT_NUM]; // ドーナツ画像
-	int donut_count[6]; // 消したドーナツの数をカウント
-	int receipt_se;
-	bool receipt_se_flg;
-	char time_buf[64];
-	int rank_img[4];
-	double rank_scale;
-	int rank_se;
-	int high_score_img;
-	bool high_score_flg;
-	double high_score_scale;
-	bool rank_moved_flg;
-	bool high_score_moved_flg;
-	bool receipt_moved_flg;
+	int donut_count[6];           // 消したドーナツの数をカウント
+	int receipt_se;               // レシート効果音
+	bool receipt_se_flg;          // レシート効果音流れているか？(true:流れている false:流れていない)
+	char time_buf[64];            // 現在の日時データ
+	int rank_img[4];              // ランク画像
+	double rank_scale;            // ランク画像拡大率
+	int rank_se;                  // ランク効果音
+	int high_score_img;           // ハイスコア画像
+	bool high_score_flg;          // ハイスコアか？(ture:ハイスコア false:ハイスコアじゃない)
+	double high_score_scale;      // ハイスコア画像拡大率
+	bool rank_moved_flg;          // ランクアニメーションが終わったか？(true:終わった false:終わってない)
+	bool high_score_moved_flg;    // ハイスコアアニメーションが終わったか？(true:終わった false:終わってない)
+	bool receipt_moved_flg;       // レシートアニメーションが終わったか？(true:終わった false:終わってない)
 	
 public:
 	// コンストラクタ

@@ -8,8 +8,10 @@ private:
 public:
     // ‰Šú‰»ˆ—i“Ç‚İ‚İ•Ä¶j
     static void Initialize(); 
+   
     // ’â~ˆ—
     static void Stop(); 
+    
     // ‰ğ•úˆ—
     static void Release();
 };

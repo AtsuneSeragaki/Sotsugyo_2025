@@ -52,15 +52,13 @@ private:
 	int donut_creat_count;                // 次のドーナツを生成できる時間のカウント
 	ButtonState button[GAMEMAIN_BUTTON_NUM];  // ボタン情報(0:ポーズボタン 1:「続ける」ボタン 2:「タイトルに戻る」ボタン)
 	bool can_check_gameover;              // ゲームオーバー判定してもいいかフラグ（false:だめ true:してもいい）
-	int donut_image[MAX_DONUT_NUM];
-	bool is_donutgraphloaded;
-	int circle_image;
-	int background_img;
-	int pause_img;
-	static int delete_donut_count[6]; // 消したドーナツの数をカウント
-	int gameover_y;
-	int gameover_y_cnt;
-	int gameover_se;
+	int donut_image[MAX_DONUT_NUM];       // ドーナツ画像(進化の輪用)
+	int background_img;                   // 背景画像
+	int pause_img;                        // ポーズ画面画像
+	static int delete_donut_count[6];     // 消したドーナツの数をカウント
+	int gameover_y;                       // ゲームオーバー文字の最終的なY座標
+	int gameover_y_cnt;                   // ゲームオーバー文字の移動用Y座標
+	int gameover_se;                      // ゲームオーバー効果音
 
 public:
 	// コンストラクタ

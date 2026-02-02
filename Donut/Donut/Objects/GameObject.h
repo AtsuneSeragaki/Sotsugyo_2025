@@ -48,7 +48,7 @@ class GameObject
 protected:
 	Vector2D location;   // 位置座標情報
 	float r;             // 半径
-	double rotation;
+	double rotation;     // 回転率
 	int image;           // 描画する画像データ
 	int flip_flag;       // 描画反転フラグ
 

@@ -3,6 +3,7 @@
 
 int FontManager::font_handle[] = {};
 
+// 初期化処理
 void FontManager::Initialize()
 {
 	// ウィンドウズPCに一時的にフォントデータを読み込む(システム終了まで)
@@ -15,6 +16,7 @@ void FontManager::Initialize()
 
 }
 
+// フォントデータを削除
 void FontManager::Cleanup()
 {
 	for (int i = 0; i < FONT_NUM; i++)
@@ -27,6 +29,7 @@ void FontManager::Cleanup()
 	RemoveFontResourceExA("Resource/Fonts/AtkinsonHyperlegibleMono-ExtraBold.ttf", FR_PRIVATE, NULL);
 }
 
+// 文字描画処理
 void FontManager::DrawStr(int x, int y, double scaleX, double scaleY, unsigned int color, const char* text)
 {
 	//バイリニア法で描画する
@@ -38,6 +41,7 @@ void FontManager::DrawStr(int x, int y, double scaleX, double scaleY, unsigned i
 	SetDrawMode(DX_DRAWMODE_NEAREST);
 }
 
+// 数字描画処理
 void FontManager::DrawNum(int x, int y, double scaleX, double scaleY, unsigned int color, const char* text)
 {
 	//バイリニア法で描画する

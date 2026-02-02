@@ -5,15 +5,15 @@
 class Donuts : public GameObject
 {
 private:
-	bool landed;      // 地面に着地したか？フラグ
-	DonutType type;   // ドーナツの種類
-	float vx;         // 横方向速度
-	float vy;         // 重力
-	bool isMerged;    // すでに合体したかどうか
-	bool isDead;      // 削除予定（外部で処理）
-	bool player_collision; // プレイヤーと当たっているか？フラグ
+	bool landed;            // 地面に着地したか？フラグ
+	DonutType type;         // ドーナツの種類
+	float vx;               // 横方向速度
+	float vy;               // 重力
+	bool isMerged;          // すでに合体したかどうか
+	bool isDead;            // 削除予定（外部で処理）
+	bool player_collision;  // プレイヤーと当たっているか？フラグ
 	bool landedOnSomething; // 何かの上に着地しているか？フラグ
-	int donut_img; // ドーナツ画像
+	int donut_img;          // ドーナツ画像
 
 public:
 	// コンストラクタ
@@ -72,6 +72,7 @@ public:
 	// 合体したか？フラグを書き換える処理(引数：設定したい値)
 	void SetMerged(bool m) { isMerged = m; }
 
+	// ドーナツ画像読み込み
 	void SetImage(const char* path);
 
 	// 着地フラグを返す処理(戻り値：着地フラグ)

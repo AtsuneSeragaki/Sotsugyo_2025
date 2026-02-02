@@ -6,27 +6,27 @@
 // コンストラクタ
 Donuts::Donuts(DonutType type)
 {
+    // ドーナツの種類を設定
     this->type = type;
-    vx = 0.0f;
-    vy = 0.0f;
 
     const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];
     r = info.size;
     landed = false;
 
-    isMerged = false;
-    isDead = false;
-
-    player_collision = false;
-
-    landedOnSomething = false;
-
+    // 画像読み込み
     ResourceManager* rm = ResourceManager::GetInstance();
     std::vector<int> tmp;
     tmp = rm->GetImages(info.image_path);
     donut_img = tmp[0];
 
+    vx = 0.0f;
+    vy = 0.0f;
     rotation = 0.0;
+   
+    isMerged = false;
+    isDead = false;
+    player_collision = false;
+    landedOnSomething = false;
 }
 
 // デストラクタ
@@ -71,32 +71,27 @@ void Donuts::Update()
 // 描画処理
 void Donuts::Draw() const 
 {
-    //float base_radius = 46.5; // 元画像(93x93)の半径
-    float base_radius = 296.5; // 元画像(288x288)の半径
+    float base_radius = 296.5; // 元画像(593x593)の半径
     double scale = (double)r / (double)base_radius; // 画像の拡大率
 
-    // ドーナツ仮表示
     if (player_collision)
-    {
+    {// プレイヤーがドーナツに当たっていたら、ドーナツを暗くする
+
         // ドーナツを暗くする
         // 描画輝度のセット
         SetDrawBright(128, 128, 128);
+        
+        // ドーナツ
         DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale,rotation, donut_img, TRUE);
+        
         // 描画輝度を元に戻す
         SetDrawBright(255, 255, 255);
     }
     else
     {
+        // ドーナツ
        DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, rotation, donut_img, TRUE);
     }
-   
-    /*SetFontSize(20);
-    const DonutInfo& info = g_DonutInfoTable[static_cast<int>(type)];*/
-   
-    // ドーナツ番号表示
-    //DrawFormatStringF(location.x, location.y - 3.0f, 0x5C4630, "%d", info.number);
-    // ドーナツ着地フラグ表示
-    //DrawFormatString(100, 0, 0x000000, "%d", type);
 }
 
 // 終了時処理
@@ -125,6 +120,7 @@ int Donuts::GetDonutScore(DonutType dtype)
     return info.score;
 }
 
+// ドーナツ画像読み込み
 void Donuts::SetImage(const char* path)
 {
     ResourceManager* rm = ResourceManager::GetInstance();
@@ -252,10 +248,6 @@ void Donuts::HandleCollision(Donuts* other)
     other->vy = new_v2n * ny + v2t * tangenty;
 
     // 弾性反発係数と摩擦を適用
-    //vx *= 0.85f; // 反発後の減速
-    //vy *= 0.85f;
-    //other->vx *= 0.85f;
-    //other->vy *= 0.85f;
     vx *= 0.85f; // 反発後の減速
     vy *= 0.85f;
     other->vx *= 0.85f;

@@ -9,9 +9,11 @@
 Order::Order()
 {
     difficulty = 0;
+   
     // オーダーを設定
     SetRandomOrder(difficulty);
 
+    // 画像読み込み
     ResourceManager* rm = ResourceManager::GetInstance();
     std::vector<int> tmp;
     tmp = rm->GetImages("Resource/Images/gamemain/box.png");
@@ -19,6 +21,7 @@ Order::Order()
     tmp = rm->GetImages("Resource/Images/gamemain/clear.png");
     clear_img = tmp[0];
 
+    // 音源読み込み
     clear_se[0] = rm->GetSounds("Resource/Sounds/gamemain/clear_se.mp3");
     clear_se[1] = rm->GetSounds("Resource/Sounds/gamemain/box_move_se.mp3");
     ChangeVolumeSoundMem(150, clear_se[1]);
@@ -26,6 +29,7 @@ Order::Order()
     ChangeVolumeSoundMem(170, clear_se[2]);
     next_order_se = rm->GetSounds("Resource/Sounds/button_se.mp3");
 
+    // ドーナツの画像を設定
     SetDonutImage();
 
     // クリアアニメーションの変数を全てリセット
@@ -41,17 +45,12 @@ Order::~Order()
 void Order::Initialize()
 {
     difficulty = 0;
+    
     // オーダーを設定
     SetRandomOrder(difficulty);
+    
     // クリアアニメーションの変数を全てリセット
     ClearAnimReset();
-
-    // デバック用
-  /* clear_anim_flg = true;
-    order_num[0] = 0;
-    order_num[1] = 0;
-    order_num[2] = 0;
-    order_num[3] = 1;*/
 }
 
 // 更新処理
@@ -68,10 +67,6 @@ void Order::Update()
     {
         ClearAnim();
     }
-    //else
-    //{// 連続再生(デバック用)
-    //    clear_anim_flg = true;
-    //}
 }
 
 // 描画処理
@@ -81,7 +76,8 @@ void Order::Draw() const
     double scale = 40.0 / (double)base_radius; // 画像の拡大率
 
     if (clear_anim_flg)
-    {
+    {// クリアアニメーション
+
         if (box_x >= 30.0f && donut_num >= 0)
         {
             // ドーナツ表示

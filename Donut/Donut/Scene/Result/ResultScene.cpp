@@ -23,6 +23,7 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	// タイトルボタン初期化
 	button[1] = { RESULT_TITLE_BUTTON_LX,RESULT_TITLE_BUTTON_RX,RESULT_BUTTON_LY,RESULT_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
 
+	// 画像読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/result/result.png");
@@ -42,16 +43,17 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	tmp = rm->GetImages("Resource/Images/result/highscore.png");
 	high_score_img = tmp[0];
 
-	receipt_se = rm->GetSounds("Resource/Sounds/result/receipt_se.mp3");
-	ChangeVolumeSoundMem(200, receipt_se);
-	rank_se = rm->GetSounds("Resource/Sounds/result/rank_se.mp3");
-	ChangeVolumeSoundMem(200, rank_se);
-
 	for (int i = 0; i < MAX_DONUT_NUM; i++)
 	{
 		tmp = rm->GetImages(g_DonutInfoTable[i].image_path);
 		donut_img[i] = tmp[0];
 	}
+
+	// 効果音読み込み
+	receipt_se = rm->GetSounds("Resource/Sounds/result/receipt_se.mp3");
+	ChangeVolumeSoundMem(200, receipt_se);
+	rank_se = rm->GetSounds("Resource/Sounds/result/rank_se.mp3");
+	ChangeVolumeSoundMem(200, rank_se);
 
 	receipt_y = 650.0f;
 
@@ -82,6 +84,15 @@ ResultScene::ResultScene(int score,int* delete_donut_count)
 	else
 	{
 		high_score_flg = false;
+	}
+
+	// 消したドーナツの個数を99個までに制限
+	for (int i = 0; i < 6; i++)
+	{
+		if (donut_count[i] >= 99)
+		{
+			donut_count[i] = 99;
+		}
 	}
 }
 
@@ -202,7 +213,7 @@ void ResultScene::Draw() const
 
 	if (high_score_flg && rank_scale <= 1.0)
 	{
-		DrawRotaGraph2F(rank_x /*- 265*/, rank_y + 125, 95, 16, high_score_scale, 0.0, high_score_img, TRUE);
+		DrawRotaGraph2F(rank_x, rank_y + 125, 95, 16, high_score_scale, 0.0, high_score_img, TRUE);
 	}
 	
 	// リザルト画面に遷移した日時
@@ -269,13 +280,6 @@ void ResultScene::DrawScore() const
 			FontManager::DrawNum(525 + 185 * (i - 3), (int)receipt_y + 198, 0.45, 0.45, 0x5C4630, buf);
 		}
 	}
-
-	//// スコアを文字列に変換
-	//char score_buf[16];
-	//sprintf_s(score_buf, sizeof(score_buf), "%08d", score);
-
-	//FontManager::DrawNum(445 + plus, (int)receipt_y + 318, 0.85, 0.85, 0x5C4630, score_buf);
-	//FontManager::Draw(447 + plus, 230, 0.7, 0.7, 0x5C4630, "");
 }
 
 // ランキング描画処理
@@ -301,7 +305,6 @@ void ResultScene::DrawRanking() const
 		sprintf_s(ranking_buf, sizeof(ranking_buf),"%08d",ranking->GetScore(i));
 
 		FontManager::DrawNum(480 + plus, 375 + i * 60, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
-		//FontManager::DrawNum(480 + plus, 375 + i * 60, ranking_fontsize, ranking_fontsize, 0x766351, ranking_buf);
 	}
 }
 

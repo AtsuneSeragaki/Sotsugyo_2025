@@ -95,15 +95,6 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 
 			int offset_y = 4;
 
-			// ƒ{ƒ^ƒ“”wŒi•`‰æ
-			//DrawBox(button[i].lx, button[i].ly + offset_y, button[i].rx, button[i].ry + offset_y, button_color, TRUE);
-
-			//// ƒ{ƒ^ƒ“˜g•`‰æ(˜g‚ğ‘¾‚­‚·‚é‚½‚ß‚É•¡”•`‰æ)
-			//for (int j = 0; j < button_line_width; j++)
-			//{
-			//	DrawBox(button[i].lx - j, button[i].ly - j + offset_y, button[i].rx + j, button[i].ry + j + offset_y, button_line_color, FALSE);
-			//}
-
 			DrawExtendGraph(button[i].lx, button[i].ly + offset_y, button[i].rx, button[i].ry + offset_y, button_img, TRUE);
 
 			FontManager::DrawStr(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing + offset_y, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);
@@ -130,16 +121,6 @@ void SceneBase::DrawButton(int button_num, const ButtonState* button) const
 				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			}
 			
-
-			// ƒ{ƒ^ƒ“”wŒi•`‰æ
-			//DrawBox(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_color, TRUE);
-
-			//// ƒ{ƒ^ƒ“˜g•`‰æ(˜g‚ğ‘¾‚­‚·‚é‚½‚ß‚É•¡”•`‰æ)
-			//for (int j = 0; j < button_line_width; j++)
-			//{
-			//	DrawBox(button[i].lx - j, button[i].ly - j, button[i].rx + j, button[i].ry + j, button_line_color, FALSE);
-			//}
-
 			DrawExtendGraph(button[i].lx, button[i].ly, button[i].rx, button[i].ry, button_img, TRUE);
 
 			FontManager::DrawStr(button[i].lx + button[i].style.xspacing, button[i].ly + button[i].style.yspacing, button[i].style.xscale, button[i].style.yscale, button[i].style.string_color, button[i].label);

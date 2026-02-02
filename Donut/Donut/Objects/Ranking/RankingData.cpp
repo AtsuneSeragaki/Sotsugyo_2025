@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+// コンストラクタ
 RankingData::RankingData()
 {
 	for (int i = 0; i < RANKING_DATA_MAX; i++)
@@ -11,10 +12,12 @@ RankingData::RankingData()
 	}
 }
 
+// デストラクタ
 RankingData::~RankingData()
 {
 }
 
+// 初期処理
 void RankingData::Initialize()
 {
 	// ランキングデータの読み込み
@@ -39,11 +42,13 @@ void RankingData::Initialize()
 	fclose(fp);
 }
 
+// 終了処理
 void RankingData::Finalize()
 {
 
 }
 
+// ランキングデータの設定
 void RankingData::SetRankingData(int score)
 {
 	if (this->score[RANKING_DATA_MAX - 1] < score)
@@ -54,6 +59,7 @@ void RankingData::SetRankingData(int score)
 	}
 }
 
+// データ入れ替え処理
 void RankingData::SortData()
 {
 	// 選択法ソートを使用し、降順で入れ替える

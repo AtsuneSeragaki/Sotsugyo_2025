@@ -21,6 +21,7 @@ HelpScene::HelpScene()
 	// タイトルボタン初期化
 	button[1] = { HELP_TITLE_BUTTON_LX,HELP_TITLE_BUTTON_RX,HELP_BUTTON_LY,HELP_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
 
+	// 画像読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/help/help.png");
@@ -127,45 +128,6 @@ void HelpScene::Draw() const
 		float spacing = 15.0f;     // ドーナツ同士の空白幅（px）
 		float current_x = 120.0f;   // 最初のドーナツ左端のX座標
 		float base_radius = 296.5; // 元画像(593x593)の半径
-
-		// ドーナツ表示
-		//for (int i = 0; i < MAX_DONUT_NUM; i++) 
-		//{
-		//	double scale = ((double)g_DonutInfoTable[i].size - 7.0) / (double)base_radius; // 画像の拡大率
-
-		//	float draw_w = base_radius * 2 * (float)scale;  // 拡大後の幅
-		//	float draw_h = base_radius * 2 * (float)scale;  // 拡大後の高さ
-
-		//	// DrawRotaGraph2F の左上座標 = current_x + 画像中心からのオフセット
-		//	float draw_x = current_x;
-		//	float draw_y = donut_y - draw_h / 2;     // Yは中心に揃える
-		//	float shadow_x = 4.0f;
-		//	float shadow_y = 6.5f;
-
-		//	// 左側ドーナツ描画
-		//	// 影
-		//	if (i < 5)
-		//	{
-		//		DrawRotaGraph2F(draw_x + shadow_x / 2.0f, draw_y + shadow_y / 2.0f, base_radius, base_radius, scale, 0.0, donut_shadow_img[0], TRUE);
-		//	}
-		//	else if (i < 7)
-		//	{
-		//		DrawRotaGraph2F(draw_x + shadow_x / 1.7f, draw_y + shadow_y / 1.7f, base_radius, base_radius, scale, 0.0, donut_shadow_img[1], TRUE);
-		//	}
-		//	else if (i == 10)
-		//	{
-		//		DrawRotaGraph2F(draw_x + shadow_x, draw_y + shadow_y, base_radius, base_radius, scale, 0.0, donut_shadow_img[0], TRUE);
-		//	}
-		//	else
-		//	{
-		//		DrawRotaGraph2F(draw_x + shadow_x / 1.2f, draw_y + shadow_y / 1.2f, base_radius, base_radius, scale, 0.0, donut_shadow_img[2], TRUE);
-		//	}
-
-		//	DrawRotaGraph2F(draw_x, draw_y, base_radius, base_radius, scale, 0.0, donut_img[i], TRUE);
-
-		//	// 次のドーナツの左端X = 現在ドーナツの右端 + 空白
-		//	current_x += draw_w + spacing;
-		//}
 
 		// 三角形ボタン
 		if (triangle_collision)

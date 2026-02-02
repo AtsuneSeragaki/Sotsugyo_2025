@@ -11,6 +11,7 @@ RankingScene::RankingScene()
 	// ƒ^ƒCƒgƒ‹ƒ{ƒ^ƒ“‰Šú‰»
 	button[0] = { RANKING_TITLE_BUTTON_LX,RANKING_TITLE_BUTTON_RX,RANKING_BUTTON_LY,RANKING_BUTTON_RY,false,eSceneType::eTitle,{32,17,0x5C4630,0.35,0.35},"BACK TO TITLE" };
 	
+	// ‰æ‘œ“Ç‚İ‚İ
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
 	tmp = rm->GetImages("Resource/Images/ranking/ranking.png");
@@ -28,6 +29,7 @@ RankingScene::RankingScene()
 	tmp = rm->GetImages("Resource/Images/ranking/star.png");
 	star_img = tmp[0];
 
+	// ‰¹Œ¹“Ç‚İ‚İ
 	drop_se = rm->GetSounds("Resource/Sounds/gamemain/marge_se.mp3");
 	ChangeVolumeSoundMem(170, drop_se);
 
@@ -100,7 +102,7 @@ void RankingScene::Draw() const
 	// ”wŒi
 	DrawGraph(0, 0, background_img, FALSE);
 
-	float base_radius = 296.5; // Œ³‰æ‘œ(288x288)‚Ì”¼Œa
+	float base_radius = 296.5; // Œ³‰æ‘œ(593x593)‚Ì”¼Œa
 	double scale = 0.57; // ‰æ‘œ‚ÌŠg‘å—¦
 
 	float donut_x = 235.0f;
@@ -159,8 +161,6 @@ void RankingScene::Draw() const
 
 		// ƒ‰ƒ“ƒLƒ“ƒO‚ğ•¶š—ñ‚É•ÏŠ·
 		sprintf_s(ranking_buf, sizeof(ranking_buf), "%08d", ranking->GetScore(i));
-
-		//FontManager::DrawNum(default_x + i * string_space, (int)donut_num[i] - 54, ranking_fontsize, ranking_fontsize, 0x5C4630, ranking_buf);
 	}
 
 
