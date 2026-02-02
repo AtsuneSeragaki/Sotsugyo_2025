@@ -4,16 +4,16 @@
 class Player : public GameObject
 {
 private:
-	bool is_click;                  // マウス左クリックされたか？
-	DonutType donut_type;           // 落とすドーナツの種類
-	DonutType next_donut_type;      // 次に落とすドーナツの種類
-	float next_r;                   // 次に落とすドーナツの半径
-	int donut_number;               // ドーナツの番号
-	int next_donut_number;          // ネクストドーナツの番号
-	bool donut_collision;           // ドーナツと当たっているか？
-	int donut_img[2];               // ドーナツ画像
-	int click_timer;
-	bool click_timer_flg;
+	bool is_click;               // マウス左クリックされたか？
+	DonutType donut_type;        // 落とすドーナツの種類
+	DonutType next_donut_type;   // 次に落とすドーナツの種類
+	float next_r;                // 次に落とすドーナツの半径
+	int donut_number;            // ドーナツの番号
+	int next_donut_number;       // ネクストドーナツの番号
+	bool donut_collision;        // ドーナツと当たっているか？
+	int donut_img[2];            // ドーナツ画像
+	int click_timer;             // プレイヤーがクリックしていない時間をカウント
+	bool click_timer_flg;        // クリックタイマーカウントするか？(true:カウントする false:カウントしない)
 
 public:
 	// コンストラクタ
@@ -72,13 +72,17 @@ public:
 	// プレイヤーのX座標を設定
 	void SetPlayerPosX(float pos_x) { location.x = pos_x; }
 
+	// クリックタイマーの値を取得する処理
 	int GetClickTimer() { return click_timer; }
 
+	// クリックタイマー初期化処理
 	void ResetClickTimer() { click_timer = 0; }
 
+	// クリックタイマー中断処理
 	void StopClickTimer() { click_timer_flg = false; }
 
-	void StartClickTimer();
+	// クリックタイマー開始処理
+	void StartClickTimer() { click_timer_flg = true; }
 
 private:
 	// ドーナツを落とす枠の範囲しか横移動出来ないようにする処理

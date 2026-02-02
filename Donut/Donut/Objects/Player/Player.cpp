@@ -5,7 +5,7 @@
 #include "DxLib.h"
 
 // コンストラクタ
-Player::Player() : is_click(true)
+Player::Player()
 {
 	// 最初は1のドーナツを設定
 	donut_type = DonutType::DONUT_BASIC;
@@ -19,8 +19,7 @@ Player::Player() : is_click(true)
 	next_r = info2.size;
 	next_donut_number = 3;
 
-	donut_collision = false;
-
+	// 画像読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
 	tmp = rm->GetImages(info.image_path);
@@ -29,6 +28,9 @@ Player::Player() : is_click(true)
 	donut_img[1] = tmp[0];
 
 	click_timer = 0;
+	click_timer_flg = true;
+	donut_collision = false;
+	is_click = true;
 }
 
 // デストラクタ
@@ -53,52 +55,33 @@ void Player::Update()
 	// カーソル移動制限
 	LocXControl();
 
-	if (click_timer_flg)
+	/*if (click_timer_flg)
 	{
 		click_timer++;
-	}
+	}*/
 }
 
 // 描画処理
 void Player::Draw() const
 {
-	// ネクスト枠の描画(右上)
-	//DrawCircle(1070, 135, 105, 0xD8C3A5, TRUE);
-
-	//// 枠の太さ
+	// 枠の太さ
 	int line_width = 3;
 
-	//// ドーナツを落とす枠描画(枠を太くするために複数描画)
-	//for (int i = 0; i < line_width; i++)
-	//{
-	//	DrawCircleAA(1070.0f, 135.0f, 105.0f + i, 64,0xA67C52, FALSE);
-	//}
-
-	//FontManager::Draw(1035, 65, 0.3, 0.3, 0x5C4630, "NEXT");
-
-	//float base_radius = 46.5; // 元画像(93x93)の半径
-	float base_radius = 296.5; // 元画像(288x288)の半径
+	float base_radius = 296.5; // 元画像(593x593)の半径
 	double scale = (double)r / (double)base_radius; // 落とすドーナツ画像の拡大率
 	double next_scale = (double)next_r / (double)base_radius; // 次に落とすドーナツ画像の拡大率
 
+	// ドーナツの落下位置(白い線)
 	for (int i = 0; i < line_width; i++)
 	{
 		DrawLineAA(location.x + i, location.y + r, location.x + i, FRAME_RY, 0xffffff);
 	}
 
-	// 落とすドーナツ描画
+	// 落とすドーナツ
 	DrawRotaGraph2F(location.x, location.y, base_radius, base_radius, scale, 0.0, donut_img[0], TRUE);
-
-	// 落とすドーナツ番号の描画
-	//DrawFormatString((int)location.x, (int)location.y - 3, 0x5C4630, "%d", donut_number);
-
-	scale = (double)next_r / base_radius; // 次に落とすドーナツ画像の拡大率
 
 	// 次に落とすドーナツの描画(右上)
 	DrawRotaGraph2F(1078.0f, 150.0f, base_radius, base_radius, next_scale, 0.0, donut_img[1], TRUE);
-
-	// 次に落とすドーナツ番号の描画(右上)
-	//DrawFormatString(0, 0, 0x000000, "%d", click_timer);
 }
 
 // 終了時処理
@@ -118,6 +101,7 @@ void Player::ChooseRandomDonut()
 	const DonutInfo& info = g_DonutInfoTable[static_cast<int>(donut_type)];
 	const DonutInfo& info2 = g_DonutInfoTable[static_cast<int>(next_donut_type)];
 
+	// 画像読み込み
 	ResourceManager* rm = ResourceManager::GetInstance();
 	std::vector<int> tmp;
 	tmp = rm->GetImages(info.image_path);
@@ -125,21 +109,13 @@ void Player::ChooseRandomDonut()
 	tmp = rm->GetImages(info2.image_path);
 	donut_img[1] = tmp[0];
 
+	// 大きさ設定
 	r = info.size;
 	next_r = info2.size;
 
+	// 番号設定
 	donut_number = info.number;
 	next_donut_number = info2.number;
-}
-
-void Player::StartClickTimer()
-{
-	/*if (!click_timer_flg)
-	{
-		click_timer_flg = true;
-	}*/
-
-	click_timer_flg = true;
 }
 
 // ドーナツを落とす枠の範囲しか横移動出来ないようにする処理
